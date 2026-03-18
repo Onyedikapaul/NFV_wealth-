@@ -41,6 +41,12 @@
       html {
         scroll-behavior: smooth;
       }
+      html,
+      body {
+        overflow-x: hidden;
+        width: 100%;
+      }
+
       body {
         font-family: "DM Sans", sans-serif;
         background: var(--white);
@@ -215,6 +221,9 @@
         max-width: 1300px;
         margin: 0 auto;
         position: relative;
+      }
+      .hero-blob {
+        display: none;
       }
       .hero-blob {
         position: absolute;
@@ -1072,6 +1081,20 @@
       }
       .wb-body {
       }
+
+      .hero-grid {
+        overflow: hidden;
+      }
+
+      .why-section,
+      .how-section,
+      .features-section,
+      .testi-section,
+      .faq-section,
+      .stats-section,
+      .cta-section {
+        overflow: hidden;
+      }
       .wb-title {
         font-family: "Syne", sans-serif;
         font-size: 1rem;
@@ -1127,6 +1150,9 @@
           grid-template-columns: 1fr;
           gap: 2.5rem;
           direction: ltr;
+        }
+        .hero-blob {
+          display: block;
         }
         .why-row-reverse {
           direction: ltr;
@@ -1737,10 +1763,7 @@
             </div>
           </div>
           <div class="how-img-wrap reveal">
-            <img
-              src="/assets/images/about-image.jfif"
-              alt="app on phone"
-            />
+            <img src="/assets/images/about-image.jfif" alt="app on phone" />
           </div>
         </div>
       </div>
@@ -1870,10 +1893,7 @@
 
           <div class="why-img-col">
             <div class="why-img-wrap">
-              <img
-                src="/assets/images/other-image-2.jfif"
-                alt="Mobile"
-              />
+              <img src="/assets/images/other-image-2.jfif" alt="Mobile" />
               <div class="why-img-badge why-img-badge-right">
                 <div class="wib-icon">
                   <svg
@@ -2148,32 +2168,32 @@
         <div class="footer-brand">
           <a href="#" class="nav-logo" style="text-decoration: none">
             <div class="logo-mark">
-            <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#fff"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M12 2L4 6v6c0 4.5 3.5 8.5 8 10 4.5-1.5 8-5.5 8-10V6L12 2z"
-              fill="rgba(255,255,255,0.15)"
-              stroke="#fff"
-            />
-            <text
-              x="12"
-              y="14.5"
-              text-anchor="middle"
-              font-size="8"
-              font-weight="800"
-              fill="#fff"
-              stroke="none"
-              font-family="system-ui"
-            >
-              N
-            </text>
-          </svg>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2L4 6v6c0 4.5 3.5 8.5 8 10 4.5-1.5 8-5.5 8-10V6L12 2z"
+                  fill="rgba(255,255,255,0.15)"
+                  stroke="#fff"
+                />
+                <text
+                  x="12"
+                  y="14.5"
+                  text-anchor="middle"
+                  font-size="8"
+                  font-weight="800"
+                  fill="#fff"
+                  stroke="none"
+                  font-family="system-ui"
+                >
+                  N
+                </text>
+              </svg>
             </div>
             <span class="logo-text" style="color: #fff"
               >NFV <span>Wealth</span></span
@@ -2671,19 +2691,32 @@
       if (statsGrid) statsObserver.observe(statsGrid);
     </script>
 
-
-<!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '7624f45c2fd0e6c023e08149787a3168ec2a5a77';
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
-
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+      var _smartsupp = _smartsupp || {};
+      _smartsupp.key = "7624f45c2fd0e6c023e08149787a3168ec2a5a77";
+      window.smartsupp ||
+        (function (d) {
+          var s,
+            c,
+            o = (smartsupp = function () {
+              o._.push(arguments);
+            });
+          o._ = [];
+          s = d.getElementsByTagName("script")[0];
+          c = d.createElement("script");
+          c.type = "text/javascript";
+          c.charset = "utf-8";
+          c.async = true;
+          c.src = "https://www.smartsuppchat.com/loader.js?";
+          s.parentNode.insertBefore(c, s);
+        })(document);
+    </script>
+    <noscript
+      >Powered by
+      <a href="https://www.smartsupp.com" target="_blank"
+        >Smartsupp</a
+      ></noscript
+    >
   </body>
 </html>
