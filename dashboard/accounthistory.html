@@ -1,0 +1,1117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="utf-8" />
+    <title>NFV Wealth | Account Transactions History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+<script defer src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        [x-cloak] { display: none !important; }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'dashboard',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+                <!-- Desktop Layout -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                       <div id="sidebar-slot"></div>
+
+                    
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col w-full">
+                <!-- Desktop Header -->
+                  <div id="header-slot"></div>
+
+ 
+                <!-- Main Content -->
+<main class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-0 overflow-y-auto">
+
+<script src="/auth-script/accountHistory.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4 lg:p-6 pb-24 lg:pb-10"
+     x-data="transactionApp()"
+     x-init="init()">
+
+  <!-- Page Title -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Account History</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">View your transfers and deposits</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex flex-wrap gap-1 bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-2xl p-1 border border-white/20 dark:border-gray-700/50 shadow mb-6 w-fit">
+    <button @click="switchTab('transactions')"
+            :class="activeTab === 'transactions' ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200">
+      <i class="fa-solid fa-arrow-right-arrow-left mr-2"></i>Local Transfers
+    </button>
+    <button @click="switchTab('international')"
+            :class="activeTab === 'international' ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200">
+      <i class="fa-solid fa-globe mr-2"></i>International
+    </button>
+    <button @click="switchTab('deposits')"
+            :class="activeTab === 'deposits' ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200">
+      <i class="fa-solid fa-wallet mr-2"></i>Deposits
+    </button>
+  </div>
+
+  <!-- ── LOCAL TRANSACTIONS TAB ── -->
+  <div x-show="activeTab === 'transactions'" x-transition>
+    <div class="flex items-center gap-3 mb-4">
+      <select x-model="txnStatus" @change="txnPage=1; loadTransactions()"
+              class="text-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+        <option value="">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="completed">Completed</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
+
+    <!-- Desktop Table -->
+    <div class="hidden md:block bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 overflow-hidden mb-4">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+          <thead class="bg-gradient-to-r from-primary-50/80 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/30">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Reference</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Recipient</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Bank</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Amount</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Status</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Date</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200/30 dark:divide-gray-700/30">
+            <tr x-show="loading"><td colspan="7" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div><p class="text-sm text-gray-400">Loading...</p></div></td></tr>
+            <tr x-show="!loading && transactions.length === 0"><td colspan="7" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center"><i class="fa-solid fa-receipt text-gray-400 text-xl"></i></div><p class="text-sm text-gray-500 dark:text-gray-400">No transactions found</p></div></td></tr>
+            <template x-for="txn in transactions" :key="txn._id">
+              <tr class="hover:bg-primary-50/40 dark:hover:bg-primary-900/10 transition-colors">
+                <td class="px-4 py-3 text-xs font-mono text-gray-700 dark:text-gray-300" x-text="txn.reference || '—'"></td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-white" x-text="txn.accountname"></td>
+                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400" x-text="txn.bankname"></td>
+                <td class="px-4 py-3 text-sm font-semibold text-red-600 dark:text-red-400" x-text="fmt(txn.amount)"></td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(txn.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(txn.status)"></div><span x-text="cap(txn.status)"></span></span></td>
+                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400"><div x-text="fmtDate(txn.createdAt)"></div><div class="text-xs" x-text="fmtTime(txn.createdAt)"></div></td>
+                <td class="px-4 py-3 text-right"><button @click="viewItem(txn, 'transaction')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-800/50 transition-all"><i class="fa-solid fa-eye mr-1.5"></i> View</button></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="md:hidden space-y-3 mb-4">
+      <div x-show="loading" class="text-center py-8"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500 mx-auto"></div></div>
+      <div x-show="!loading && transactions.length === 0" class="text-center py-8 text-gray-400 text-sm">No transactions found</div>
+      <template x-for="txn in transactions" :key="txn._id">
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow border border-white/20 dark:border-gray-700/50 p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div><div class="text-sm font-semibold text-gray-900 dark:text-white" x-text="txn.accountname"></div><div class="text-xs text-gray-500 dark:text-gray-400" x-text="txn.bankname"></div></div>
+            <div class="text-sm font-bold text-red-500" x-text="fmt(txn.amount)"></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(txn.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(txn.status)"></div><span x-text="cap(txn.status)"></span></span>
+            <div class="flex items-center gap-2"><span class="text-xs text-gray-400" x-text="fmtDate(txn.createdAt)"></span><button @click="viewItem(txn, 'transaction')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 transition-all"><i class="fa-solid fa-eye mr-1"></i> View</button></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Transactions Pagination -->
+    <div x-show="txnTotalPages > 1" class="flex items-center justify-between bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 shadow px-4 py-3">
+      <span class="text-sm text-gray-500 dark:text-gray-400">Page <span x-text="txnPage"></span> of <span x-text="txnTotalPages"></span> &bull; <span x-text="txnTotal"></span> total</span>
+      <div class="flex gap-2">
+        <button @click="txnGoTo(txnPage - 1)" :disabled="txnPage === 1" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Prev</button>
+        <button @click="txnGoTo(txnPage + 1)" :disabled="txnPage === txnTotalPages" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INTERNATIONAL TRANSFERS TAB ── -->
+  <div x-show="activeTab === 'international'" x-transition>
+    <div class="flex items-center gap-3 mb-4">
+      <select x-model="intStatus" @change="intPage=1; loadInternationalTransfers()"
+              class="text-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+        <option value="">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="completed">Completed</option>
+        <option value="failed">Failed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <!-- Desktop Table -->
+    <div class="hidden md:block bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 overflow-hidden mb-4">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+          <thead class="bg-gradient-to-r from-primary-50/80 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/30">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Method</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Recipient</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Amount</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Status</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Date</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200/30 dark:divide-gray-700/30">
+            <tr x-show="loading"><td colspan="6" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div><p class="text-sm text-gray-400">Loading...</p></div></td></tr>
+            <tr x-show="!loading && internationalTransfers.length === 0"><td colspan="6" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center"><i class="fa-solid fa-globe text-gray-400 text-xl"></i></div><p class="text-sm text-gray-500 dark:text-gray-400">No international transfers found</p></div></td></tr>
+            <template x-for="t in internationalTransfers" :key="t._id">
+              <tr class="hover:bg-primary-50/40 dark:hover:bg-primary-900/10 transition-colors">
+                <td class="px-4 py-3">
+                  <span class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300">
+                    <i class="fa-solid fa-globe text-primary-400 text-xs"></i>
+                    <span x-text="t.method"></span>
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-white" x-text="intRecipient(t)"></td>
+                <td class="px-4 py-3 text-sm font-semibold text-red-600 dark:text-red-400">
+                  <span x-text="t.balanceType === 'btc' ? parseFloat(t.amount).toFixed(8) + ' BTC' : fmt(t.amount)"></span>
+                </td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(t.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(t.status)"></div><span x-text="cap(t.status)"></span></span></td>
+                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400"><div x-text="fmtDate(t.createdAt)"></div><div class="text-xs" x-text="fmtTime(t.createdAt)"></div></td>
+                <td class="px-4 py-3 text-right"><button @click="viewItem(t, 'international')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-800/50 transition-all"><i class="fa-solid fa-eye mr-1.5"></i> View</button></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="md:hidden space-y-3 mb-4">
+      <div x-show="loading" class="text-center py-8"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500 mx-auto"></div></div>
+      <div x-show="!loading && internationalTransfers.length === 0" class="text-center py-8 text-gray-400 text-sm">No international transfers found</div>
+      <template x-for="t in internationalTransfers" :key="t._id">
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow border border-white/20 dark:border-gray-700/50 p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm font-semibold text-gray-900 dark:text-white" x-text="t.method"></div>
+              <div class="text-xs text-gray-500 dark:text-gray-400" x-text="intRecipient(t)"></div>
+            </div>
+            <div class="text-sm font-bold text-red-500" x-text="t.balanceType === 'btc' ? parseFloat(t.amount).toFixed(8) + ' BTC' : fmt(t.amount)"></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(t.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(t.status)"></div><span x-text="cap(t.status)"></span></span>
+            <div class="flex items-center gap-2"><span class="text-xs text-gray-400" x-text="fmtDate(t.createdAt)"></span><button @click="viewItem(t, 'international')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 transition-all"><i class="fa-solid fa-eye mr-1"></i> View</button></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- International Pagination -->
+    <div x-show="intTotalPages > 1" class="flex items-center justify-between bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 shadow px-4 py-3">
+      <span class="text-sm text-gray-500 dark:text-gray-400">Page <span x-text="intPage"></span> of <span x-text="intTotalPages"></span> &bull; <span x-text="intTotal"></span> total</span>
+      <div class="flex gap-2">
+        <button @click="intGoTo(intPage - 1)" :disabled="intPage === 1" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Prev</button>
+        <button @click="intGoTo(intPage + 1)" :disabled="intPage === intTotalPages" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DEPOSITS TAB ── -->
+  <div x-show="activeTab === 'deposits'" x-transition>
+    <div class="flex items-center gap-3 mb-4">
+      <select x-model="depStatus" @change="depPage=1; loadDeposits()"
+              class="text-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+        <option value="">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+
+    <!-- Desktop Table -->
+    <div class="hidden md:block bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 overflow-hidden mb-4">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+          <thead class="bg-gradient-to-r from-primary-50/80 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/30">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Txn ID</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Amount</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Coin / Method</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Status</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Date</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold text-primary-900 dark:text-primary-100 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200/30 dark:divide-gray-700/30">
+            <tr x-show="loading"><td colspan="6" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div><p class="text-sm text-gray-400">Loading...</p></div></td></tr>
+            <tr x-show="!loading && deposits.length === 0"><td colspan="6" class="py-12 text-center"><div class="flex flex-col items-center gap-2"><div class="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center"><i class="fa-solid fa-wallet text-gray-400 text-xl"></i></div><p class="text-sm text-gray-500 dark:text-gray-400">No deposits found</p></div></td></tr>
+            <template x-for="dep in deposits" :key="dep._id">
+              <tr class="hover:bg-primary-50/40 dark:hover:bg-primary-900/10 transition-colors">
+                <td class="px-4 py-3 text-xs font-mono text-gray-700 dark:text-gray-300" x-text="dep.transactionId"></td>
+                <td class="px-4 py-3 text-sm font-semibold text-emerald-600 dark:text-emerald-400" x-text="fmt(dep.amount)"></td>
+                <td class="px-4 py-3 text-xs font-mono text-gray-500 dark:text-gray-400 max-w-xs truncate" x-text="dep.paymentMethod"></td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(dep.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(dep.status)"></div><span x-text="cap(dep.status)"></span></span></td>
+                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400"><div x-text="fmtDate(dep.createdAt)"></div><div class="text-xs" x-text="fmtTime(dep.createdAt)"></div></td>
+                <td class="px-4 py-3 text-right"><button @click="viewItem(dep, 'deposit')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-800/50 transition-all"><i class="fa-solid fa-eye mr-1.5"></i> View</button></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="md:hidden space-y-3 mb-4">
+      <div x-show="loading" class="text-center py-8"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500 mx-auto"></div></div>
+      <div x-show="!loading && deposits.length === 0" class="text-center py-8 text-gray-400 text-sm">No deposits found</div>
+      <template x-for="dep in deposits" :key="dep._id">
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow border border-white/20 dark:border-gray-700/50 p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div><div class="text-sm font-semibold text-gray-900 dark:text-white" x-text="fmt(dep.amount)"></div><div class="text-xs font-mono text-gray-500 dark:text-gray-400 truncate max-w-48" x-text="dep.transactionId"></div></div>
+            <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg" :class="statusClass(dep.status)"><div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(dep.status)"></div><span x-text="cap(dep.status)"></span></span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-400" x-text="fmtDate(dep.createdAt)"></span>
+            <button @click="viewItem(dep, 'deposit')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 hover:bg-primary-200 transition-all"><i class="fa-solid fa-eye mr-1"></i> View</button>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Deposits Pagination -->
+    <div x-show="depTotalPages > 1" class="flex items-center justify-between bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 shadow px-4 py-3">
+      <span class="text-sm text-gray-500 dark:text-gray-400">Page <span x-text="depPage"></span> of <span x-text="depTotalPages"></span> &bull; <span x-text="depTotal"></span> total</span>
+      <div class="flex gap-2">
+        <button @click="depGoTo(depPage - 1)" :disabled="depPage === 1" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Prev</button>
+        <button @click="depGoTo(depPage + 1)" :disabled="depPage === depTotalPages" class="px-3 py-1.5 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-40 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VIEW MODAL ── -->
+  <div x-show="showModal" x-cloak @click.self="closeModal()" @keydown.escape.window="closeModal()"
+       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+    <div @click.stop class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/50"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
+
+      <!-- Modal Header -->
+      <div class="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white"
+            x-text="modalType === 'deposit' ? 'Deposit Details' : modalType === 'international' ? 'International Transfer Details' : 'Transfer Details'"></h2>
+        <button @click="closeModal()" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <i class="fa-solid fa-times text-gray-500 dark:text-gray-400"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6" x-show="modalData">
+
+        <!-- Amount hero -->
+        <div class="text-center mb-6 pb-6 border-b border-gray-100 dark:border-gray-700">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-3"
+               :class="modalType === 'deposit' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'">
+            <i class="fa-solid text-xl" :class="modalType === 'deposit' ? 'fa-arrow-down text-emerald-600 dark:text-emerald-400' : 'fa-arrow-up text-red-500 dark:text-red-400'"></i>
+          </div>
+          <div class="text-3xl font-bold mb-2"
+               :class="modalType === 'deposit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'">
+            <template x-if="modalType === 'international' && modalData?.balanceType === 'btc'">
+              <span x-text="parseFloat(modalData?.amount).toFixed(8) + ' BTC'"></span>
+            </template>
+            <template x-if="!(modalType === 'international' && modalData?.balanceType === 'btc')">
+              <span x-text="fmt(modalData?.amount)"></span>
+            </template>
+          </div>
+          <span class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full" :class="statusClass(modalData?.status)">
+            <div class="w-1.5 h-1.5 rounded-full mr-1.5" :class="dotClass(modalData?.status)"></div>
+            <span x-text="cap(modalData?.status)"></span>
+          </span>
+        </div>
+
+        <!-- Local Transfer fields -->
+        <template x-if="modalType === 'transaction'">
+          <div class="space-y-3">
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Reference</span><span class="text-sm font-mono font-semibold text-gray-900 dark:text-white" x-text="modalData?.reference || '—'"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Recipient</span><span class="text-sm font-medium text-gray-900 dark:text-white" x-text="modalData?.accountname"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Account Number</span><span class="text-sm font-mono text-gray-900 dark:text-white" x-text="modalData?.accountnumber"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Bank</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.bankname"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Account Type</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.accounttype || '—'"></span></div>
+            <div x-show="modalData?.description" class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Description</span><span class="text-sm text-gray-900 dark:text-white text-right max-w-xs" x-text="modalData?.description"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Balance Before</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmt(modalData?.balanceBefore)"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Balance After</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmt(modalData?.balanceAfter)"></span></div>
+            <div class="flex justify-between py-2"><span class="text-sm text-gray-500 dark:text-gray-400">Date</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmtDate(modalData?.createdAt) + ' ' + fmtTime(modalData?.createdAt)"></span></div>
+          </div>
+        </template>
+
+        <!-- International Transfer fields -->
+        <template x-if="modalType === 'international'">
+          <div class="space-y-3">
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Method</span><span class="text-sm font-semibold text-gray-900 dark:text-white" x-text="modalData?.method"></span></div>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Currency</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.currency || 'USD'"></span></div>
+
+            <!-- Wire Transfer details -->
+            <template x-if="modalData?.method === 'Wire Transfer'">
+              <div class="space-y-3">
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Recipient</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.accountName || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Account Number</span><span class="text-sm font-mono text-gray-900 dark:text-white" x-text="modalData?.details?.accountNumber || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Bank</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.bankName || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Country</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.country || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">IBAN</span><span class="text-sm font-mono text-gray-900 dark:text-white" x-text="modalData?.details?.iban || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">SWIFT Code</span><span class="text-sm font-mono text-gray-900 dark:text-white" x-text="modalData?.details?.swiftCode || '—'"></span></div>
+              </div>
+            </template>
+
+            <!-- Crypto details -->
+            <template x-if="modalData?.method === 'Cryptocurrency'">
+              <div class="space-y-3">
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Cryptocurrency</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.cryptoCurrency || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Network</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.cryptoNetwork || '—'"></span></div>
+                <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Wallet Address</span><span class="text-xs font-mono text-gray-700 dark:text-gray-300 text-right max-w-xs break-all" x-text="modalData?.details?.walletAddress || '—'"></span></div>
+              </div>
+            </template>
+
+            <!-- Generic details for other methods (PayPal, Wise, etc.) -->
+            <template x-if="modalData?.method !== 'Wire Transfer' && modalData?.method !== 'Cryptocurrency'">
+              <div class="space-y-3">
+                <template x-if="modalData?.details?.paypalEmail"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">PayPal Email</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.paypalEmail"></span></div></template>
+                <template x-if="modalData?.details?.email"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Email</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.email"></span></div></template>
+                <template x-if="modalData?.details?.fullName"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Full Name</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.fullName"></span></div></template>
+                <template x-if="modalData?.details?.username"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Username</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.username"></span></div></template>
+                <template x-if="modalData?.details?.cashtag"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">$Cashtag</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.cashtag"></span></div></template>
+                <template x-if="modalData?.details?.phone"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Phone</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.phone"></span></div></template>
+                <template x-if="modalData?.details?.country"><div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Country</span><span class="text-sm text-gray-900 dark:text-white" x-text="modalData?.details?.country"></span></div></template>
+              </div>
+            </template>
+
+            <div x-show="modalData?.description" class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Note</span><span class="text-sm text-gray-900 dark:text-white text-right max-w-xs" x-text="modalData?.description"></span></div>
+            <div class="flex justify-between py-2"><span class="text-sm text-gray-500 dark:text-gray-400">Date</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmtDate(modalData?.createdAt) + ' ' + fmtTime(modalData?.createdAt)"></span></div>
+          </div>
+        </template>
+
+        <!-- Deposit fields -->
+        <template x-if="modalType === 'deposit'">
+          <div class="space-y-3">
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Transaction ID</span><span class="text-sm font-mono font-semibold text-gray-900 dark:text-white" x-text="modalData?.transactionId"></span></div>
+           <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50">
+  <span class="text-sm text-gray-500 dark:text-gray-400">Coin / Method</span>
+  <span class="text-sm font-medium text-gray-900 dark:text-white" x-text="modalData?.paymentMethod || '—'"></span>
+</div>
+<div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50">
+  <span class="text-sm text-gray-500 dark:text-gray-400">Wallet Address</span>
+  <span class="text-xs font-mono text-gray-700 dark:text-gray-300 text-right max-w-xs break-all" x-text="modalData?.walletAddress || '—'"></span>
+</div>
+            <div x-show="modalData?.approvedAt" class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Approved At</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmtDate(modalData?.approvedAt) + ' ' + fmtTime(modalData?.approvedAt)"></span></div>
+            <div x-show="modalData?.rejectedAt" class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Rejected At</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmtDate(modalData?.rejectedAt)"></span></div>
+            <div x-show="modalData?.rejectionReason" class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700/50"><span class="text-sm text-gray-500 dark:text-gray-400">Rejection Reason</span><span class="text-sm text-red-500 text-right max-w-xs" x-text="modalData?.rejectionReason"></span></div>
+            <div class="flex justify-between py-2"><span class="text-sm text-gray-500 dark:text-gray-400">Submitted</span><span class="text-sm text-gray-900 dark:text-white" x-text="fmtDate(modalData?.createdAt) + ' ' + fmtTime(modalData?.createdAt)"></span></div>
+          </div>
+        </template>
+
+        <!-- Download PDF -->
+        <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+          <button @click="downloadPdf()"
+                  class="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary-500/25 transition-all duration-200 transform hover:scale-[1.02]">
+            <i class="fa-solid fa-download mr-2"></i>Download PDF Receipt
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+            <!-- Mobile Floating Navigation -->
+              <div x-data="app()" x-init="init()">
+
+<div data-mobile-nav></div>
+</div>
+        
+        </div>
+    </div>
+
+        
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    </script>
+
+    <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+
+<!-- Account History Script -->
+<!-- <script src="/js-scripts/accountHistory.js"></script> -->
+
+<!-- Logout Script -->
+<script src="/js-scripts/logout.js"></script>
+
+       
+            <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script>
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+  <!-- Mobile Header Script -->
+   <script src="/js-scripts/includeMobileHeader.js"></script>
+
+  <!-- Export Transactions Script -->
+  <script src="/js-scripts/downloadTransactions.js"></script>
+
+  <!-- Mobile Navigation Script -->
+<script src="/js-scripts/mobile-nav.js"></script>
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+        
+</body>
+</html>

@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User International Transfers — Admin</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0ea5e9;
+        --primary-dark: #0284c7;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #3b82f6;
+        --gray: #6b7280;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #f1f5f9;
+        font-family: "Inter", sans-serif;
+        color: #1e293b;
+      }
+
+      .page-wrapper {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 24px 20px 60px;
+      }
+
+      /* Page header */
+      .page-header {
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .page-header h1 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .page-header p {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 3px;
+      }
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+        text-decoration: none;
+        transition: background 0.2s;
+        white-space: nowrap;
+      }
+      .back-btn:hover {
+        background: #f8fafc;
+      }
+
+      /* User card */
+      .user-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        flex-wrap: wrap;
+      }
+      .user-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .user-info .name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .user-info .email {
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+      .user-info .acct {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 2px;
+        font-family: monospace;
+      }
+      .user-balances {
+        margin-left: auto;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .bal-item .bal-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #94a3b8;
+      }
+      .bal-item .bal-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-top: 2px;
+      }
+
+      /* Filter + action bar */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+        align-items: center;
+      }
+      .filter-bar select {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        color: #334155;
+        outline: none;
+        transition: border 0.2s;
+      }
+      .filter-bar select:focus {
+        border-color: var(--primary);
+      }
+      .btn-add {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .btn-add:hover {
+        background: var(--primary-dark);
+      }
+      .btn-refresh {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+      }
+      .btn-refresh:hover {
+        background: #f8fafc;
+      }
+
+      /* Table card */
+      .table-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 780px;
+      }
+      thead tr {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      }
+      th {
+        padding: 11px 14px;
+        text-align: left;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #0369a1;
+        white-space: nowrap;
+      }
+      tbody tr {
+        border-top: 1px solid #f1f5f9;
+        transition: background 0.15s;
+      }
+      tbody tr:hover {
+        background: #f8fafc;
+      }
+      td {
+        padding: 12px 14px;
+        font-size: 13px;
+        color: #334155;
+        vertical-align: middle;
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      .badge-pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-processing {
+        background: #dbeafe;
+        color: #1e3a8a;
+      }
+      .badge-completed {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-failed {
+        background: #fee2e2;
+        color: #7f1d1d;
+      }
+      .badge-cancelled {
+        background: #f1f5f9;
+        color: #475569;
+      }
+
+      /* Action buttons */
+      .actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+      }
+      .btn:hover {
+        opacity: 0.85;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+      .btn-view {
+        background: #e0f2fe;
+        color: #0369a1;
+      }
+      .btn-complete {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .btn-cancel {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .btn-fail {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* Empty/loading */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #94a3b8;
+      }
+      .empty-state i {
+        font-size: 40px;
+        margin-bottom: 12px;
+        display: block;
+      }
+      .spinner {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        border: 3px solid #e2e8f0;
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-top: 1px solid #f1f5f9;
+        background: #fafafa;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .pagination span {
+        font-size: 13px;
+        color: #64748b;
+      }
+      .pagination-btns {
+        display: flex;
+        gap: 6px;
+      }
+      .page-btn {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .page-btn:hover:not(:disabled) {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+      .page-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(3px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: #fff;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        animation: modalIn 0.2s ease;
+      }
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1;
+      }
+      .modal-header h2 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .modal-close {
+        background: #f1f5f9;
+        border: none;
+        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #64748b;
+        transition: background 0.2s;
+      }
+      .modal-close:hover {
+        background: #e2e8f0;
+      }
+      .modal-body {
+        padding: 20px 24px 24px;
+      }
+      .amount-hero {
+        text-align: center;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 14px;
+        margin-bottom: 20px;
+      }
+      .amount-hero .amount {
+        font-size: 32px;
+        font-weight: 800;
+        color: #ef4444;
+      }
+      .amount-hero .method-tag {
+        display: inline-block;
+        margin-top: 8px;
+        background: #e0f2fe;
+        color: #0369a1;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 9px 0;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 12px;
+      }
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+      .detail-row .lbl {
+        font-size: 12px;
+        color: #94a3b8;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .detail-row .val {
+        font-size: 13px;
+        color: #1e293b;
+        font-weight: 600;
+        text-align: right;
+        word-break: break-all;
+      }
+      .note-area {
+        width: 100%;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 13px;
+        resize: vertical;
+        min-height: 70px;
+        outline: none;
+        transition: border 0.2s;
+        margin-top: 4px;
+      }
+      .note-area:focus {
+        border-color: var(--primary);
+      }
+      .modal-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .modal-actions .btn-lg {
+        padding: 11px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+      }
+      .modal-actions .btn-lg:hover {
+        opacity: 0.88;
+      }
+      .modal-actions .btn-lg:active {
+        transform: scale(0.98);
+      }
+      .modal-actions .btn-lg:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .btn-approve-lg {
+        background: var(--success);
+        color: #fff;
+      }
+      .btn-process-lg {
+        background: var(--info);
+        color: #fff;
+      }
+      .btn-cancel-lg {
+        background: var(--warning);
+        color: #fff;
+      }
+      .btn-fail-lg {
+        background: var(--danger);
+        color: #fff;
+      }
+
+      /* Toast */
+      #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        min-width: 260px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        animation: toastIn 0.3s ease;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .toast-success {
+        background: var(--success);
+      }
+      .toast-error {
+        background: var(--danger);
+      }
+      .toast-info {
+        background: var(--info);
+      }
+
+      @media (max-width: 640px) {
+        .modal-actions {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toast-container" id="toast-container"></div>
+    <header id="topnav-mount"></header>
+
+    <div class="page-wrapper" style="margin-top: 60px">
+      <!-- Header -->
+      <div class="page-header">
+        <div>
+          <h1>
+            <i
+              class="fa-solid fa-globe"
+              style="color: var(--primary); margin-right: 8px"
+            ></i
+            >International Transfers
+          </h1>
+          <p id="pageSubtitle">Loading user...</p>
+        </div>
+        <a id="backBtn" href="javascript:history.back()" class="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back to Users
+        </a>
+      </div>
+
+      <!-- User info card -->
+      <div class="user-card" id="userCard" style="display: none">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-info">
+          <div class="name" id="userName">—</div>
+          <div class="email" id="userEmail">—</div>
+          <div class="acct" id="userAcct">—</div>
+        </div>
+        <div class="user-balances">
+          <div class="bal-item">
+            <div class="bal-label">Fiat Balance</div>
+            <div class="bal-value" id="userBalFiat">—</div>
+          </div>
+          <div class="bal-item">
+            <div class="bal-label">BTC Balance</div>
+            <div class="bal-value" id="userBalBtc">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter + Add bar -->
+      <div class="filter-bar">
+        <select id="filterStatus" onchange="applyFilters()">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select id="filterMethod" onchange="applyFilters()">
+          <option value="">All Methods</option>
+          <option value="Wire Transfer">Wire Transfer</option>
+          <option value="Cryptocurrency">Cryptocurrency</option>
+          <option value="PayPal">PayPal</option>
+          <option value="Wise Transfer">Wise Transfer</option>
+          <option value="Skrill">Skrill</option>
+          <option value="Venmo">Venmo</option>
+          <option value="Zelle">Zelle</option>
+          <option value="Cash App">Cash App</option>
+          <option value="Revolut">Revolut</option>
+          <option value="Alipay">Alipay</option>
+          <option value="WeChat Pay">WeChat Pay</option>
+        </select>
+        <button class="btn-refresh" onclick="loadTransfers(1)">
+          <i class="fa-solid fa-rotate-right"></i> Refresh
+        </button>
+        <a
+          id="addTransferBtn"
+          href="#"
+          class="btn-add"
+          style="margin-left: auto"
+        >
+          <i class="fa-solid fa-plus"></i> Add Transfer
+        </a>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Recipient</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td colspan="6">
+                  <div class="empty-state"><div class="spinner"></div></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination" style="display: none">
+          <span id="paginationInfo"></span>
+          <div class="pagination-btns">
+            <button
+              class="page-btn"
+              id="btnPrev"
+              onclick="loadTransfers(currentPage - 1)"
+            >
+              ← Prev
+            </button>
+            <button
+              class="page-btn"
+              id="btnNext"
+              onclick="loadTransfers(currentPage + 1)"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail / Action Modal -->
+    <div class="modal-overlay" id="detailModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>
+            <i
+              class="fa-solid fa-paper-plane"
+              style="color: var(--primary); margin-right: 8px"
+            ></i
+            >Transfer Details
+          </h2>
+          <button class="modal-close" onclick="closeModal()">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      // ── Get userId from URL params ────────────────────────────────────────
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get("userId") || urlParams.get("id");
+
+      let currentPage = 1;
+      let totalPages = 1;
+      let currentFilter = { status: "", method: "" };
+      let activeTransfer = null;
+
+      // ── Init ──────────────────────────────────────────────────────────────
+      document.addEventListener("DOMContentLoaded", () => {
+        if (!userId) {
+          document.getElementById("pageSubtitle").textContent =
+            "No user ID provided in URL.";
+          document.getElementById("tableBody").innerHTML =
+            `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>No userId in URL. Expected ?userId=...</p></div></td></tr>`;
+          return;
+        }
+
+        // Pre-fill the Add Transfer link with userId
+        document.getElementById("addTransferBtn").href =
+          `add-international-transfer.html?userId=${userId}`;
+
+        loadUser();
+        loadTransfers(1);
+      });
+
+      // ── Load user info ────────────────────────────────────────────────────
+      async function loadUser() {
+        try {
+          const res = await fetch(`/api/admin/users/${userId}`, {
+            credentials: "include",
+          });
+          const data = await res.json();
+          if (!data.success || !data.user) return;
+
+          const u = data.user;
+          document.getElementById("pageSubtitle").textContent =
+            `International transfers for ${u.name} ${u.lastname}`;
+
+          // Avatar initials
+          document.getElementById("userAvatar").textContent =
+            ((u.name?.[0] || "") + (u.lastname?.[0] || "")).toUpperCase() ||
+            "?";
+
+          document.getElementById("userName").textContent =
+            `${u.name} ${u.lastname}`;
+          document.getElementById("userEmail").textContent = u.email;
+          document.getElementById("userAcct").textContent =
+            `Account: ${u.accountNumber || "—"}`;
+          document.getElementById("userBalFiat").textContent =
+            `$${Number(u.balance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+          document.getElementById("userBalBtc").textContent =
+            `${parseFloat(u.crypto_balance || 0).toFixed(8)} BTC`;
+          document.getElementById("userCard").style.display = "flex";
+        } catch (err) {
+          console.error("loadUser error:", err);
+        }
+      }
+
+      // ── Filters ───────────────────────────────────────────────────────────
+      function applyFilters() {
+        currentFilter.status = document.getElementById("filterStatus").value;
+        currentFilter.method = document.getElementById("filterMethod").value;
+        loadTransfers(1);
+      }
+
+      // ── Load transfers for this user ──────────────────────────────────────
+      async function loadTransfers(page = 1) {
+        currentPage = page;
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="spinner"></div></div></td></tr>`;
+
+        const params = new URLSearchParams({ page, limit: 15, userId });
+        if (currentFilter.status) params.set("status", currentFilter.status);
+        if (currentFilter.method) params.set("method", currentFilter.method);
+
+        try {
+          const res = await fetch(
+            `/api/admin/international-transfers?${params}`,
+            { credentials: "include" },
+          );
+          const data = await res.json();
+
+          if (!data.success) {
+            showToast(data.message || "Failed to load", "error");
+            return;
+          }
+
+          totalPages = data.totalPages || 1;
+          renderTable(data.transfers);
+          renderPagination(data.total);
+        } catch (err) {
+          showToast("Network error loading transfers", "error");
+          console.error(err);
+        }
+      }
+
+      // ── Render table ──────────────────────────────────────────────────────
+      function renderTable(transfers) {
+        const tbody = document.getElementById("tableBody");
+        if (!transfers.length) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-globe"></i><p>No international transfers found for this user</p></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = transfers
+          .map((t) => {
+            const recipient = getRecipient(t);
+            const amount =
+              t.balanceType === "btc"
+                ? `${parseFloat(t.amount).toFixed(8)} BTC`
+                : `$${Number(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+            const isTerminal = ["completed", "cancelled", "failed"].includes(
+              t.status,
+            );
+
+            return `
+            <tr>
+              <td><span style="font-weight:600">${t.method}</span></td>
+              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${recipient}">${recipient}</td>
+              <td style="font-weight:700;color:#ef4444">${amount}</td>
+              <td><span class="badge badge-${t.status}">${cap(t.status)}</span></td>
+              <td style="white-space:nowrap">${fmtDate(t.createdAt)}<br><small style="color:#94a3b8">${fmtTime(t.createdAt)}</small></td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-view" onclick="openModal('${t._id}')"><i class="fa-solid fa-eye"></i> View</button>
+                  ${
+                    !isTerminal
+                      ? `
+                    <button class="btn btn-complete" onclick="quickAction('${t._id}','completed')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')"><i class="fa-solid fa-ban"></i></button>
+                  `
+                      : ""
+                  }
+                </div>
+              </td>
+            </tr>`;
+          })
+          .join("");
+      }
+
+      // ── Pagination ────────────────────────────────────────────────────────
+      function renderPagination(total) {
+        const pg = document.getElementById("pagination");
+        const info = document.getElementById("paginationInfo");
+        pg.style.display = total > 0 ? "flex" : "none";
+        info.textContent = `Page ${currentPage} of ${totalPages} · ${total} total`;
+        document.getElementById("btnPrev").disabled = currentPage <= 1;
+        document.getElementById("btnNext").disabled = currentPage >= totalPages;
+      }
+
+      // ── Quick action ──────────────────────────────────────────────────────
+      async function quickAction(id, status) {
+        const labels = {
+          completed: "approve",
+          failed: "fail",
+          cancelled: "cancel",
+        };
+        if (
+          !confirm(`Are you sure you want to ${labels[status]} this transfer?`)
+        )
+          return;
+        await updateStatus(id, status, "");
+      }
+
+      // ── Modal ─────────────────────────────────────────────────────────────
+      async function openModal(id) {
+        document.getElementById("detailModal").classList.add("open");
+        document.getElementById("modalBody").innerHTML =
+          `<div class="empty-state"><div class="spinner"></div></div>`;
+
+        try {
+          const res = await fetch(`/api/admin/international-transfers/${id}`, {
+            credentials: "include",
+          });
+          const data = await res.json();
+          if (!data.success) {
+            showToast(data.message, "error");
+            closeModal();
+            return;
+          }
+          activeTransfer = data.transfer;
+          renderModal(data.transfer);
+        } catch (err) {
+          showToast("Failed to load transfer details", "error");
+          closeModal();
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("detailModal").classList.remove("open");
+        activeTransfer = null;
+      }
+
+      document
+        .getElementById("detailModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+
+      // ── Render modal ──────────────────────────────────────────────────────
+      function renderModal(t) {
+        const det = t.details || {};
+        const isBtc = t.balanceType === "btc";
+        const isTerminal = ["completed", "cancelled", "failed"].includes(
+          t.status,
+        );
+        const amount = isBtc
+          ? `${parseFloat(t.amount).toFixed(8)} BTC`
+          : `$${Number(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+
+        const rows = [
+          ["Method", t.method],
+          ["Balance Type", isBtc ? "BTC (Crypto)" : "Fiat (USD)"],
+          ["Currency", t.currency || "USD"],
+          ...(det.accountName ? [["Recipient Name", det.accountName]] : []),
+          ...(det.accountNumber ? [["Account Number", det.accountNumber]] : []),
+          ...(det.bankName ? [["Bank", det.bankName]] : []),
+          ...(det.bankAddress ? [["Bank Address", det.bankAddress]] : []),
+          ...(det.accountType ? [["Account Type", det.accountType]] : []),
+          ...(det.country ? [["Country", det.country]] : []),
+          ...(det.iban ? [["IBAN", det.iban]] : []),
+          ...(det.swiftCode ? [["SWIFT Code", det.swiftCode]] : []),
+          ...(det.routingNumber ? [["Routing Number", det.routingNumber]] : []),
+          ...(det.walletAddress ? [["Wallet Address", det.walletAddress]] : []),
+          ...(det.cryptoCurrency
+            ? [["Cryptocurrency", det.cryptoCurrency]]
+            : []),
+          ...(det.cryptoNetwork ? [["Network", det.cryptoNetwork]] : []),
+          ...(det.paypalEmail ? [["PayPal Email", det.paypalEmail]] : []),
+          ...(det.wiseEmail ? [["Wise Email", det.wiseEmail]] : []),
+          ...(det.wiseFullName ? [["Wise Name", det.wiseFullName]] : []),
+          ...(det.wiseCountry ? [["Wise Country", det.wiseCountry]] : []),
+          ...(det.skrillEmail ? [["Skrill Email", det.skrillEmail]] : []),
+          ...(det.skrillFullName ? [["Skrill Name", det.skrillFullName]] : []),
+          ...(det.venmoUsername ? [["Venmo Username", det.venmoUsername]] : []),
+          ...(det.venmoPhone ? [["Venmo Phone", det.venmoPhone]] : []),
+          ...(det.zelleEmail ? [["Zelle Email", det.zelleEmail]] : []),
+          ...(det.zellePhone ? [["Zelle Phone", det.zellePhone]] : []),
+          ...(det.zelleName ? [["Zelle Name", det.zelleName]] : []),
+          ...(det.cashAppTag ? [["Cash App $Tag", det.cashAppTag]] : []),
+          ...(det.cashAppFullName
+            ? [["Cash App Name", det.cashAppFullName]]
+            : []),
+          ...(det.revolutEmail ? [["Revolut Email", det.revolutEmail]] : []),
+          ...(det.revolutPhone ? [["Revolut Phone", det.revolutPhone]] : []),
+          ...(det.alipayId ? [["Alipay ID", det.alipayId]] : []),
+          ...(det.alipayFullName ? [["Alipay Name", det.alipayFullName]] : []),
+          ...(det.wechatId ? [["WeChat ID", det.wechatId]] : []),
+          ...(det.wechatName ? [["WeChat Name", det.wechatName]] : []),
+          ...(t.description ? [["Note", t.description]] : []),
+          [
+            "Status",
+            `<span class="badge badge-${t.status}">${cap(t.status)}</span>`,
+          ],
+          ...(t.adminNote ? [["Admin Note", t.adminNote]] : []),
+          ["Submitted", fmtDate(t.createdAt) + " " + fmtTime(t.createdAt)],
+          ...(t.processedAt
+            ? [
+                [
+                  "Processed At",
+                  fmtDate(t.processedAt) + " " + fmtTime(t.processedAt),
+                ],
+              ]
+            : []),
+        ];
+
+        const rowsHtml = rows
+          .map(
+            ([l, v]) =>
+              `<div class="detail-row"><span class="lbl">${l}</span><span class="val">${v}</span></div>`,
+          )
+          .join("");
+
+        const actionButtons = isTerminal
+          ? `<div style="background:#f8fafc;border-radius:10px;padding:12px 14px;font-size:13px;color:#64748b;text-align:center">
+               <i class="fa-solid fa-lock" style="margin-right:6px"></i>
+               This transfer is <strong>${t.status}</strong> and cannot be changed.
+             </div>`
+          : `<div>
+               <label style="font-size:12px;font-weight:600;color:#475569;display:block;margin-bottom:4px">
+                 <i class="fa-solid fa-note-sticky" style="margin-right:4px"></i>Admin Note (optional)
+               </label>
+               <textarea id="modalAdminNote" class="note-area" placeholder="Add an internal note...">${t.adminNote || ""}</textarea>
+             </div>
+             <div class="modal-actions">
+               <button class="btn-lg btn-approve-lg" onclick="modalAction('completed')"><i class="fa-solid fa-check-circle"></i> Approve</button>
+               <button class="btn-lg btn-process-lg" onclick="modalAction('processing')"><i class="fa-solid fa-spinner"></i> Processing</button>
+               <button class="btn-lg btn-cancel-lg"  onclick="modalAction('cancelled')"><i class="fa-solid fa-ban"></i> Cancel</button>
+               <button class="btn-lg btn-fail-lg"    onclick="modalAction('failed')"><i class="fa-solid fa-xmark-circle"></i> Failed</button>
+             </div>`;
+
+        document.getElementById("modalBody").innerHTML = `
+          <div class="amount-hero">
+            <div class="amount">${amount}</div>
+            <div class="method-tag"><i class="fa-solid fa-globe" style="margin-right:4px"></i>${t.method}</div>
+          </div>
+          ${rowsHtml}
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9">${actionButtons}</div>`;
+      }
+
+      // ── Modal action ──────────────────────────────────────────────────────
+      async function modalAction(status) {
+        if (!activeTransfer) return;
+        const note = document.getElementById("modalAdminNote")?.value || "";
+        const labels = {
+          completed: "approve",
+          processing: "mark as processing",
+          cancelled: "cancel",
+          failed: "mark as failed",
+        };
+        if (
+          !confirm(`Are you sure you want to ${labels[status]} this transfer?`)
+        )
+          return;
+        await updateStatus(activeTransfer._id, status, note);
+        closeModal();
+      }
+
+      // ── Core update ───────────────────────────────────────────────────────
+      async function updateStatus(id, status, adminNote) {
+        try {
+          const res = await fetch(
+            `/api/admin/international-transfers/${id}/status`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ status, adminNote }),
+            },
+          );
+          const data = await res.json();
+
+          if (data.success) {
+            showToast(`Transfer ${status} successfully`, "success");
+            loadTransfers(currentPage);
+            loadUser(); // refresh balances after refund
+          } else {
+            showToast(data.message || "Action failed", "error");
+          }
+        } catch (err) {
+          showToast("Network error. Please try again.", "error");
+          console.error(err);
+        }
+      }
+
+      // ── Helpers ───────────────────────────────────────────────────────────
+      function getRecipient(t) {
+        const d = t.details || {};
+        return (
+          d.accountName ||
+          d.paypalEmail ||
+          d.walletAddress ||
+          d.wiseFullName ||
+          d.skrillEmail ||
+          d.venmoUsername ||
+          d.zelleEmail ||
+          d.cashAppTag ||
+          d.revolutEmail ||
+          d.alipayId ||
+          d.wechatId ||
+          "—"
+        );
+      }
+
+      function cap(str) {
+        return str ? str.charAt(0).toUpperCase() + str.slice(1) : "—";
+      }
+
+      function fmtDate(d) {
+        if (!d) return "—";
+        return new Date(d).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function fmtTime(d) {
+        if (!d) return "";
+        return new Date(d).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function showToast(msg, type = "info") {
+        const c = document.getElementById("toast-container");
+        const icon =
+          type === "success"
+            ? "fa-circle-check"
+            : type === "error"
+              ? "fa-circle-xmark"
+              : "fa-circle-info";
+        const t = document.createElement("div");
+        t.className = `toast toast-${type}`;
+        t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+        c.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+      }
+    </script>
+  </body>
+</html>

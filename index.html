@@ -1,0 +1,2346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFV Wealth — Grow  Smarter. Live Better.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="icon" href="/assets/images/logo.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --blue: #0ea5e9;
+        --blue-mid: #0284c7;
+        --blue-dark: #0369a1;
+        --blue-deep: #0c4a6e;
+        --blue-bg: #f0f9ff;
+        --blue-light: #e0f2fe;
+        --text: #0f172a;
+        --text-2: #334155;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --radius: 14px;
+        --radius-sm: 8px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--white);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── NAVBAR ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 6%;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-mark svg {
+        width: 22px;
+        height: 22px;
+      }
+      .logo-text {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: var(--text);
+      }
+      .logo-text span {
+        color: var(--blue);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--blue);
+      }
+      .nav-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn-ghost {
+        background: none;
+        border: 1.5px solid var(--border);
+        color: var(--text-2);
+        padding: 0.5rem 1.2rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn-ghost:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        color: #fff;
+        border: none;
+        padding: 0.55rem 1.4rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: all 0.3s;
+      }
+
+      /* ── MOBILE MENU ── */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.98);
+        z-index: 1000;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-family: "Syne", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--blue);
+      }
+      .mobile-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 6%;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        min-height: 92vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        padding: 5rem 6%;
+        max-width: 1300px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .hero-blob {
+        position: absolute;
+        top: -100px;
+        right: -200px;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(
+          circle,
+          rgba(14, 165, 233, 0.08) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--blue-bg);
+        border: 1px solid #bae6fd;
+        color: var(--blue-dark);
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-bottom: 1.6rem;
+      }
+      .badge-dot {
+        width: 7px;
+        height: 7px;
+        background: var(--blue);
+        border-radius: 50%;
+        animation: blink 2s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+        font-weight: 800;
+        line-height: 1.1;
+        color: var(--text);
+        margin-bottom: 1.4rem;
+      }
+      .hero h1 .accent {
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-sub {
+        font-size: 1.05rem;
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 2.2rem;
+        max-width: 500px;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+      }
+      .btn-hero {
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-hero-primary {
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        color: #fff;
+        border: none;
+      }
+      .btn-hero-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(14, 165, 233, 0.35);
+      }
+      .btn-hero-outline {
+        background: transparent;
+        color: var(--text);
+        border: 1.5px solid var(--border);
+      }
+      .btn-hero-outline:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+      .hero-trust {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .trust-avatars {
+        display: flex;
+      }
+      .trust-avatars img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2.5px solid #fff;
+        margin-left: -10px;
+        object-fit: cover;
+      }
+      .trust-avatars img:first-child {
+        margin-left: 0;
+      }
+      .trust-text {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .trust-text strong {
+        color: var(--text);
+      }
+
+      /* ── HERO VISUAL ── */
+      .hero-visual {
+        position: relative;
+        z-index: 1;
+      }
+      .hero-img-wrap {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow:
+          0 40px 80px rgba(14, 165, 233, 0.15),
+          0 0 0 1px rgba(14, 165, 233, 0.1);
+      }
+      .hero-img-wrap img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        display: block;
+      }
+      .hero-card-float {
+        position: absolute;
+        bottom: -24px;
+        left: -24px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 1rem 1.3rem;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        min-width: 200px;
+      }
+      .float-label {
+        font-size: 0.72rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+      }
+      .float-amount {
+        font-family: "Syne", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .float-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-top: 4px;
+      }
+      .hero-card-float2 {
+        position: absolute;
+        top: 20px;
+        right: -20px;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        border-radius: 14px;
+        padding: 0.9rem 1.2rem;
+        box-shadow: 0 12px 30px rgba(14, 165, 233, 0.35);
+        color: #fff;
+        min-width: 170px;
+      }
+      .float2-label {
+        font-size: 0.72rem;
+        opacity: 0.8;
+        margin-bottom: 4px;
+      }
+      .float2-val {
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+      }
+      .float2-sub {
+        font-size: 0.75rem;
+        opacity: 0.75;
+        margin-top: 2px;
+      }
+
+      /* ── SECTION SHARED ── */
+      section {
+        padding: 5rem 6%;
+      }
+      .section-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .section-tag {
+        display: inline-block;
+        background: var(--blue-bg);
+        color: var(--blue-dark);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.9rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+      }
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      .section-sub {
+        font-size: 1rem;
+        color: var(--muted);
+        max-width: 520px;
+        line-height: 1.7;
+      }
+      .section-header {
+        margin-bottom: 3.5rem;
+      }
+      .section-header.center {
+        text-align: center;
+      }
+      .section-header.center .section-sub {
+        margin: 0 auto;
+      }
+
+      /* ── STATS ── */
+      .stats-section {
+        background: linear-gradient(135deg, var(--blue-deep), var(--blue-dark));
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .stat-card {
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+      .stat-num {
+        font-family: "Syne", sans-serif;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #fff;
+      }
+      .stat-num span {
+        color: var(--blue);
+      }
+      .stat-desc {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 0.5rem;
+      }
+
+      /* ── FEATURES ── */
+      .features-section {
+        background: var(--bg);
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.8rem;
+      }
+      .feature-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 2rem;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--blue), var(--blue-dark));
+        transform: scaleX(0);
+        transition: transform 0.3s;
+        transform-origin: left;
+      }
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(14, 165, 233, 0.1);
+      }
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: var(--blue-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.2rem;
+      }
+      .feature-icon svg {
+        width: 26px;
+        height: 26px;
+        stroke: var(--blue);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .feature-title {
+        font-family: "Syne", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+      }
+      .feature-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      /* ── HOW IT WORKS ── */
+      .how-section {
+        background: #fff;
+      }
+      .how-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+      .how-img-wrap {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      }
+      .how-img-wrap img {
+        width: 100%;
+        height: 480px;
+        object-fit: cover;
+        display: block;
+      }
+      .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .step-item {
+        display: flex;
+        gap: 1.2rem;
+        align-items: flex-start;
+      }
+      .step-num {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        color: #fff;
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .step-content {
+      }
+      .step-title {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.35rem;
+      }
+      .step-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* ── TESTIMONIALS ── */
+      .testi-section {
+        background: var(--bg);
+      }
+      .testi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.8rem;
+      }
+      .testi-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 2rem;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+      }
+      .testi-card:hover {
+        box-shadow: 0 16px 40px rgba(14, 165, 233, 0.1);
+        transform: translateY(-3px);
+      }
+      .testi-stars {
+        display: flex;
+        gap: 3px;
+        margin-bottom: 1rem;
+      }
+      .star {
+        color: #f59e0b;
+        font-size: 1rem;
+      }
+      .testi-text {
+        font-size: 0.92rem;
+        color: var(--text-2);
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .author-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #fff;
+      }
+      .author-name {
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--text);
+      }
+      .author-role {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      /* ── FAQ ── */
+      .faq-section {
+        background: #fff;
+      }
+      .faq-wrap {
+        max-width: 780px;
+        margin: 0 auto;
+      }
+      .faq-item {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        margin-bottom: 0.8rem;
+        overflow: hidden;
+        transition: box-shadow 0.2s;
+      }
+      .faq-item:hover {
+        box-shadow: 0 4px 16px rgba(14, 165, 233, 0.08);
+      }
+      .faq-q {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        cursor: pointer;
+        user-select: none;
+        background: #fff;
+        transition: background 0.2s;
+      }
+      .faq-q:hover {
+        background: var(--blue-bg);
+      }
+      .faq-q-text {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text);
+      }
+      .faq-icon {
+        width: 22px;
+        height: 22px;
+        transition: transform 0.3s;
+        color: var(--blue);
+        flex-shrink: 0;
+      }
+      .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+      }
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.35s ease,
+          padding 0.3s ease;
+        padding: 0 1.5rem;
+      }
+      .faq-item.open .faq-a {
+        max-height: 300px;
+        padding: 0 1.5rem 1.2rem;
+      }
+      .faq-a p {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      /* ── CTA BAND ── */
+      .cta-section {
+        background: linear-gradient(
+          135deg,
+          var(--blue-deep) 0%,
+          var(--blue-dark) 50%,
+          var(--blue) 100%
+        );
+        text-align: center;
+        padding: 5rem 6%;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: -60px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .cta-section::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        right: -40px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .cta-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .cta-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .cta-sub {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+      }
+      .cta-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-white {
+        background: #fff;
+        color: var(--blue-dark);
+        border: none;
+        padding: 0.9rem 2.2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+        text-decoration: none;
+      }
+      .btn-white:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+      }
+      .btn-outline-white {
+        background: transparent;
+        color: #fff;
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        padding: 0.9rem 2.2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+        text-decoration: none;
+      }
+      .btn-outline-white:hover {
+        border-color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--text);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 4rem 6% 2rem;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+      }
+      .footer-brand .logo-text {
+        color: #fff;
+      }
+      .footer-tagline {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        margin-top: 0.8rem;
+        max-width: 240px;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 10px;
+        margin-top: 1.5rem;
+      }
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .social-btn:hover {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+      }
+      .social-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .footer-col h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .footer-col ul a {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-col ul a:hover {
+        color: var(--blue);
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: gap;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .footer-copy {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .footer-legal {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .footer-legal a {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-legal a:hover {
+        color: var(--blue);
+      }
+
+      /* ── WHY CHOOSE US ── */
+      .why-section {
+        background: var(--white);
+        padding: 5rem 6%;
+      }
+      .why-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+        margin-top: 1rem;
+      }
+      .why-row-reverse {
+        direction: rtl;
+      }
+      .why-row-reverse > * {
+        direction: ltr;
+      }
+
+      .why-img-col {
+      }
+      .why-img-wrap {
+        position: relative;
+        border-radius: 22px;
+        overflow: visible;
+      }
+      .why-img-wrap img {
+        width: 100%;
+        height: 440px;
+        object-fit: cover;
+        border-radius: 22px;
+        display: block;
+        box-shadow:
+          0 30px 70px rgba(14, 165, 233, 0.13),
+          0 0 0 1px rgba(14, 165, 233, 0.08);
+      }
+      .why-img-badge {
+        position: absolute;
+        bottom: -18px;
+        left: 24px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 0.85rem 1.2rem;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border);
+      }
+      .why-img-badge-right {
+        left: auto;
+        right: 24px;
+      }
+      .wib-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 10px;
+        background: var(--blue-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .wib-title {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text);
+      }
+      .wib-sub {
+        font-size: 0.73rem;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+
+      .why-content-col {
+        padding: 1rem 0;
+      }
+      .why-benefit-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .why-benefit {
+        display: flex;
+        gap: 1.4rem;
+        align-items: flex-start;
+        padding: 1.6rem 0;
+        border-bottom: 1px solid var(--border);
+        transition: all 0.25s;
+      }
+      .why-benefit:first-child {
+        padding-top: 0;
+      }
+      .why-benefit:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .why-benefit:hover .wb-num {
+        color: var(--blue);
+      }
+      .why-benefit:hover .wb-title {
+        color: var(--blue-dark);
+      }
+      .wb-num {
+        font-family: "Syne", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--border);
+        min-width: 40px;
+        line-height: 1;
+        transition: color 0.25s;
+        padding-top: 2px;
+      }
+      .wb-body {
+      }
+      .wb-title {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.4rem;
+        transition: color 0.25s;
+      }
+      .wb-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.72;
+      }
+
+      .why-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 4rem 0;
+        max-width: 100%;
+      }
+
+      /* ── SCROLL ANIMATIONS ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+      .reveal-delay-4 {
+        transition-delay: 0.4s;
+      }
+      .reveal-delay-5 {
+        transition-delay: 0.5s;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1024px) {
+        .why-row {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          direction: ltr;
+        }
+        .why-row-reverse {
+          direction: ltr;
+        }
+        .why-img-wrap img {
+          height: 300px;
+        }
+        .why-img-badge,
+        .why-img-badge-right {
+          bottom: -14px;
+          left: 16px;
+          right: auto;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+          min-height: auto;
+          padding: 3rem 6%;
+        }
+        .hero-visual {
+          order: -1;
+        }
+        .hero-card-float {
+          bottom: -16px;
+          left: -10px;
+        }
+        .hero-card-float2 {
+          top: 14px;
+          right: -10px;
+        }
+        .how-grid {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+        .how-img-wrap {
+          order: -1;
+        }
+        .how-img-wrap img {
+          height: 320px;
+        }
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .testi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+      }
+      @media (max-width: 768px) {
+        nav {
+          padding: 0.9rem 5%;
+        }
+        .nav-links,
+        .nav-actions {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .hero h1 {
+          font-size: 2.2rem;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .testi-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+        .hero-card-float,
+        .hero-card-float2 {
+          display: none;
+        }
+        section {
+          padding: 3.5rem 5%;
+        }
+      }
+      @media (max-width: 480px) {
+        .hero {
+          padding: 2.5rem 5%;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stat-num {
+          font-size: 2rem;
+        }
+        .cta-title {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+      <a href="#features" onclick="closeMobileMenu()">Features</a>
+      <a href="#how" onclick="closeMobileMenu()">How It Works</a>
+      <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
+      <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+      <a
+        href="./register.html"
+        class="btn-primary"
+        style="margin-top: 1rem; padding: 0.8rem 2rem; font-size: 1rem"
+        >Get Started</a
+      >
+    </div>
+
+    <!-- NAVBAR -->
+    <nav>
+      <a href="#" class="nav-logo">
+        <div class="logo-mark">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="2" y="5" width="20" height="14" rx="3" />
+            <path d="M2 10h20" />
+          </svg>
+        </div>
+        <span class="logo-text">NFV <span>Wealth</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="./login.html" class="btn-ghost">Log In</a>
+        <a href="./register.html" class="btn-primary">Get Started</a>
+      </div>
+      <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- HERO -->
+    <div
+      style="
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 5rem 6%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        position: relative;
+      "
+      id="heroGrid"
+    >
+      <div class="hero-blob"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Trusted by 50,000+ users worldwide
+        </div>
+        <h1
+          style="
+            font-family: &quot;Syne&quot;, sans-serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 1.4rem;
+          "
+        >
+          Grow Smarter.<br />
+          <span
+            style="
+              background: linear-gradient(
+                135deg,
+                var(--blue),
+                var(--blue-dark)
+              );
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+            "
+            >Live Better.</span
+          >
+        </h1>
+        <p
+          style="
+            font-size: 1.05rem;
+            color: var(--muted);
+            line-height: 1.75;
+            margin-bottom: 2.2rem;
+            max-width: 500px;
+          "
+        >
+          NFV Wealth gives you powerful financial tools — local & international
+          transfers, virtual cards, crypto swaps, and real-time insights — all
+          in one secure platform.
+        </p>
+        <div
+          style="
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+          "
+        >
+          <a href="./register.html" class="btn-hero btn-hero-primary">
+            Get Started Free
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#how" class="btn-hero btn-hero-outline">See How It Works</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <div style="display: flex">
+            <img
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face"
+              style="
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 2.5px solid #fff;
+                object-fit: cover;
+              "
+              alt="user"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face"
+              style="
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 2.5px solid #fff;
+                margin-left: -9px;
+                object-fit: cover;
+              "
+              alt="user"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&h=80&fit=crop&crop=face"
+              style="
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 2.5px solid #fff;
+                margin-left: -9px;
+                object-fit: cover;
+              "
+              alt="user"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop&crop=face"
+              style="
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 2.5px solid #fff;
+                margin-left: -9px;
+                object-fit: cover;
+              "
+              alt="user"
+            />
+          </div>
+          <div
+            style="font-size: 0.82rem; color: var(--muted); line-height: 1.5"
+          >
+            <strong style="color: var(--text)">4.9/5</strong> from over 12,000
+            reviews
+          </div>
+        </div>
+      </div>
+
+      <div style="position: relative">
+        <div
+          style="
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+              0 40px 80px rgba(14, 165, 233, 0.15),
+              0 0 0 1px rgba(14, 165, 233, 0.1);
+          "
+        >
+          <img
+            src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=900&h=600&fit=crop"
+            style="
+              width: 100%;
+              height: 420px;
+              object-fit: cover;
+              display: block;
+            "
+            alt="Banking"
+          />
+        </div>
+        <!-- Float card bottom left -->
+        <div
+          style="
+            position: absolute;
+            bottom: -22px;
+            left: -22px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 1rem 1.3rem;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.13);
+            min-width: 190px;
+          "
+        >
+          <div
+            style="
+              font-size: 0.7rem;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.07em;
+              margin-bottom: 4px;
+            "
+          >
+            Total Balance
+          </div>
+          <div
+            style="
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-size: 1.55rem;
+              font-weight: 700;
+              color: var(--text);
+            "
+          >
+            $84,520.00
+          </div>
+          <div
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              background: #dcfce7;
+              color: #15803d;
+              font-size: 0.72rem;
+              font-weight: 500;
+              padding: 2px 8px;
+              border-radius: 20px;
+              margin-top: 5px;
+            "
+          >
+            ↑ +3.4% this month
+          </div>
+        </div>
+        <!-- Float card top right -->
+        <div
+          style="
+            position: absolute;
+            top: 18px;
+            right: -18px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            border-radius: 14px;
+            padding: 0.9rem 1.2rem;
+            box-shadow: 0 12px 30px rgba(14, 165, 233, 0.4);
+            color: #fff;
+            min-width: 162px;
+          "
+        >
+          <div style="font-size: 0.7rem; opacity: 0.8; margin-bottom: 3px">
+            Transfer Sent
+          </div>
+          <div
+            style="
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-size: 1.25rem;
+              font-weight: 700;
+            "
+          >
+            $2,400.00
+          </div>
+          <div style="font-size: 0.72rem; opacity: 0.75; margin-top: 2px">
+            ✓ Delivered instantly
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <section class="stats-section" id="stats">
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-num">50<span>K+</span></div>
+          <div class="stat-desc">Active Users Worldwide</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-num">$2<span>B+</span></div>
+          <div class="stat-desc">Transactions Processed</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-num">99<span>.9%</span></div>
+          <div class="stat-desc">Uptime Guarantee</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="stat-num">180<span>+</span></div>
+          <div class="stat-desc">Countries Supported</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section" id="features">
+      <div class="section-inner">
+        <div class="section-header center">
+          <span class="section-tag">Features</span>
+          <h2 class="section-title reveal">
+            Everything you need to<br />manage your money
+          </h2>
+          <p class="section-sub reveal reveal-delay-1">
+            Built for individuals and businesses who want full control of their
+            finances with zero compromise on security.
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <div class="feature-title">Instant Local Transfers</div>
+            <div class="feature-desc">
+              Send money to any local account instantly, 24/7. Zero fees,
+              real-time processing.
+            </div>
+          </div>
+
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                />
+              </svg>
+            </div>
+            <div class="feature-title">International Transfers</div>
+            <div class="feature-desc">
+              Wire transfers, PayPal, Wise, Crypto — send money anywhere in the
+              world with competitive rates.
+            </div>
+          </div>
+
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="2" y="5" width="20" height="14" rx="2" />
+                <path d="M2 10h20" />
+              </svg>
+            </div>
+            <div class="feature-title">Virtual Cards</div>
+            <div class="feature-desc">
+              Create secure virtual cards instantly for online shopping,
+              subscriptions, and global payments.
+            </div>
+          </div>
+
+          <div class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <path d="M12 17h.01" />
+              </svg>
+            </div>
+            <div class="feature-title">Crypto & Currency Swap</div>
+            <div class="feature-desc">
+              Swap between USD and Bitcoin at live market rates, with instant
+              conversion previews.
+            </div>
+          </div>
+
+          <div class="feature-card reveal reveal-delay-4">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div class="feature-title">Top-Level Security</div>
+            <div class="feature-desc">
+              2FA, OTP verification, PIN protection, and end-to-end encryption
+              keep every transaction safe.
+            </div>
+          </div>
+
+          <div class="feature-card reveal reveal-delay-5">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+            </div>
+            <div class="feature-title">Financial Insights</div>
+            <div class="feature-desc">
+              Track spending, monitor transaction history, and get a clear
+              picture of your financial health.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how">
+      <div class="section-inner">
+        <div class="how-grid">
+          <div>
+            <span class="section-tag">How It Works</span>
+            <h2 class="section-title reveal">Up and running<br />in minutes</h2>
+            <p
+              class="section-sub reveal reveal-delay-1"
+              style="margin-bottom: 2.5rem"
+            >
+              No paperwork. No branch visits. Open your NFV Wealth account from
+              your phone or computer in just a few simple steps.
+            </p>
+            <div class="steps-list">
+              <div class="step-item reveal reveal-delay-1">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Create your account</div>
+                  <div class="step-desc">
+                    Sign up with your name, email, and phone number. Takes less
+                    than 2 minutes.
+                  </div>
+                </div>
+              </div>
+              <div class="step-item reveal reveal-delay-2">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Verify your identity</div>
+                  <div class="step-desc">
+                    Confirm your email with a 6-digit OTP. Your account is
+                    instantly activated.
+                  </div>
+                </div>
+              </div>
+              <div class="step-item reveal reveal-delay-3">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Fund your account</div>
+                  <div class="step-desc">
+                    Deposit via crypto or wire transfer and start sending money
+                    immediately.
+                  </div>
+                </div>
+              </div>
+              <div class="step-item reveal reveal-delay-4">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Manage freely</div>
+                  <div class="step-desc">
+                    Transfer locally, send internationally, swap currencies —
+                    all from your dashboard.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="how-img-wrap reveal">
+            <img
+              src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop"
+              alt="Banking app on phone"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="why-section" id="why">
+      <div class="section-inner">
+        <div class="section-header center">
+          <span class="section-tag">Why NFV Wealth</span>
+          <h2 class="section-title reveal">
+            Finance that works<br />as hard as you do
+          </h2>
+          <p class="section-sub reveal reveal-delay-1">
+            We built NFV Wealth because everyone deserves fast, secure, and
+            transparent company — without the fees, delays, or red tape.
+          </p>
+        </div>
+
+        <!-- ROW 1: Image left, benefits right -->
+        <div class="why-row reveal">
+          <div class="why-img-col">
+            <div class="why-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop"
+                alt="Financial freedom"
+              />
+              <div class="why-img-badge">
+                <div class="wib-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#0369a1"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="wib-title">Top-Grade Security</div>
+                  <div class="wib-sub">256-bit encrypted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="why-content-col">
+            <div class="why-benefit-list">
+              <div class="why-benefit reveal reveal-delay-1">
+                <div class="wb-num">01</div>
+                <div class="wb-body">
+                  <div class="wb-title">Zero hidden fees, ever</div>
+                  <div class="wb-desc">
+                    Every charge is shown upfront before you confirm. No
+                    surprise deductions, no monthly maintenance fees on standard
+                    accounts.
+                  </div>
+                </div>
+              </div>
+              <div class="why-benefit reveal reveal-delay-2">
+                <div class="wb-num">02</div>
+                <div class="wb-body">
+                  <div class="wb-title">Works in 180+ countries</div>
+                  <div class="wb-desc">
+                    Send and receive money across borders with confidence. We
+                    support wire, crypto, PayPal, Wise, and more global methods.
+                  </div>
+                </div>
+              </div>
+              <div class="why-benefit reveal reveal-delay-3">
+                <div class="wb-num">03</div>
+                <div class="wb-body">
+                  <div class="wb-title">Your money moves instantly</div>
+                  <div class="wb-desc">
+                    Local transfers are instant 24/7. No waiting till Monday, no
+                    processing delays. Your money goes when you say it goes.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-divider"></div>
+
+        <!-- ROW 2: Benefits left, image right -->
+        <div class="why-row why-row-reverse reveal">
+          <div class="why-content-col">
+            <div class="why-benefit-list">
+              <div class="why-benefit reveal reveal-delay-1">
+                <div class="wb-num">04</div>
+                <div class="wb-body">
+                  <div class="wb-title">Open in under 5 minutes</div>
+                  <div class="wb-desc">
+                    No branch visits. No stacks of paperwork. Sign up online,
+                    verify your email, and your account is live immediately.
+                  </div>
+                </div>
+              </div>
+              <div class="why-benefit reveal reveal-delay-2">
+                <div class="wb-num">05</div>
+                <div class="wb-body">
+                  <div class="wb-title">Total control, one dashboard</div>
+                  <div class="wb-desc">
+                    Cards, transfers, deposits, crypto swaps — manage everything
+                    from one clean, intuitive dashboard on any device.
+                  </div>
+                </div>
+              </div>
+              <div class="why-benefit reveal reveal-delay-3">
+                <div class="wb-num">06</div>
+                <div class="wb-body">
+                  <div class="wb-title">24/7 human support</div>
+                  <div class="wb-desc">
+                    Real people, not bots. Our support team is available around
+                    the clock via live chat, email, and phone.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="why-img-col">
+            <div class="why-img-wrap">
+              <img
+              src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&h=600&fit=crop"
+                alt="Mobile banking"
+              />
+              <div class="why-img-badge why-img-badge-right">
+                <div class="wib-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#0369a1"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="wib-title">Always Available</div>
+                  <div class="wib-sub">Support 24/7</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+ <section class="testi-section" id="testimonials">
+  <div class="section-inner">
+    <div class="section-header center">
+      <span class="section-tag">Testimonials</span>
+      <h2 class="section-title reveal">What our customers say</h2>
+      <p class="section-sub reveal reveal-delay-1">
+        Real stories from real people who use NFV Wealth every day.
+      </p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          "NFV Wealth made international transfers so easy. I send money to
+          my family abroad every month — it's instant and the fees are
+          unbeatable."
+        </p>
+        <div class="testi-author">
+          <div class="author-avatar">JM</div>
+          <div>
+            <div class="author-name">James Mitchell</div>
+            <div class="author-role">Small Business Owner, USA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          "The virtual card feature is a game changer. I use it for all my
+          online subscriptions and I've never had a security issue.
+          Absolutely love it."
+        </p>
+        <div class="testi-author">
+          <div class="author-avatar">SC</div>
+          <div>
+            <div class="author-name">Sophie Chen</div>
+            <div class="author-role">Software Developer, Canada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">
+          "From account creation to my first transfer took less than 10
+          minutes. The dashboard is clean, fast, and incredibly easy to
+          navigate."
+        </p>
+        <div class="testi-author">
+          <div class="author-avatar">LR</div>
+          <div>
+            <div class="author-name">Lucas Reynolds</div>
+            <div class="author-role">Freelance Designer, UK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-header center">
+          <span class="section-tag">FAQ</span>
+          <h2 class="section-title reveal">Frequently asked questions</h2>
+          <p class="section-sub reveal reveal-delay-1">
+            Got questions? We've got answers.
+          </p>
+        </div>
+        <div class="faq-wrap">
+          <div class="faq-item reveal" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text">Is NFV Wealth safe to use?</span>
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                Absolutely. NFV Wealth uses bank-grade 256-bit encryption,
+                two-factor authentication, OTP verification on every login, and
+                PIN protection. Your funds and data are protected at all times.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-1" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text">How do I open an account?</span>
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                Click "Get Started", fill in your basic details, verify your
+                email with an OTP code, and your account is live — all in under
+                5 minutes with no paperwork required.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-2" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text"
+                >What transfer methods are supported?</span
+              >
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                We support local bank transfers, international wire transfers,
+                PayPal, Wise, Cryptocurrency (Bitcoin), Cash App, Zelle, Venmo,
+                Revolut, and more.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-3" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text">Are there any fees for transfers?</span>
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                Local transfers are completely free. International transfers may
+                have minimal fees depending on the method and destination. All
+                fees are shown clearly before you confirm any transaction.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-4" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text">Can I use NFV Wealth on mobile?</span>
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                Yes! NFV Wealth is fully responsive and works seamlessly on all
+                devices — smartphones, tablets, and desktops. A dedicated mobile
+                app is also coming soon.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal reveal-delay-5" onclick="toggleFaq(this)">
+            <div class="faq-q">
+              <span class="faq-q-text">How do I contact support?</span>
+              <svg
+                class="faq-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <div class="faq-a">
+              <p>
+                You can reach our support team via the live chat widget on your
+                dashboard, or visit our
+                <a href="./contact.html" style="color: var(--blue)"
+                  >Contact page</a
+                >. We're available 24/7.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="cta-title reveal">
+          Ready to take control<br />of your finances?
+        </h2>
+        <p class="cta-sub reveal reveal-delay-1">
+          Join 50,000+ users who trust NFV Wealth for secure, fast, and flexible
+          platform — anywhere in the world.
+        </p>
+        <div class="cta-actions reveal reveal-delay-2">
+          <a href="./register.html" class="btn-white">Get Started Free</a>
+          <a href="./contact.html" class="btn-outline-white">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" style="text-decoration: none">
+            <div class="logo-mark">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="5" width="20" height="14" rx="3" />
+                <path d="M2 10h20" />
+              </svg>
+            </div>
+            <span class="logo-text" style="color: #fff"
+              >NFV <span>Wealth</span></span
+            >
+          </a>
+          <p class="footer-tagline">
+           Modern finance for a modern world. Secure, fast, and built for everyone.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn" aria-label="Twitter">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Facebook">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="./register.html">Open Account</a></li>
+            <li><a href="./login.html">Sign In</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Local Transfers</a></li>
+            <li><a href="#">International Transfers</a></li>
+            <li><a href="#">Virtual Cards</a></li>
+            <li><a href="#">Crypto Swap</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="./privacy.html">Privacy Policy</a></li>
+            <li><a href="./terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 NFV Wealth. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="./privacy.html">Privacy Policy</a>
+          <a href="./terms.html">Terms of Service</a>
+          <a href="./contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu
+      function openMobileMenu() {
+        document.getElementById("mobileMenu").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeMobileMenu() {
+        document.getElementById("mobileMenu").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // FAQ toggle
+      function toggleFaq(el) {
+        const isOpen = el.classList.contains("open");
+        document
+          .querySelectorAll(".faq-item.open")
+          .forEach((i) => i.classList.remove("open"));
+        if (!isOpen) el.classList.add("open");
+      }
+
+      // Scroll reveal
+      const revealEls = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      revealEls.forEach((el) => observer.observe(el));
+
+      // Hero grid responsive fix
+      function heroResponsive() {
+        const grid = document.getElementById("heroGrid");
+        if (window.innerWidth <= 768) {
+          grid.style.gridTemplateColumns = "1fr";
+          grid.style.padding = "2.5rem 5%";
+        } else if (window.innerWidth <= 1024) {
+          grid.style.gridTemplateColumns = "1fr";
+          grid.style.padding = "3rem 6%";
+        } else {
+          grid.style.gridTemplateColumns = "1fr 1fr";
+          grid.style.padding = "5rem 6%";
+        }
+      }
+      heroResponsive();
+      window.addEventListener("resize", heroResponsive);
+
+      // Animated counter for stats
+      function animateCount(el, target, suffix) {
+        let start = 0;
+        const step = target / 60;
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= target) {
+            start = target;
+            clearInterval(timer);
+          }
+          el.innerHTML = Math.floor(start) + "<span>" + suffix + "</span>";
+        }, 24);
+      }
+
+      const statsObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const nums = e.target.querySelectorAll(".stat-num");
+              const data = [
+                { val: 50, suffix: "K+" },
+                { val: 2, suffix: "B+" },
+                { val: 99.9, suffix: "%" },
+                { val: 180, suffix: "+" },
+              ];
+              nums.forEach((n, i) =>
+                animateCount(n, data[i].val, data[i].suffix),
+              );
+              statsObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      const statsGrid = document.querySelector(".stats-grid");
+      if (statsGrid) statsObserver.observe(statsGrid);
+    </script>
+  </body>
+</html>

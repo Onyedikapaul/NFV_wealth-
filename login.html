@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    
+     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | NFV Wealth</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+
+    <!-- Tailwind CSS -->
+    <script src="3.4.17"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#38bdf8",
+                100: "#38bdf8",
+                200: "#38bdf8",
+                300: "#38bdf8",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0ea5e9",
+                700: "#0369a1",
+                800: "#0369a1",
+                900: "#0369a1",
+              },
+              secondary: {
+                50: "#5eead4",
+                100: "#5eead4",
+                200: "#5eead4",
+                300: "#5eead4",
+                400: "#5eead4",
+                500: "#14b8a6",
+                600: "#14b8a6",
+                700: "#0f766e",
+                800: "#0f766e",
+                900: "#0f766e",
+              },
+            },
+            fontFamily: {
+              sans: ["Lato", "sans-serif"],
+            },
+            animation: {
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Alpine.js -->
+    <script defer="" src="npm/alpinejs%403.x.x/dist/cdn.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="lucide%400.562.0/dist/umd/lucide.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Custom Toast Styles -->
+    <style>
+      .custom-toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        max-width: 400px;
+      }
+
+      .custom-toast {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 10px;
+        padding: 16px;
+        display: flex;
+        align-items: start;
+        animation: slideIn 0.3s ease-out;
+        border-left: 4px solid;
+      }
+
+      .custom-toast.success {
+        border-left-color: #10b981;
+      }
+
+      .custom-toast.error {
+        border-left-color: #ef4444;
+      }
+
+      .custom-toast-icon {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+      }
+
+      .custom-toast.success .custom-toast-icon {
+        background-color: #d1fae5;
+        color: #059669;
+      }
+
+      .custom-toast.error .custom-toast-icon {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+
+      .custom-toast-content {
+        flex: 1;
+      }
+
+      .custom-toast-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #111827;
+        margin-bottom: 4px;
+      }
+
+      .custom-toast-message {
+        font-size: 13px;
+        color: #6b7280;
+        line-height: 1.4;
+      }
+
+      .custom-toast-field {
+        display: inline-block;
+        background: #f3f4f6;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #374151;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .custom-toast-close {
+        flex-shrink: 0;
+        margin-left: 12px;
+        cursor: pointer;
+        color: #9ca3af;
+        transition: color 0.2s;
+      }
+
+      .custom-toast-close:hover {
+        color: #374151;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+
+      .custom-toast.removing {
+        animation: slideOut 0.3s ease-out forwards;
+      }
+    </style>
+
+    <link
+      href="css2-1e027.html?family=Lato:wght@300;400;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Variables -->
+    <script>
+      // Set CSS theme variables
+      document.documentElement.style.setProperty("--primary-color", "#0ea5e9");
+      document.documentElement.style.setProperty(
+        "--primary-color-dark",
+        "#0369a1",
+      );
+      document.documentElement.style.setProperty(
+        "--primary-color-light",
+        "#38bdf8",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color",
+        "#14b8a6",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color-dark",
+        "#0f766e",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color-light",
+        "#5eead4",
+      );
+      document.documentElement.style.setProperty("--text-color", "#111827");
+      document.documentElement.style.setProperty("--bg-color", "#f9fafb");
+      document.documentElement.style.setProperty("--card-bg-color", "#ffffff");
+    </script>
+
+    <!-- Modern Loading Animation -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 0.4s 0.2s ease-in-out;
+        background-color: #ffffff;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        transform: translateY(-50%);
+        transition: opacity 0.2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+
+      .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .loading-animation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .loading-animation .circle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid transparent;
+        mix-blend-mode: overlay;
+        animation: rotateCircle 1.5s linear infinite;
+      }
+
+      .loading-animation .circle:nth-child(1) {
+        border-top-color: var(--primary-color);
+        animation-delay: 0s;
+      }
+
+      .loading-animation .circle:nth-child(2) {
+        border-right-color: var(--primary-color-light);
+        animation-delay: 0.2s;
+      }
+
+      .loading-animation .circle:nth-child(3) {
+        border-bottom-color: var(--secondary-color);
+        animation-delay: 0.4s;
+      }
+
+      .loading-animation .circle:nth-child(4) {
+        border-left-color: var(--primary-color-light);
+        animation-delay: 0.6s;
+      }
+
+      .loading-animation .core {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(
+          45deg,
+          var(--primary-color-light),
+          var(--primary-color-dark)
+        );
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        animation: pulse 1s ease-in-out infinite alternate;
+      }
+
+      .page-loading .text {
+        color: var(--primary-color);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-dark),
+          var(--primary-color-light),
+          var(--primary-color-dark)
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient 2s linear infinite;
+      }
+
+      @keyframes rotateCircle {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        from {
+          transform: scale(0.8);
+          opacity: 0.8;
+        }
+        to {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Floating elements animation */
+      .floating {
+        animation: floating 3s ease-in-out infinite;
+      }
+      .floating-slow {
+        animation: floating 6s ease-in-out infinite;
+      }
+      .floating-slower {
+        animation: floating 8s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      /* Interactive elements */
+      .input-wrapper {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .input-wrapper:focus-within {
+        transform: translateY(-2px);
+      }
+
+      .input-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 1rem;
+        color: #94a3b8;
+        transition: color 0.3s ease;
+      }
+
+      .input-wrapper:focus-within .input-icon {
+        color: var(--primary-color);
+      }
+
+      input:focus + .input-toggle {
+        color: var(--primary-color);
+      }
+    </style>
+
+
+
+  </head>
+
+  <body class="font-sans bg-gray-50 text-gray-900 flex min-h-screen">
+    <!-- Custom Toast Container -->
+    <div class="custom-toast-container" id="customToastContainer"></div>
+
+    <!-- Page Loader -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="loading-container">
+          <div class="loading-animation">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="core"></div>
+          </div>
+          <div class="text">NFV Wealth </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full">
+      <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Left Side - Branding & Illustration (Desktop Only) -->
+        <div
+          class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 relative overflow-hidden"
+        >
+          <!-- Animated Shapes -->
+          <div class="absolute inset-0 overflow-hidden opacity-10">
+            <div
+              class="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full mix-blend-overlay floating-slow"
+            ></div>
+            <div
+              class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay floating"
+            ></div>
+            <div
+              class="absolute top-2/3 left-1/3 w-40 h-40 bg-white rounded-full mix-blend-overlay floating-slower"
+            ></div>
+
+            <!-- Grid pattern -->
+            <div
+              class="absolute inset-0"
+              style="
+                background-image: radial-gradient(
+                  rgba(255, 255, 255, 0.1) 1px,
+                  transparent 1px
+                );
+                background-size: 20px 20px;
+              "
+            ></div>
+          </div>
+
+          <!-- Content -->
+          <div
+            class="relative flex flex-col justify-center items-center w-full h-full text-white p-12 z-10"
+          >
+            <!-- Logo -->
+            <!--<a href="index.php" class="mb-6">-->
+            <!--    <img src="storage/app/public/photos/3cMq7m61LjUH5wFLMqxp2Ac6XYWKgZlqYH1AKQc5.png" alt="Logo" class="h-16 filter brightness-0 invert">-->
+            <!--</a>-->
+
+            <!-- Title -->
+            <h1 class="text-4xl font-extrabold mb-6 text-center">
+              Swift Money Transfer
+            </h1>
+
+            <!-- Description -->
+            <p class="text-xl mb-8 max-w-md text-center text-white/80">
+              Swift and Secure Money Transfer to any  account will become a
+              breeze with NFV Wealth .
+            </p>
+
+            <!-- Features -->
+            <div class="grid grid-cols-2 gap-6 w-full max-w-md">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                >
+                  <i data-lucide="shield" class="h-5 w-5"></i>
+                </div>
+                <span>Secure Transfers</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <div
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                >
+                  <i data-lucide="zap" class="h-5 w-5"></i>
+                </div>
+                <span>Lightning Fast</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <div
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                >
+                  <i data-lucide="globe" class="h-5 w-5"></i>
+                </div>
+                <span>Global Access</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <div
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                >
+                  <i data-lucide="smartphone" class="h-5 w-5"></i>
+                </div>
+                <span>Mobile Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div
+          class="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12"
+        >
+          <div class="w-full max-w-md">
+            <!-- Mobile Logo -->
+            <div class="lg:hidden text-center mb-8">
+              <!--<a href="index.php">-->
+              <!--    <img src="storage/app/public/photos/3cMq7m61LjUH5wFLMqxp2Ac6XYWKgZlqYH1AKQc5.png" alt="Logo" class="h-12 mx-auto">-->
+              <!--</a>-->
+            </div>
+
+            <!-- Alerts -->
+
+            <!-- Login Card -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <!-- Card Header -->
+              <div class="px-8 pt-8 pb-6">
+                <h2 class="text-2xl font-bold text-gray-900">
+                  Sign In to NFV Wealth 
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                  Access the NFV Wealth  panel using your email
+                  and password.
+                </p>
+              </div>
+
+              <!-- Login Form -->
+              <div class="px-8 pb-8">
+                <form id="login-form">
+                  <input
+                    type="hidden"
+                    name="_token"
+                    value="tr2fIN8lLEJl8fK5XUCxbTpOPx26egWFHrKt6FPV"
+                  />
+                  <!-- Email -->
+                  <div class="mb-6">
+                    <label
+                      for="email"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                      >Email Address</label
+                    >
+                    <div class="input-wrapper">
+                      <div class="relative">
+                        <div class="input-icon">
+                          <i data-lucide="mail" class="h-5 w-5"></i>
+                        </div>
+                        <input
+                          id="email"
+                          type="email"
+                          name="email"
+                          class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="name@email.com"
+                          autocomplete="email"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                      <label
+                        for="password"
+                        class="block text-sm font-medium text-gray-700"
+                        >Password</label
+                      >
+                      <a
+                        href="forgot-password.html"
+                        class="text-sm text-primary-600 hover:text-primary-500"
+                      >
+                        Forgot Password?
+                      </a>
+                    </div>
+                    <div class="input-wrapper">
+                      <div class="relative">
+                        <div class="input-icon">
+                          <i data-lucide="lock" class="h-5 w-5"></i>
+                        </div>
+                        <input
+                          id="password"
+                          type="password"
+                          name="password"
+                          class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="••••••••"
+                          autocomplete="current-password"
+                        />
+                        <button
+                          type="button"
+                          onclick="togglePasswordVisibility()"
+                          class="absolute inset-y-0 right-0 flex items-center pr-3 input-toggle"
+                        >
+                          <i
+                            data-lucide="eye"
+                            id="show-password"
+                            class="h-5 w-5 text-gray-400"
+                          ></i>
+                          <i
+                            data-lucide="eye-off"
+                            id="hide-password"
+                            class="h-5 w-5 text-gray-400 hidden"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Remember Me -->
+                  <div class="mb-6">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        name="remember_me"
+                        class="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                        checked=""
+                      />
+                      <span class="ml-2 text-sm text-gray-600"
+                        >Stay signed in for 30 days</span
+                      >
+                    </label>
+                  </div>
+
+                  <div class="cf-turnstile" data-sitekey="0x4AAAAAACp6FI4ZNShqeanG"></div>
+
+                  <!-- Buttons -->
+                  <div class="flex flex-col space-y-4">
+                    <button
+                      type="submit"
+                      class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow transition duration-150 ease-in-out flex items-center justify-center"
+                    >
+                      <i data-lucide="log-in" class="h-5 w-5 mr-2"></i>
+                      Sign In
+                    </button>
+
+                    <a
+                      href="register.html"
+                      class="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition duration-150 ease-in-out flex items-center justify-center"
+                    >
+                      <i data-lucide="user-plus" class="h-5 w-5 mr-2"></i>
+                      Not enrolled? Create Account
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Additional Links -->
+            <div class="mt-8 text-center">
+              <p class="text-sm text-gray-600">
+                By signing in, you agree to our
+                <a
+                  href="terms-of-service.html"
+                  class="text-primary-600 hover:text-primary-500"
+                  >Terms of Service</a
+                >
+                and
+                <a
+                  href="terms-of-service.html"
+                  class="text-primary-600 hover:text-primary-500"
+                  >Privacy Policy</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+      window.onload = function () {
+        const preloader = document.querySelector(".page-loading");
+
+        // Add a slight delay to make loading animation more noticeable
+        setTimeout(function () {
+          preloader.classList.remove("active");
+          setTimeout(function () {
+            preloader.remove();
+          }, 500);
+        }, 800);
+      };
+    </script>
+
+    <!-- Additional Scripts -->
+    <script>
+      // Custom Toast Function
+      function showToast(
+        message,
+        type = "error",
+        fieldName = null,
+        duration = 8000,
+      ) {
+        const container = $("#customToastContainer");
+        const toastId = "toast-" + Date.now();
+
+        let icon =
+          type === "success"
+            ? '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>'
+            : '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>';
+
+        let title = type === "success" ? "Success" : "Login Error";
+        let fieldLabel = fieldName
+          ? '<div class="custom-toast-field">Field: ' + fieldName + "</div>"
+          : "";
+
+        const toast = $(`
+            <div class="custom-toast ${type}" id="${toastId}">
+                <div class="custom-toast-icon">
+                    ${icon}
+                </div>
+                <div class="custom-toast-content">
+                    <div class="custom-toast-title">${title}</div>
+                    <div class="custom-toast-message">${message}</div>
+                    ${fieldLabel}
+                </div>
+                <div class="custom-toast-close" onclick="removeToast('${toastId}')">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+        `);
+
+        $("#customToastContainer").append(toast);
+
+        // Auto remove after specified duration
+        setTimeout(function () {
+          removeToast(toastId);
+        }, duration);
+      }
+
+      function removeToast(toastId) {
+        const toast = $("#" + toastId);
+        toast.addClass("removing");
+        setTimeout(function () {
+          toast.remove();
+        }, 300);
+      }
+
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const showPasswordIcon = document.getElementById("show-password");
+        const hidePasswordIcon = document.getElementById("hide-password");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          showPasswordIcon.classList.add("hidden");
+          hidePasswordIcon.classList.remove("hidden");
+        } else {
+          passwordInput.type = "password";
+          showPasswordIcon.classList.remove("hidden");
+          hidePasswordIcon.classList.add("hidden");
+        }
+      }
+
+      // Field name mapping for better display
+      const fieldLabels = {
+        email: "Email Address",
+        password: "Password",
+      };
+    </script>
+
+   <script>
+    // Replace the existing login form submit <script> in login.html
+
+$("#login-form").on("submit", async function (e) {
+  e.preventDefault();
+
+    const form = this;   // <-- ADD THIS
+
+
+
+  const email    = $("#email").val().trim();
+  const password = $("#password").val();
+
+  // ── Turnstile token ──
+    const turnstileToken = form.querySelector(
+      "[name='cf-turnstile-response']",
+    )?.value;
+    if (!turnstileToken) {
+      return showToast("⚠️ Please complete the captcha.", false);
+    }
+
+  if (!email || !password) {
+    showToast("Email and password are required", "error");
+    return;
+  }
+
+  const submitButton       = $(this).find('button[type="submit"]');
+  const originalButtonHtml = submitButton.html();
+
+  submitButton.prop("disabled", true).html("Checking credentials...");
+
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, "cf-turnstile-response": turnstileToken}),
+    });
+
+    const result = await res.json();
+    submitButton.prop("disabled", false).html(originalButtonHtml);
+
+    if (!res.ok) {
+      showToast(result.message || "Login failed", "error");
+      return;
+    }
+
+    // Credentials valid — OTP sent → redirect to verify page in login mode
+    if (result.requiresOTP) {
+      showToast("Verification code sent to your email!", "success");
+      sessionStorage.setItem("pendingVerifyEmail", result.email);
+      setTimeout(() => {
+        window.location.href = `/verify-email.html?email=${encodeURIComponent(result.email)}&mode=login`;
+      }, 1200);
+    }
+
+  } catch (err) {
+    console.error(err);
+    submitButton.prop("disabled", false).html(originalButtonHtml);
+    showToast("Server error. Please try again.", "error");
+  }
+});
+   </script>
+
+   <script>
+      // login-register-protect.js
+      async function redirectIfLoggedIn() {
+        try {
+          const res = await fetch("/api/user/check-auth", {
+            credentials: "include",
+          });
+
+          if (res.ok) {
+            // Already logged in → go to dashboard
+            window.location.href = "/dashboard/index.html";
+          }
+        } catch (err) {
+          // Not logged in → stay on page
+        }
+      }
+
+      redirectIfLoggedIn();
+    </script>
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+  </body>
+
+</html>

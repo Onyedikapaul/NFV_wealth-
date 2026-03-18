@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send Email to User</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    <style>
+      .card {
+        background: #f9f9fb;
+        border: 1px solid #e9e9ef;
+        border-radius: 16px;
+        padding: 14px;
+        margin-top: 14px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 900px) {
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: #475467;
+        margin-bottom: 6px;
+      }
+      .input,
+      .textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e9e9ef;
+        border-radius: 12px;
+        outline: none;
+        background: #fff;
+      }
+      .textarea {
+        min-height: 160px;
+        resize: vertical;
+      }
+      .btn {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 12px;
+        cursor: pointer;
+        background: #0b2f55;
+        color: #fff;
+        font-weight: 600;
+      }
+      .btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+      .muted {
+        color: #667085;
+        font-size: 13px;
+      }
+      .alert {
+        padding: 10px 12px;
+        border-radius: 12px;
+        margin-top: 10px;
+      }
+      .alert-success {
+        background: #e7f7ee;
+        border: 1px solid #c6efd5;
+      }
+      .alert-danger {
+        background: #fdecec;
+        border: 1px solid #f7caca;
+      }
+      .pill {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #f1f3f9;
+        font-size: 12px;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Topnav -->
+    <header id="topnav-mount"></header>
+
+    <div class="admin-shell">
+      <!-- Sidebar -->
+      <aside id="sidebar-mount" class="admin-sidebar"></aside>
+
+      <!-- Main -->
+      <main class="admin-main">
+        <div class="admin-container">
+          <h1>Send Email</h1>
+          <div class="muted" style="margin-top: -6px">
+            This email will be sent to one user only.
+          </div>
+
+          <div class="card">
+            <div class="actions" style="margin-bottom: 12px">
+              <span class="pill" id="toPill">To: —</span>
+              <span class="muted" id="userMeta"></span>
+            </div>
+
+            <form id="sendForm">
+              <div class="row">
+                <div>
+                  <label for="subject">Email Subject</label>
+                  <input
+                    id="subject"
+                    class="input"
+                    type="text"
+                    placeholder="Subject..."
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="toEmail">Recipient Email</label>
+                  <input
+                    id="toEmail"
+                    class="input"
+                    type="text"
+                    placeholder="user@email.com"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div style="margin-top: 12px">
+                <label for="body">Email Body</label>
+                <textarea
+                  id="body"
+                  class="textarea"
+                  placeholder="Write message..."
+                  required
+                ></textarea>
+                <div class="muted" style="margin-top: 6px">
+                  Tip: Keep it clear. No HTML. Plain text.
+                </div>
+              </div>
+
+              <div class="actions" style="margin-top: 12px">
+                <button class="btn" id="sendBtn" type="submit">
+                  Send Email
+                </button>
+                <a class="muted" href="javascript:history.back()">← Back</a>
+              </div>
+
+              <div id="result"></div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer-mount"></footer>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      (function () {
+        const USER_API = (id) => `/api/admin/users/${encodeURIComponent(id)}`;
+        const SEND_API = (id) =>
+          `/api/admin/messages/email/${encodeURIComponent(id)}`;
+
+        const toPill = document.getElementById("toPill");
+        const userMeta = document.getElementById("userMeta");
+        const toEmail = document.getElementById("toEmail");
+
+        const sendForm = document.getElementById("sendForm");
+        const sendBtn = document.getElementById("sendBtn");
+        const result = document.getElementById("result");
+
+        const subjectEl = document.getElementById("subject");
+        const bodyEl = document.getElementById("body");
+
+        let userId = null;
+        let user = null;
+
+        function esc(str) {
+          return String(str ?? "").replace(
+            /[&<>"']/g,
+            (m) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;",
+              })[m],
+          );
+        }
+
+        function fullName(u) {
+          return (
+            [u.firstname, u.middlename, u.lastname]
+              .filter(Boolean)
+              .join(" ")
+              .trim() || "—"
+          );
+        }
+
+        function showAlert(type, msg) {
+          const cls =
+            type === "success" ? "alert alert-success" : "alert alert-danger";
+          result.innerHTML = `<div class="${cls}">${esc(msg)}</div>`;
+        }
+
+        function getQueryParam(key) {
+          const url = new URL(window.location.href);
+          return url.searchParams.get(key);
+        }
+
+        async function fetchUser(id) {
+          try {
+            toPill.textContent = "To: Loading...";
+            const res = await fetch(USER_API(id), { credentials: "include" });
+            const data = await res.json().catch(() => ({}));
+
+            if (!res.ok) throw new Error(data.message || "Failed to load user");
+
+            // your backend can return {user} or directly the user
+            user = data.user || data;
+
+            const name = fullName(user);
+            const email = user.email || "—";
+
+            toPill.textContent = `To: ${name}`;
+            toEmail.value = email;
+            userMeta.textContent = `(${email})`;
+
+            if (!user.email) {
+              showAlert("error", "This user has no email address.");
+              sendBtn.disabled = true;
+            }
+          } catch (err) {
+            console.error(err);
+            toPill.textContent = "To: —";
+            showAlert("error", err.message || "Could not load user");
+            sendBtn.disabled = true;
+          }
+        }
+
+        sendForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          result.innerHTML = "";
+
+          const subject = subjectEl.value.trim();
+          const body = bodyEl.value.trim();
+
+          if (!userId)
+            return showAlert("error", "Missing user id in URL (?id=...)");
+          if (!subject || !body)
+            return showAlert("error", "Subject and body are required.");
+
+          try {
+            sendBtn.disabled = true;
+            sendBtn.textContent = "Sending...";
+
+            const res = await fetch(SEND_API(userId), {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ subject, body }),
+            });
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok)
+              throw new Error(data.message || "Failed to send email");
+
+            showAlert("success", data.message || "Email sent successfully.");
+            sendForm.reset();
+            toEmail.value = user?.email || "";
+          } catch (err) {
+            console.error(err);
+            showAlert("error", err.message || "Failed to send email");
+          } finally {
+            sendBtn.disabled = false;
+            sendBtn.textContent = "Send Email";
+          }
+        });
+
+        // init
+        userId = getQueryParam("userId");
+        if (!userId) {
+          showAlert(
+            "error",
+            "Missing user id. Open this page like: ?userId=USER_ID",
+          );
+          sendBtn.disabled = true;
+        } else {
+          fetchUser(userId);
+        }
+      })();
+    </script>
+  </body>
+</html>

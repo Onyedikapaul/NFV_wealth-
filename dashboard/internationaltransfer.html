@@ -1,0 +1,3331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFV Wealth | International Transfer</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+   
+    
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+        
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    
+        
+        
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'internationaltransfer',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+                <!-- Responsive Layout Shell -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                                  <div id="sidebar-slot"></div>
+
+
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col w-full">
+               <!-- header-->
+               <div id="header-slot"></div>
+
+
+                <!-- Main Content -->
+                <main class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-0">
+                    <div class="h-full overflow-y-auto">
+                        
+
+<div
+    @beneficiary-selected="handleBeneficiarySelection($event.detail)"
+    x-data="{ 
+        withdrawMethod: '',
+        amount: '',
+        accountName: '',
+        accountNumber: '',
+        bankName: '',
+        bankAddress: '',
+        accountType: 'Online System',
+        country: '',
+        swiftCode: '',
+        routingNumber: '',
+        iban: '',
+        pin: '',
+        description: '',
+        cryptoCurrency: 'BTC',
+        cryptoNetwork: 'Native',
+        walletAddress: '',
+        paypalEmail: '',
+        wiseFullName: '',
+        wiseEmail: '',
+        wiseCountry: '',
+        skrillEmail: '',
+        skrillFullName: '',
+        venmoUsername: '',
+        venmoPhone: '',
+        zelleEmail: '',
+        zellePhone: '',
+        zelleName: '',
+        balanceType: 'fiat',
+        
+        // Get balance type based on selected method
+        getBalanceTypeForMethod() {
+            return this.withdrawMethod === 'Cryptocurrency' ? 'btc' : 'fiat';
+        },
+        
+        // Check if method supports balance type selection
+        shouldShowBalanceSelection() {
+            return false; // We'll handle this with conditional rendering
+        },
+        cashAppTag: '',
+        cashAppFullName: '',
+        revolutFullName: '',
+        revolutEmail: '',
+        revolutPhone: '',
+        alipayId: '',
+        alipayFullName: '',
+        wechatId: '',
+        wechatName: '',
+        formTitle: 'International Wire Transfer',
+        formDescription: 'Funds will reflect in the Beneficiary Account within 72hours.',
+        isSubmitting: false,
+        showPreview: false,
+        showMoreMethods: false,
+        
+        changeMethod() {
+            // Hide all method-specific fields first by not setting a method
+            this.resetRequiredFields();
+            
+            // Set balance type based on method
+            this.balanceType = this.getBalanceTypeForMethod();
+            
+            // Trigger beneficiary reload for the new method
+            window.dispatchEvent(new CustomEvent('method-changed', { 
+                detail: { method: this.withdrawMethod } 
+            }));
+            
+            // Set the appropriate title and description based on selected method
+            switch(this.withdrawMethod) {
+                case 'Wire Transfer':
+                    this.formTitle = 'International Wire Transfer';
+                    this.formDescription = '';
+                    break;
+                case 'Cryptocurrency':
+                    this.formTitle = 'Cryptocurrency Withdrawal';
+                    this.formDescription = 'Withdrawals are typically processed within 1-3 hours.';
+                    break;
+                case 'PayPal':
+                    this.formTitle = 'PayPal Withdrawal';
+                    this.formDescription = 'Funds will be sent to your PayPal account within 24 hours.';
+                    break;
+                case 'Wise Transfer':
+                    this.formTitle = 'Wise Transfer Withdrawal';
+                    this.formDescription = 'Your funds will be processed within 1-2 business days.';
+                    break;
+                case 'Skrill':
+                    this.formTitle = 'Skrill Withdrawal';
+                    this.formDescription = 'Withdrawals to Skrill are processed within 24 hours.';
+                    break;
+                case 'Venmo':
+                    this.formTitle = 'Venmo Withdrawal';
+                    this.formDescription = 'Funds will be transferred to your Venmo account within 24 hours.';
+                    break;
+                case 'Zelle':
+                    this.formTitle = 'Zelle Withdrawal';
+                    this.formDescription = 'Funds will be sent to your Zelle account typically within a few hours.';
+                    break;
+                case 'Cash App':
+                    this.formTitle = 'Cash App Withdrawal';
+                    this.formDescription = 'Withdrawals to Cash App are typically processed within 24 hours.';
+                    break;
+                case 'Revolut':
+                    this.formTitle = 'Revolut Withdrawal';
+                    this.formDescription = 'Funds will be transferred to your Revolut account within 1-2 business days.';
+                    break;
+                case 'Alipay':
+                    this.formTitle = 'Alipay Withdrawal';
+                    this.formDescription = 'Withdrawals to Alipay are typically processed within 24-48 hours.';
+                    break;
+                case 'WeChat Pay':
+                    this.formTitle = 'WeChat Pay Withdrawal';
+                    this.formDescription = 'Funds will be sent to your WeChat Pay account within 24-48 hours.';
+                    break;
+                default:
+                    this.formTitle = 'Select a Withdrawal Method';
+                    this.formDescription = 'Please select a withdrawal method to proceed.';
+            }
+        },
+        
+        resetRequiredFields() {
+            // This method is used to handle the required attributes in the Alpine.js context
+            // In practice, HTML5 validation will handle required fields based on visible elements
+        },
+        
+        validateAmount() {
+            const maxBalance = this.balanceType === 'fiat' ? 20369651 : 12.5760278;
+            if (this.amount > maxBalance) {
+                this.amount = maxBalance;
+            }
+        },
+        
+        previewTransfer() {
+            if (this.amount > 0 && this.withdrawMethod !== '') {
+                this.showPreview = true;
+            }
+        },
+        
+
+
+      submitForm() {
+    window.submitTransfer(this);
+},
+
+    }"
+    x-init=""
+    class="min-h-screen lg:min-h-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4 lg:p-6 pb-24 lg:pb-10 space-y-4"
+>
+    <!-- Alerts -->
+            
+    <!-- Mobile Header -->
+    <div class="lg:hidden mb-2">
+        <div class="lg:hidden" x-data="{ showMobileNotifications: false }">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2">
+                            <!-- Back Button -->
+                <a href="index.html" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 mr-2">
+                    <i class="fa-solid fa-arrow-left text-gray-700 dark:text-gray-300 text-base"></i>
+                </a>
+                        
+            <div>
+                                    <!-- Custom Title -->
+                    <p class="text-gray-900 dark:text-white font-semibold text-base">International Transfer</p>
+                            </div>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+                            <!-- Dark Mode Toggle -->
+                <button @click="toggleDarkMode()" 
+                        class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i x-show="!darkMode" class="fa-solid fa-moon text-gray-700 text-base"></i>
+                    <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-base"></i>
+                </button>
+                        
+                            <!-- Notifications -->
+                <div class="relative">
+                    <!-- <button @click="showMobileNotifications = !showMobileNotifications" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fa-solid fa-bell text-gray-700 dark:text-gray-300 text-base"></i>
+                    </button> -->
+                                                        </div>
+                    </div>
+    </div>
+
+            <!-- Mobile Notifications Panel -->
+       
+    </div>     </div>
+
+    <!-- Desktop Header -->
+    <div class="hidden lg:block mb-4">
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-globe text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900 dark:text-white">International Transfer</h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Send money worldwide with multiple payment methods</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Card Container -->
+    <div class="max-w-8xl mx-auto">        
+        <!-- Method Selection Cards -->
+        <div class="mb-6" x-show="!withdrawMethod">
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Select Transfer Method</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+                <!-- Wire Transfer -->
+                <div @click="withdrawMethod = 'Wire Transfer'; changeMethod()" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-building-columns text-blue-600 dark:text-blue-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Wire Transfer</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Transfer funds directly to international bank accounts.</p>
+                </div>
+                
+                <!-- Cryptocurrency -->
+                <div id="crypto" @click="withdrawMethod = 'Cryptocurrency'; changeMethod()" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                            <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Cryptocurrency</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Send funds to your cryptocurrency wallet.</p>
+                </div>
+                
+                <!-- PayPal -->
+                <div @click="withdrawMethod = 'PayPal'; changeMethod()" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                            <i class="fa-brands fa-paypal text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">PayPal</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Transfer funds to your PayPal account.</p>
+                </div>
+                
+                <!-- Wise Transfer -->
+                <div @click="withdrawMethod = 'Wise Transfer'; changeMethod()" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-money-bill-transfer text-green-600 dark:text-green-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Wise Transfer</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Transfer with lower fees using Wise.</p>
+                </div> 
+                
+                <!-- Cash App -->
+                <div @click="withdrawMethod = 'Cash App'; changeMethod()" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-dollar-sign text-pink-600 dark:text-pink-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Cash App</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Quick transfers to your Cash App account.</p>
+                </div> 
+                
+                <!-- More Options -->
+                <div @click="showMoreMethods = true; withdrawMethod = ''" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                           <i class="fa-solid fa-ellipsis text-amber-600 dark:text-amber-400 text-sm"></i>
+                        </div>
+                        <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">More Options</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Zelle, Venmo, Revolut, and more.</p>
+                </div> 
+            </div>
+        </div>
+
+        
+        <div x-show="showMoreMethods" class="mb-6" x-transition>
+    <div class="flex items-center mb-4">
+        <button 
+            @click="showMoreMethods = false" 
+            class="mr-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-full p-2 text-gray-500 dark:text-gray-400 border border-white/20 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+        >
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Additional Transfer Methods</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <!-- Skrill -->
+        <div @click="withdrawMethod = 'Skrill'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-wallet text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Skrill</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Transfer funds to your Skrill account.</p>
+        </div>
+        
+        <!-- Venmo -->
+        <div @click="withdrawMethod = 'Venmo'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-mobile-screen text-blue-600 dark:text-blue-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Venmo</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Send funds to your Venmo account.</p>
+        </div>
+        
+        <!-- Zelle -->
+        <div @click="withdrawMethod = 'Zelle'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-purple-600 dark:text-purple-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Zelle</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Quick transfers to your Zelle account.</p>
+        </div>
+        
+        <!-- Revolut -->
+        <div @click="withdrawMethod = 'Revolut'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-credit-card text-cyan-600 dark:text-cyan-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Revolut</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Transfer to your Revolut account with low fees.</p>
+        </div>
+        
+        <!-- Alipay -->
+        <div @click="withdrawMethod = 'Alipay'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-mobile-screen-button text-blue-600 dark:text-blue-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">Alipay</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Send funds to your Alipay account.</p>
+        </div>
+        
+        <!-- WeChat Pay -->
+        <div @click="withdrawMethod = 'WeChat Pay'; changeMethod(); showMoreMethods = false" class="cursor-pointer bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/50 p-3 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all">
+            <div class="flex items-center mb-2">
+                <div class="h-8 w-8 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <i class="fa-brands fa-weixin text-green-600 dark:text-green-400 text-sm"></i>
+                </div>
+                <h3 class="ml-3 font-medium text-gray-900 dark:text-white text-sm">WeChat Pay</h3>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Transfer to your WeChat Pay wallet.</p>
+        </div>
+    </div>
+</div>
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden" x-show="withdrawMethod && !showMoreMethods">
+    <!-- Card Header with Method Icon -->
+    <div class="relative bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 p-6">
+        <!-- Back Button -->
+        <button 
+            @click="withdrawMethod = ''" 
+            class="absolute top-4 left-4 bg-white/20 dark:bg-white/10 rounded-full p-2 text-white hover:bg-white/30 dark:hover:bg-white/20 transition-colors"
+        >
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        
+        <div class="flex flex-col items-center">
+            <div class="bg-white/20 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl mb-3">
+                <template x-if="withdrawMethod === 'Wire Transfer'">
+                    <i class="fa-solid fa-building-columns text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Cryptocurrency'">
+                    <i class="fa-brands fa-bitcoin text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'PayPal'">
+                    <i class="fa-brands fa-paypal text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Wise Transfer'">
+                    <i class="fa-solid fa-money-bill-transfer text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Skrill'">
+                    <i class="fa-solid fa-wallet text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Venmo'">
+                    <i class="fa-solid fa-mobile-screen text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Zelle'">
+                    <i class="fa-solid fa-bolt text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Cash App'">
+                    <i class="fa-solid fa-dollar-sign text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Revolut'">
+                    <i class="fa-solid fa-credit-card text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'Alipay'">
+                    <i class="fa-solid fa-mobile-screen-button text-white text-2xl"></i>
+                </template>
+                <template x-if="withdrawMethod === 'WeChat Pay'">
+                    <i class="fa-brands fa-weixin text-white text-2xl"></i>
+                </template>
+            </div>
+            <h2 class="text-xl font-bold text-white" x-text="formTitle">International Wire Transfer</h2>
+            <p class="text-white/80 mt-1 text-center text-sm" x-text="formDescription">Funds will reflect in the Beneficiary Account within 72hours.</p>
+        </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="p-4 space-y-4">
+<form id="internationalTransferForm" action="/api/international-transfer/submit" method="post">
+
+            <!-- Balance Display (Method-specific) -->
+            <div class="mb-4">
+                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Available Balance</label>
+                
+                <!-- Fiat Balance Display (for non-crypto methods) -->
+                <div x-show="withdrawMethod !== 'Cryptocurrency'" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-primary-500 ring-2 ring-primary-200 dark:ring-primary-800 p-3">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 mr-3">
+                            <i class="fa-solid fa-building-columns text-blue-600 dark:text-blue-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Account Balance</p>
+                            <p class="user-balance text-lg font-bold text-gray-900 dark:text-white"></p>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="w-5 h-5 rounded-full border-2 bg-primary-500 border-primary-500 flex items-center justify-center">
+                                <i class="fa-solid fa-check text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bitcoin Balance Display (for crypto method only) -->
+                <div x-show="withdrawMethod === 'Cryptocurrency'" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-primary-500 ring-2 ring-primary-200 dark:ring-primary-800 p-3">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-xl flex items-center justify-center bg-amber-100 dark:bg-amber-900/30 mr-3">
+                            <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Bitcoin Balance</p>
+                            <p class="user-crypto-balance text-lg font-bold text-gray-900 dark:text-white"></p>
+                             <p class="user-btc-usd text-xs text-gray-500 dark:text-gray-400">≈ </p>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="w-5 h-5 rounded-full border-2 bg-primary-500 border-primary-500 flex items-center justify-center">
+                                <i class="fa-solid fa-check text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden input to pass the balance type to the controller -->
+                <input type="hidden" name="balance_type" x-model="balanceType">
+            </div>
+
+            <!-- Amount Input with Currency (Enhanced) -->
+            <div class="mb-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-700/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                <label for="amount" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Amount to Transfer</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <span class="text-gray-500 text-lg font-bold" x-text="withdrawMethod === 'Cryptocurrency' ? '' : '$'"></span>
+                    </div>
+                    <input 
+                        type="number" 
+                        name="amount" 
+                        id="amount" 
+                        x-model="amount"
+                        @input="validateAmount()"
+                        :min="withdrawMethod === 'Cryptocurrency' ? '0.00000001' : '1'" 
+                        :max="withdrawMethod === 'Cryptocurrency' ? 12.5760278 : 20369651"
+                        :step="withdrawMethod === 'Cryptocurrency' ? '0.00000001' : '0.01'"
+                        class="block w-full pl-12 pr-20 py-3 border-2 border-primary-100 dark:border-primary-800 rounded-lg bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-xl font-bold"
+                        :placeholder="withdrawMethod === 'Cryptocurrency' ? '0.00000000' : '0.00'"
+                        required
+                    />
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-lg font-bold text-gray-400 pointer-events-none" x-text="withdrawMethod === 'Cryptocurrency' ? 'BTC' : ''"></div>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                    <!-- Quick Amount Buttons -->
+                    <div class="flex space-x-2">
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <div class="flex space-x-2">
+                                <button type="button" @click="amount = '100'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">$100</button>
+                                <button type="button" @click="amount = '500'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">$500</button>
+                                <button type="button" @click="amount = '1000'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">$1000</button>
+                                <button type="button" @click="amount = 20369651" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">Max</button>
+                            </div>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <div class="flex space-x-2">
+                                <button type="button" @click="amount = '0.001'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">0.001 BTC</button>
+                                <button type="button" @click="amount = '0.01'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">0.01 BTC</button>
+                                <button type="button" @click="amount = '0.1'" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">0.1 BTC</button>
+                                <button type="button" @click="amount = 12.5760278" class="px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md text-xs font-medium text-gray-700 dark:text-gray-300 transition-colors">Max</button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                
+                <!-- Conversion Preview -->
+                <div class="mt-3 text-xs text-gray-600 dark:text-gray-400" x-show="amount && parseFloat(amount) > 0">
+
+                <!-- Transfer Limits Info for Fiat -->
+                <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                    <div class="mt-3 p-3 bg-gray-50/80 dark:bg-gray-800/80 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-shield-alt text-gray-500 dark:text-gray-400 text-xs"></i>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Transfer Limits</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                            <span>Minimum: <span class="font-semibold text-gray-900 dark:text-white">$4,000.00</span></span>
+                            <span>Maximum: <span class="font-semibold text-gray-900 dark:text-white">$500,000.00</span></span>
+                        </div>
+                    </div>
+                </template>
+                    <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                        <p>Equivalent: <span class="font-medium" x-text="'≈ ' + (parseFloat(amount) / 87570).toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8}) + ' BTC'"></span></p>
+                    </template>
+                    <template x-if="withdrawMethod === 'Cryptocurrency'">
+                        <p>Equivalent: <span class="font-medium" x-text="'≈ $' + (parseFloat(amount) * 87570).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' USD'"></span></p>
+                    </template>
+                </div>
+            </div>
+        
+            <!-- WIRE TRANSFER FIELDS -->
+            <div x-show="withdrawMethod === 'Wire Transfer'" x-transition class="space-y-4 mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="accountname" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Beneficiary Account Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="accountName" 
+                                id="accountname" 
+                                x-model="accountName"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter beneficiary's full name"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="accountnumber" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Beneficiary Account Number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-hashtag text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="accountNumber" 
+                                id="accountnumber" 
+                                x-model="accountNumber"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter account number"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="bankname" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Bank Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-building text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="bankName" 
+                                id="bankname" 
+                                x-model="bankName"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter bank name"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="bankaddress" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Bank Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-location-dot text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="bankaddress" 
+                                id="bankaddress" 
+                                x-model="bankAddress"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter bank address"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                    </div>
+                </div>
+     
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="Accounttype" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Account Type</label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-list text-gray-400 text-sm"></i>
+                            </div>
+                            <select 
+                                name="Accounttype" 
+                                id="Accounttype" 
+                                x-model="accountType"
+                                class="block w-full pl-10 pr-8 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none text-sm"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            >
+                                <option value="Online System">Online System</option>
+                                <option value="Joint Account">Joint Account</option>
+                                <option value="Checking">Checking</option>
+                                <option value="Savings Account">Savings Account</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="country" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-globe text-gray-400 text-sm"></i>
+                            </div>
+                            <div class="pl-10">
+                                <select class="block w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none" 
+        type="text" 
+        name="country" 
+        autocomplete="country" 
+        >
+    <option value="Afghanistan">Afghanistan</option>
+    <option value="Albania">Albania</option>
+    <option value="Algeria">Algeria</option>
+    <option value="American Samoa">American Samoa</option>
+    <option value="Andorra">Andorra</option>
+    <option value="Angola">Angola</option>
+    <option value="Anguilla">Anguilla</option>
+    <option value="Antarctica">Antarctica</option>
+    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+    <option value="Argentina">Argentina</option>
+    <option value="Armenia">Armenia</option>
+    <option value="Aruba">Aruba</option>
+    <option value="Australia">Australia</option>
+    <option value="Austria">Austria</option>
+    <option value="Azerbaijan">Azerbaijan</option>
+    <option value="Bahamas">Bahamas</option>
+    <option value="Bahrain">Bahrain</option>
+    <option value="Bangladesh">Bangladesh</option>
+    <option value="Barbados">Barbados</option>
+    <option value="Belarus">Belarus</option>
+    <option value="Belgium">Belgium</option>
+    <option value="Belize">Belize</option>
+    <option value="Benin">Benin</option>
+    <option value="Bermuda">Bermuda</option>
+    <option value="Bhutan">Bhutan</option>
+    <option value="Bolivia">Bolivia</option>
+    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+    <option value="Botswana">Botswana</option>
+    <option value="Bouvet Island">Bouvet Island</option>
+    <option value="Brazil">Brazil</option>
+    <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+    <option value="Brunei Darussalam">Brunei Darussalam</option>
+    <option value="Bulgaria">Bulgaria</option>
+    <option value="Burkina Faso">Burkina Faso</option>
+    <option value="Burundi">Burundi</option>
+    <option value="Cambodia">Cambodia</option>
+    <option value="Cameroon">Cameroon</option>
+    <option value="Canada">Canada</option>
+    <option value="Cape Verde">Cape Verde</option>
+    <option value="Cayman Islands">Cayman Islands</option>
+    <option value="Central African Republic">Central African Republic</option>
+    <option value="Chad">Chad</option>
+    <option value="Chile">Chile</option>
+    <option value="China">China</option>
+    <option value="Christmas Island">Christmas Island</option>
+    <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+    <option value="Colombia">Colombia</option>
+    <option value="Comoros">Comoros</option>
+    <option value="Congo">Congo</option>
+    <option value="Cook Islands">Cook Islands</option>
+    <option value="Costa Rica">Costa Rica</option>
+    <option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
+    <option value="Cuba">Cuba</option>
+    <option value="Cyprus">Cyprus</option>
+    <option value="Czech Republic">Czech Republic</option>
+    <option value="Denmark">Denmark</option>
+    <option value="Djibouti">Djibouti</option>
+    <option value="Dominica">Dominica</option>
+    <option value="Dominican Republic">Dominican Republic</option>
+    <option value="East Timor">East Timor</option>
+    <option value="Ecuador">Ecuador</option>
+    <option value="Egypt">Egypt</option>
+    <option value="El Salvador">El Salvador</option>
+    <option value="Equatorial Guinea">Equatorial Guinea</option>
+    <option value="Eritrea">Eritrea</option>
+    <option value="Estonia">Estonia</option>
+    <option value="Ethiopia">Ethiopia</option>
+    <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
+    <option value="Faroe Islands">Faroe Islands</option>
+    <option value="Fiji">Fiji</option>
+    <option value="Finland">Finland</option>
+    <option value="France">France</option>
+    <option value="France, Metropolitan">France, Metropolitan</option>
+    <option value="French Guiana">French Guiana</option>
+    <option value="French Polynesia">French Polynesia</option>
+    <option value="French Southern Territories">French Southern Territories</option>
+    <option value="Gabon">Gabon</option>
+    <option value="Gambia">Gambia</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Germany">Germany</option>
+    <option value="Ghana">Ghana</option>
+    <option value="Gibraltar">Gibraltar</option>
+    <option value="Guernsey">Guernsey</option>
+    <option value="Greece">Greece</option>
+    <option value="Greenland">Greenland</option>
+    <option value="Grenada">Grenada</option>
+    <option value="Guadeloupe">Guadeloupe</option>
+    <option value="Guam">Guam</option>
+    <option value="Guatemala">Guatemala</option>
+    <option value="Guinea">Guinea</option>
+    <option value="Guinea-Bissau">Guinea-Bissau</option>
+    <option value="Guyana">Guyana</option>
+    <option value="Haiti">Haiti</option>
+    <option value="Heard and Mc Donald Islands">Heard and Mc Donald Islands</option>
+    <option value="Honduras">Honduras</option>
+    <option value="Hong Kong">Hong Kong</option>
+    <option value="Hungary">Hungary</option>
+    <option value="Iceland">Iceland</option>
+    <option value="India">India</option>
+    <option value="Isle of Man">Isle of Man</option>
+    <option value="Indonesia">Indonesia</option>
+    <option value="Iran (Islamic Republic of)">Iran (Islamic Republic of)</option>
+    <option value="Iraq">Iraq</option>
+    <option value="Ireland">Ireland</option>
+    <option value="Israel">Israel</option>
+    <option value="Italy">Italy</option>
+    <option value="Ivory Coast">Ivory Coast</option>
+    <option value="Jersey">Jersey</option>
+    <option value="Jamaica">Jamaica</option>
+    <option value="Japan">Japan</option>
+    <option value="Jordan">Jordan</option>
+    <option value="Kazakhstan">Kazakhstan</option>
+    <option value="Kenya">Kenya</option>
+    <option value="Kiribati">Kiribati</option>
+    <option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option>
+    <option value="Korea, Republic of">Korea, Republic of</option>
+    <option value="Kosovo">Kosovo</option>
+    <option value="Kuwait">Kuwait</option>
+    <option value="Kyrgyzstan">Kyrgyzstan</option>
+    <option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option>
+    <option value="Latvia">Latvia</option>
+    <option value="Lebanon">Lebanon</option>
+    <option value="Lesotho">Lesotho</option>
+    <option value="Liberia">Liberia</option>
+    <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
+    <option value="Liechtenstein">Liechtenstein</option>
+    <option value="Lithuania">Lithuania</option>
+    <option value="Luxembourg">Luxembourg</option>
+    <option value="Macau">Macau</option>
+    <option value="Macedonia">Macedonia</option>
+    <option value="Madagascar">Madagascar</option>
+    <option value="Malawi">Malawi</option>
+    <option value="Malaysia">Malaysia</option>
+    <option value="Maldives">Maldives</option>
+    <option value="Mali">Mali</option>
+    <option value="Malta">Malta</option>
+    <option value="Marshall Islands">Marshall Islands</option>
+    <option value="Martinique">Martinique</option>
+    <option value="Mauritania">Mauritania</option>
+    <option value="Mauritius">Mauritius</option>
+    <option value="Mayotte">Mayotte</option>
+    <option value="Mexico">Mexico</option>
+    <option value="Micronesia, Federated States of">Micronesia, Federated States of</option>
+    <option value="Moldova, Republic of">Moldova, Republic of</option>
+    <option value="Monaco">Monaco</option>
+    <option value="Mongolia">Mongolia</option>
+    <option value="Montenegro">Montenegro</option>
+    <option value="Montserrat">Montserrat</option>
+    <option value="Morocco">Morocco</option>
+    <option value="Mozambique">Mozambique</option>
+    <option value="Myanmar">Myanmar</option>
+    <option value="Namibia">Namibia</option>
+    <option value="Nauru">Nauru</option>
+    <option value="Nepal">Nepal</option>
+    <option value="Netherlands">Netherlands</option>
+    <option value="Netherlands Antilles">Netherlands Antilles</option>
+    <option value="New Caledonia">New Caledonia</option>
+    <option value="New Zealand">New Zealand</option>
+    <option value="Nicaragua">Nicaragua</option>
+    <option value="Niger">Niger</option>
+    <option value="Nigeria">Nigeria</option>
+    <option value="Niue">Niue</option>
+    <option value="Norfolk Island">Norfolk Island</option>
+    <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+    <option value="Norway">Norway</option>
+    <option value="Oman">Oman</option>
+    <option value="Pakistan">Pakistan</option>
+    <option value="Palau">Palau</option>
+    <option value="Palestine">Palestine</option>
+    <option value="Panama">Panama</option>
+    <option value="Papua New Guinea">Papua New Guinea</option>
+    <option value="Paraguay">Paraguay</option>
+    <option value="Peru">Peru</option>
+    <option value="Philippines">Philippines</option>
+    <option value="Pitcairn">Pitcairn</option>
+    <option value="Poland">Poland</option>
+    <option value="Portugal">Portugal</option>
+    <option value="Puerto Rico">Puerto Rico</option>
+    <option value="Qatar">Qatar</option>
+    <option value="Reunion">Reunion</option>
+    <option value="Romania">Romania</option>
+    <option value="Russian Federation">Russian Federation</option>
+    <option value="Rwanda">Rwanda</option>
+    <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+    <option value="Saint Lucia">Saint Lucia</option>
+    <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+    <option value="Samoa">Samoa</option>
+    <option value="San Marino">San Marino</option>
+    <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+    <option value="Saudi Arabia">Saudi Arabia</option>
+    <option value="Senegal">Senegal</option>
+    <option value="Serbia">Serbia</option>
+    <option value="Seychelles">Seychelles</option>
+    <option value="Sierra Leone">Sierra Leone</option>
+    <option value="Singapore">Singapore</option>
+    <option value="Slovakia">Slovakia</option>
+    <option value="Slovenia">Slovenia</option>
+    <option value="Solomon Islands">Solomon Islands</option>
+    <option value="Somalia">Somalia</option>
+    <option value="South Africa">South Africa</option>
+    <option value="South Georgia South Sandwich Islands">South Georgia South Sandwich Islands</option>
+    <option value="South Sudan">South Sudan</option>
+    <option value="Spain">Spain</option>
+    <option value="Sri Lanka">Sri Lanka</option>
+    <option value="St. Helena">St. Helena</option>
+    <option value="St. Pierre and Miquelon">St. Pierre and Miquelon</option>
+    <option value="Sudan">Sudan</option>
+    <option value="Suriname">Suriname</option>
+    <option value="Svalbard and Jan Mayen Islands">Svalbard and Jan Mayen Islands</option>
+    <option value="Swaziland">Swaziland</option>
+    <option value="Sweden">Sweden</option>
+    <option value="Switzerland">Switzerland</option>
+    <option value="Syrian Arab Republic">Syrian Arab Republic</option>
+    <option value="Taiwan">Taiwan</option>
+    <option value="Tajikistan">Tajikistan</option>
+    <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
+    <option value="Thailand">Thailand</option>
+    <option value="Togo">Togo</option>
+    <option value="Tokelau">Tokelau</option>
+    <option value="Tonga">Tonga</option>
+    <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+    <option value="Tunisia">Tunisia</option>
+    <option value="Turkey">Turkey</option>
+    <option value="Turkmenistan">Turkmenistan</option>
+    <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+    <option value="Tuvalu">Tuvalu</option>
+    <option value="Uganda">Uganda</option>
+    <option value="Ukraine">Ukraine</option>
+    <option value="United Arab Emirates">United Arab Emirates</option>
+    <option value="United Kingdom">United Kingdom</option>
+    <option value="United States">United States</option>
+    <option value="United States minor outlying islands">United States minor outlying islands</option>
+    <option value="Uruguay">Uruguay</option>
+    <option value="Uzbekistan">Uzbekistan</option>
+    <option value="Vanuatu">Vanuatu</option>
+    <option value="Vatican City State">Vatican City State</option>
+    <option value="Venezuela">Venezuela</option>
+    <option value="Vietnam">Vietnam</option>
+    <option value="Virgin Islands (British)">Virgin Islands (British)</option>
+    <option value="Virgin Islands (U.S.)">Virgin Islands (U.S.)</option>
+    <option value="Wallis and Futuna Islands">Wallis and Futuna Islands</option>
+    <option value="Western Sahara">Western Sahara</option>
+    <option value="Yemen">Yemen</option>
+    <option value="Zaire">Zaire</option>
+    <option value="Zambia">Zambia</option>
+    <option value="Zimbabwe">Zimbabwe</option>
+</select>                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="iban" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">IBAN Number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-credit-card text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="iban" 
+                                id="iban" 
+                                x-model="iban"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter IBAN number"
+                                maxlength="34"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">International Bank Account Number</p>
+                    </div>
+                    
+                    <div>
+                        <label for="swiftcode" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">SWIFT Code</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-globe text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="swiftCode" 
+                                id="swiftcode" 
+                                x-model="swiftCode"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter SWIFT/BIC code"
+                                maxlength="11"
+                                x-bind:required="withdrawMethod === 'Wire Transfer'"
+                            />
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">8-11 character bank identifier code</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="routingnumber" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Routing Number (Optional)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-route text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="routingNumber" 
+                                id="routingnumber" 
+                                x-model="routingNumber"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter routing number (if applicable)"
+                                maxlength="9"
+                            />
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">For US banks (9 digits)</p>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            
+            <!-- CRYPTOCURRENCY FIELDS -->
+            <div x-show="withdrawMethod === 'Cryptocurrency'" x-transition class="space-y-4 mt-4">
+                <!-- Crypto Icon and Info -->
+                <div class="flex items-center justify-center mb-4">
+                    <div class="flex items-center h-16 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl">
+                        <template x-if="cryptoCurrency === 'BTC'">
+                            <div class="w-10 h-10 mr-4 rounded-full bg-amber-100 flex items-center justify-center">
+                                <img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/btc.svg" alt="Bitcoin" class="h-6 w-6">
+                            </div>
+                        </template>
+                        <!-- If more currencies enabled, include templates here -->
+                        <div>
+                            <div class="flex items-center">
+                                <span class="text-lg font-bold mr-2" x-text="cryptoCurrency"></span>
+                                <span class="text-sm text-gray-500" x-text="cryptoNetwork"></span>
+                            </div>
+                            <p class="text-sm text-gray-500">Select your preferred cryptocurrency and network</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="cryptoCurrency" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Cryptocurrency</label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-brands fa-bitcoin text-gray-400 text-sm"></i>
+                            </div>
+                            <select 
+                                name="cryptoCurrency" 
+                                id="cryptoCurrency" 
+                                x-model="cryptoCurrency"
+                                class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none text-sm"
+                                x-bind:required="withdrawMethod === 'Cryptocurrency'"
+                            >
+                                <option value="BTC">Bitcoin (BTC)</option>
+                                <!-- Add more <option> as needed -->
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="cryptoNetwork" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Network</label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-network-wired text-gray-400 text-sm"></i>
+                            </div>
+                            <select 
+                                name="cryptoNetwork" 
+                                id="cryptoNetwork" 
+                                x-model="cryptoNetwork"
+                                class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none text-sm"
+                                x-bind:required="withdrawMethod === 'Cryptocurrency'"
+                            >
+                                <option value="Native">Native</option>
+                                <!-- Add more network options if needed -->
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Crypto Cards Display -->
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <div @click="cryptoCurrency = 'BTC'" class="cursor-pointer p-2 rounded-lg border" :class="{'border-primary-500 bg-primary-50 dark:bg-primary-900/30 dark:border-primary-400': cryptoCurrency === 'BTC', 'border-gray-200 dark:border-gray-600': cryptoCurrency !== 'BTC'}">
+                        <div class="flex flex-col items-center">
+                            <img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/btc.svg" alt="Bitcoin" class="h-8 w-8 mb-1">
+                            <span class="text-xs font-medium text-gray-900 dark:text-white">BTC</span>
+                        </div>
+                    </div>
+                    <!-- Add more currency cards as needed -->
+                </div>
+                
+                <div>
+                    <label for="walletAddress" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Wallet Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-wallet text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="wallet_address" 
+                            id="walletAddress" 
+                            x-model="walletAddress"
+                            class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all font-mono text-sm"
+                            placeholder="Enter wallet address"
+                            x-bind:required="withdrawMethod === 'Cryptocurrency'"
+                        />
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button 
+                                type="button" 
+                                class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+                                @click="navigator.clipboard.readText().then(text => walletAddress = text)"
+                            >
+                                <i class="fa-solid fa-clipboard text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Wallet Address Warning -->
+                    <div class="mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 dark:border-yellow-500 rounded-r-md">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa-solid fa-triangle-exclamation text-yellow-500 dark:text-yellow-400 text-sm"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-xs text-yellow-700 dark:text-yellow-300">
+                                    Double-check your wallet address. Transactions to incorrect addresses cannot be reversed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAYPAL FIELDS -->
+            <div x-show="withdrawMethod === 'PayPal'" x-transition class="space-y-4 mt-4">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="flex items-center h-16 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl">
+                        <div class="w-8 h-8 mr-3 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                            <i class="fa-brands fa-paypal text-blue-600 dark:text-blue-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-gray-900 dark:text-white">PayPal</div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Transfer funds to your PayPal account</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="paypalEmail" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">PayPal Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="paypalEmail" 
+                            id="paypalEmail" 
+                            x-model="paypalEmail"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter PayPal email address"
+                            x-bind:required="withdrawMethod === 'PayPal'"
+                        />
+                    </div>
+                    
+                    <!-- PayPal Email Note -->
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Please ensure this is the email address associated with your PayPal account</p>
+                </div>
+            </div>
+        
+            <!-- WISE TRANSFER FIELDS -->
+            <div x-show="withdrawMethod === 'Wise Transfer'" x-transition class="space-y-6 mt-6">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="flex items-center h-20 px-6 bg-gray-50 border border-gray-100 rounded-lg">
+                        <div class="w-10 h-10 mr-4 rounded-full bg-green-100 flex items-center justify-center">
+                            <i data-lucide="wallet" class="h-6 w-6 text-green-600"></i>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold">Wise Transfer</div>
+                            <p class="text-sm text-gray-500">Formerly TransferWise - Low fee international transfers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="wiseFullName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                name="wiseFullName" 
+                                id="wiseFullName" 
+                                x-model="wiseFullName"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter your full name"
+                                x-bind:required="withdrawMethod === 'Wise Transfer'"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="wiseEmail" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="email" 
+                                name="wiseEmail" 
+                                id="wiseEmail" 
+                                x-model="wiseEmail"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                                placeholder="Enter your email address"
+                                x-bind:required="withdrawMethod === 'Wise Transfer'"
+                            />
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="wiseCountry" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
+                    <div class="relative rounded-lg shadow-sm">
+                        <select class="block w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none" 
+        type="text" 
+        name="wiseCountry" 
+        autocomplete="country" 
+        >
+    <option value="Afghanistan">Afghanistan</option>
+    <option value="Albania">Albania</option>
+    <option value="Algeria">Algeria</option>
+    <option value="American Samoa">American Samoa</option>
+    <option value="Andorra">Andorra</option>
+    <option value="Angola">Angola</option>
+    <option value="Anguilla">Anguilla</option>
+    <option value="Antarctica">Antarctica</option>
+    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+    <option value="Argentina">Argentina</option>
+    <option value="Armenia">Armenia</option>
+    <option value="Aruba">Aruba</option>
+    <option value="Australia">Australia</option>
+    <option value="Austria">Austria</option>
+    <option value="Azerbaijan">Azerbaijan</option>
+    <option value="Bahamas">Bahamas</option>
+    <option value="Bahrain">Bahrain</option>
+    <option value="Bangladesh">Bangladesh</option>
+    <option value="Barbados">Barbados</option>
+    <option value="Belarus">Belarus</option>
+    <option value="Belgium">Belgium</option>
+    <option value="Belize">Belize</option>
+    <option value="Benin">Benin</option>
+    <option value="Bermuda">Bermuda</option>
+    <option value="Bhutan">Bhutan</option>
+    <option value="Bolivia">Bolivia</option>
+    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+    <option value="Botswana">Botswana</option>
+    <option value="Bouvet Island">Bouvet Island</option>
+    <option value="Brazil">Brazil</option>
+    <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+    <option value="Brunei Darussalam">Brunei Darussalam</option>
+    <option value="Bulgaria">Bulgaria</option>
+    <option value="Burkina Faso">Burkina Faso</option>
+    <option value="Burundi">Burundi</option>
+    <option value="Cambodia">Cambodia</option>
+    <option value="Cameroon">Cameroon</option>
+    <option value="Canada">Canada</option>
+    <option value="Cape Verde">Cape Verde</option>
+    <option value="Cayman Islands">Cayman Islands</option>
+    <option value="Central African Republic">Central African Republic</option>
+    <option value="Chad">Chad</option>
+    <option value="Chile">Chile</option>
+    <option value="China">China</option>
+    <option value="Christmas Island">Christmas Island</option>
+    <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+    <option value="Colombia">Colombia</option>
+    <option value="Comoros">Comoros</option>
+    <option value="Congo">Congo</option>
+    <option value="Cook Islands">Cook Islands</option>
+    <option value="Costa Rica">Costa Rica</option>
+    <option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
+    <option value="Cuba">Cuba</option>
+    <option value="Cyprus">Cyprus</option>
+    <option value="Czech Republic">Czech Republic</option>
+    <option value="Denmark">Denmark</option>
+    <option value="Djibouti">Djibouti</option>
+    <option value="Dominica">Dominica</option>
+    <option value="Dominican Republic">Dominican Republic</option>
+    <option value="East Timor">East Timor</option>
+    <option value="Ecuador">Ecuador</option>
+    <option value="Egypt">Egypt</option>
+    <option value="El Salvador">El Salvador</option>
+    <option value="Equatorial Guinea">Equatorial Guinea</option>
+    <option value="Eritrea">Eritrea</option>
+    <option value="Estonia">Estonia</option>
+    <option value="Ethiopia">Ethiopia</option>
+    <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
+    <option value="Faroe Islands">Faroe Islands</option>
+    <option value="Fiji">Fiji</option>
+    <option value="Finland">Finland</option>
+    <option value="France">France</option>
+    <option value="France, Metropolitan">France, Metropolitan</option>
+    <option value="French Guiana">French Guiana</option>
+    <option value="French Polynesia">French Polynesia</option>
+    <option value="French Southern Territories">French Southern Territories</option>
+    <option value="Gabon">Gabon</option>
+    <option value="Gambia">Gambia</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Germany">Germany</option>
+    <option value="Ghana">Ghana</option>
+    <option value="Gibraltar">Gibraltar</option>
+    <option value="Guernsey">Guernsey</option>
+    <option value="Greece">Greece</option>
+    <option value="Greenland">Greenland</option>
+    <option value="Grenada">Grenada</option>
+    <option value="Guadeloupe">Guadeloupe</option>
+    <option value="Guam">Guam</option>
+    <option value="Guatemala">Guatemala</option>
+    <option value="Guinea">Guinea</option>
+    <option value="Guinea-Bissau">Guinea-Bissau</option>
+    <option value="Guyana">Guyana</option>
+    <option value="Haiti">Haiti</option>
+    <option value="Heard and Mc Donald Islands">Heard and Mc Donald Islands</option>
+    <option value="Honduras">Honduras</option>
+    <option value="Hong Kong">Hong Kong</option>
+    <option value="Hungary">Hungary</option>
+    <option value="Iceland">Iceland</option>
+    <option value="India">India</option>
+    <option value="Isle of Man">Isle of Man</option>
+    <option value="Indonesia">Indonesia</option>
+    <option value="Iran (Islamic Republic of)">Iran (Islamic Republic of)</option>
+    <option value="Iraq">Iraq</option>
+    <option value="Ireland">Ireland</option>
+    <option value="Israel">Israel</option>
+    <option value="Italy">Italy</option>
+    <option value="Ivory Coast">Ivory Coast</option>
+    <option value="Jersey">Jersey</option>
+    <option value="Jamaica">Jamaica</option>
+    <option value="Japan">Japan</option>
+    <option value="Jordan">Jordan</option>
+    <option value="Kazakhstan">Kazakhstan</option>
+    <option value="Kenya">Kenya</option>
+    <option value="Kiribati">Kiribati</option>
+    <option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option>
+    <option value="Korea, Republic of">Korea, Republic of</option>
+    <option value="Kosovo">Kosovo</option>
+    <option value="Kuwait">Kuwait</option>
+    <option value="Kyrgyzstan">Kyrgyzstan</option>
+    <option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option>
+    <option value="Latvia">Latvia</option>
+    <option value="Lebanon">Lebanon</option>
+    <option value="Lesotho">Lesotho</option>
+    <option value="Liberia">Liberia</option>
+    <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
+    <option value="Liechtenstein">Liechtenstein</option>
+    <option value="Lithuania">Lithuania</option>
+    <option value="Luxembourg">Luxembourg</option>
+    <option value="Macau">Macau</option>
+    <option value="Macedonia">Macedonia</option>
+    <option value="Madagascar">Madagascar</option>
+    <option value="Malawi">Malawi</option>
+    <option value="Malaysia">Malaysia</option>
+    <option value="Maldives">Maldives</option>
+    <option value="Mali">Mali</option>
+    <option value="Malta">Malta</option>
+    <option value="Marshall Islands">Marshall Islands</option>
+    <option value="Martinique">Martinique</option>
+    <option value="Mauritania">Mauritania</option>
+    <option value="Mauritius">Mauritius</option>
+    <option value="Mayotte">Mayotte</option>
+    <option value="Mexico">Mexico</option>
+    <option value="Micronesia, Federated States of">Micronesia, Federated States of</option>
+    <option value="Moldova, Republic of">Moldova, Republic of</option>
+    <option value="Monaco">Monaco</option>
+    <option value="Mongolia">Mongolia</option>
+    <option value="Montenegro">Montenegro</option>
+    <option value="Montserrat">Montserrat</option>
+    <option value="Morocco">Morocco</option>
+    <option value="Mozambique">Mozambique</option>
+    <option value="Myanmar">Myanmar</option>
+    <option value="Namibia">Namibia</option>
+    <option value="Nauru">Nauru</option>
+    <option value="Nepal">Nepal</option>
+    <option value="Netherlands">Netherlands</option>
+    <option value="Netherlands Antilles">Netherlands Antilles</option>
+    <option value="New Caledonia">New Caledonia</option>
+    <option value="New Zealand">New Zealand</option>
+    <option value="Nicaragua">Nicaragua</option>
+    <option value="Niger">Niger</option>
+    <option value="Nigeria">Nigeria</option>
+    <option value="Niue">Niue</option>
+    <option value="Norfolk Island">Norfolk Island</option>
+    <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+    <option value="Norway">Norway</option>
+    <option value="Oman">Oman</option>
+    <option value="Pakistan">Pakistan</option>
+    <option value="Palau">Palau</option>
+    <option value="Palestine">Palestine</option>
+    <option value="Panama">Panama</option>
+    <option value="Papua New Guinea">Papua New Guinea</option>
+    <option value="Paraguay">Paraguay</option>
+    <option value="Peru">Peru</option>
+    <option value="Philippines">Philippines</option>
+    <option value="Pitcairn">Pitcairn</option>
+    <option value="Poland">Poland</option>
+    <option value="Portugal">Portugal</option>
+    <option value="Puerto Rico">Puerto Rico</option>
+    <option value="Qatar">Qatar</option>
+    <option value="Reunion">Reunion</option>
+    <option value="Romania">Romania</option>
+    <option value="Russian Federation">Russian Federation</option>
+    <option value="Rwanda">Rwanda</option>
+    <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+    <option value="Saint Lucia">Saint Lucia</option>
+    <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+    <option value="Samoa">Samoa</option>
+    <option value="San Marino">San Marino</option>
+    <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+    <option value="Saudi Arabia">Saudi Arabia</option>
+    <option value="Senegal">Senegal</option>
+    <option value="Serbia">Serbia</option>
+    <option value="Seychelles">Seychelles</option>
+    <option value="Sierra Leone">Sierra Leone</option>
+    <option value="Singapore">Singapore</option>
+    <option value="Slovakia">Slovakia</option>
+    <option value="Slovenia">Slovenia</option>
+    <option value="Solomon Islands">Solomon Islands</option>
+    <option value="Somalia">Somalia</option>
+    <option value="South Africa">South Africa</option>
+    <option value="South Georgia South Sandwich Islands">South Georgia South Sandwich Islands</option>
+    <option value="South Sudan">South Sudan</option>
+    <option value="Spain">Spain</option>
+    <option value="Sri Lanka">Sri Lanka</option>
+    <option value="St. Helena">St. Helena</option>
+    <option value="St. Pierre and Miquelon">St. Pierre and Miquelon</option>
+    <option value="Sudan">Sudan</option>
+    <option value="Suriname">Suriname</option>
+    <option value="Svalbard and Jan Mayen Islands">Svalbard and Jan Mayen Islands</option>
+    <option value="Swaziland">Swaziland</option>
+    <option value="Sweden">Sweden</option>
+    <option value="Switzerland">Switzerland</option>
+    <option value="Syrian Arab Republic">Syrian Arab Republic</option>
+    <option value="Taiwan">Taiwan</option>
+    <option value="Tajikistan">Tajikistan</option>
+    <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
+    <option value="Thailand">Thailand</option>
+    <option value="Togo">Togo</option>
+    <option value="Tokelau">Tokelau</option>
+    <option value="Tonga">Tonga</option>
+    <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+    <option value="Tunisia">Tunisia</option>
+    <option value="Turkey">Turkey</option>
+    <option value="Turkmenistan">Turkmenistan</option>
+    <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+    <option value="Tuvalu">Tuvalu</option>
+    <option value="Uganda">Uganda</option>
+    <option value="Ukraine">Ukraine</option>
+    <option value="United Arab Emirates">United Arab Emirates</option>
+    <option value="United Kingdom">United Kingdom</option>
+    <option value="United States">United States</option>
+    <option value="United States minor outlying islands">United States minor outlying islands</option>
+    <option value="Uruguay">Uruguay</option>
+    <option value="Uzbekistan">Uzbekistan</option>
+    <option value="Vanuatu">Vanuatu</option>
+    <option value="Vatican City State">Vatican City State</option>
+    <option value="Venezuela">Venezuela</option>
+    <option value="Vietnam">Vietnam</option>
+    <option value="Virgin Islands (British)">Virgin Islands (British)</option>
+    <option value="Virgin Islands (U.S.)">Virgin Islands (U.S.)</option>
+    <option value="Wallis and Futuna Islands">Wallis and Futuna Islands</option>
+    <option value="Western Sahara">Western Sahara</option>
+    <option value="Yemen">Yemen</option>
+    <option value="Zaire">Zaire</option>
+    <option value="Zambia">Zambia</option>
+    <option value="Zimbabwe">Zimbabwe</option>
+</select>                    </div>
+                </div>
+            </div>
+            
+            <!-- SKRILL FIELDS -->
+            <div x-show="withdrawMethod === 'Skrill'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="skrillEmail" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Skrill Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="skrillEmail" 
+                            id="skrillEmail" 
+                            x-model="skrillEmail"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter Skrill email address"
+                            x-bind:required="withdrawMethod === 'Skrill'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="skrillFullName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="skrillFullName" 
+                            id="skrillFullName" 
+                            x-model="skrillFullName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'Skrill'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VENMO FIELDS -->
+            <div x-show="withdrawMethod === 'Venmo'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="venmoUsername" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Venmo Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-at text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="venmoUsername" 
+                            id="venmoUsername" 
+                            x-model="venmoUsername"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter Venmo username"
+                            x-bind:required="withdrawMethod === 'Venmo'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="venmoPhone" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-phone text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="tel" 
+                            name="venmoPhone" 
+                            id="venmoPhone" 
+                            x-model="venmoPhone"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter phone number associated with Venmo"
+                            x-bind:required="withdrawMethod === 'Venmo'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ZELLE FIELDS -->
+            <div x-show="withdrawMethod === 'Zelle'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="zelleEmail" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Zelle Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="zelleEmail" 
+                            id="zelleEmail" 
+                            x-model="zelleEmail"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter Zelle email address"
+                            x-bind:required="withdrawMethod === 'Zelle'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="zellePhone" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-phone text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="tel" 
+                            name="zellePhone" 
+                            id="zellePhone" 
+                            x-model="zellePhone"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter phone number associated with Zelle"
+                            x-bind:required="withdrawMethod === 'Zelle'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="zelleName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="zelleName" 
+                            id="zelleName" 
+                            x-model="zelleName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'Zelle'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CASH APP FIELDS -->
+            <div x-show="withdrawMethod === 'Cash App'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="cashAppTag" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">$Cashtag</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-dollar-sign text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="cashAppTag" 
+                            id="cashAppTag" 
+                            x-model="cashAppTag"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your $Cashtag"
+                            x-bind:required="withdrawMethod === 'Cash App'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="cashAppFullName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="cashAppFullName" 
+                            id="cashAppFullName" 
+                            x-model="cashAppFullName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'Cash App'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- REVOLUT FIELDS -->
+            <div x-show="withdrawMethod === 'Revolut'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="revolutFullName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="revolutFullName" 
+                            id="revolutFullName" 
+                            x-model="revolutFullName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'Revolut'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="revolutEmail" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="revolutEmail" 
+                            id="revolutEmail" 
+                            x-model="revolutEmail"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your email address"
+                            x-bind:required="withdrawMethod === 'Revolut'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="revolutPhone" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-phone text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="tel" 
+                            name="revolutPhone" 
+                            id="revolutPhone" 
+                            x-model="revolutPhone"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter phone number associated with Revolut"
+                            x-bind:required="withdrawMethod === 'Revolut'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ALIPAY FIELDS -->
+            <div x-show="withdrawMethod === 'Alipay'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="alipayId" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Alipay ID</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-id-card text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="alipayId" 
+                            id="alipayId" 
+                            x-model="alipayId"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your Alipay ID"
+                            x-bind:required="withdrawMethod === 'Alipay'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="alipayFullName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="alipayFullName" 
+                            id="alipayFullName" 
+                            x-model="alipayFullName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'Alipay'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WECHAT PAY FIELDS -->
+            <div x-show="withdrawMethod === 'WeChat Pay'" x-transition class="space-y-4 mt-4">
+                <div>
+                    <label for="wechatId" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">WeChat ID</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-id-card text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="wechatId" 
+                            id="wechatId" 
+                            x-model="wechatId"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your WeChat ID"
+                            x-bind:required="withdrawMethod === 'WeChat Pay'"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="wechatName" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400 text-sm"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="wechatName" 
+                            id="wechatName" 
+                            x-model="wechatName"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                            placeholder="Enter your full name"
+                            x-bind:required="withdrawMethod === 'WeChat Pay'"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PIN INPUT - required for all methods -->
+            <div class="mb-4 mt-6">
+                <label for="pin_input" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Transaction PIN</label>
+                <div class="relative rounded-lg">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-key text-gray-400 text-sm"></i>
+                    </div>
+                    <input 
+                        type="password" 
+                        name="pin" 
+                        id="pin_input" 
+                        x-model="pin"
+                        pattern="[0-9]+"
+                        minlength="4"
+                        maxlength="10"
+                        autocomplete="current-password"
+                        class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm"
+                        placeholder="Enter your 4-10 digit PIN"
+                        required
+                    />
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button 
+                            type="button" 
+                            class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+                            @click="document.getElementById('pin_input').type = document.getElementById('pin_input').type === 'password' ? 'text' : 'password'"
+                        >
+                            <i class="fa-solid fa-eye text-sm" x-show="document.getElementById('pin_input').type === 'password'"></i>
+                            <i class="fa-solid fa-eye-slash text-sm" x-show="document.getElementById('pin_input').type === 'text'"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">This is your transaction PIN, not your login password</p>
+            </div>
+
+            <!-- OTP CODE INPUT -->
+            <div class="mb-4">
+                <label for="otp_code_input" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">One-Time Password (OTP)</label>
+                <div class="flex gap-2">
+                    <button
+                        type="button"
+                        onclick="requestOTP('international_transfer')"
+                        id="otpRequestBtn"
+                        class="px-4 py-2.5 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg text-sm whitespace-nowrap"
+                    >
+                        <i class="fas fa-envelope mr-2"></i>Request OTP
+                    </button>
+                    <div class="relative flex-1">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-shield-halved text-gray-400 text-sm"></i>
+                        </div>
+                        <input
+                            type="text"
+                            name="otp_code"
+                            id="otp_code_input"
+                            maxlength="6"
+                            pattern="[0-9]{6}"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-sm tracking-widest text-center font-mono"
+                            placeholder="000000"
+                            required
+                        />
+                    </div>
+                </div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    <i class="fa-solid fa-info-circle text-blue-500 mr-1"></i>
+                    Enter the 6-digit code sent to your email (valid for 10 minutes)
+                </p>
+            </div>
+            
+            <!-- Description/Note (Optional) -->
+            <div class="mb-6">
+                <label for="Description" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note (Optional)</label>
+                <div class="relative rounded-lg">
+                    <div class="absolute top-3 left-3 flex items-start pointer-events-none">
+                        <i class="fa-solid fa-message text-gray-400 text-sm"></i>
+                    </div>
+                    <textarea 
+                        name="Description" 
+                        id="Description" 
+                        x-model="description"
+                        rows="3"
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all resize-none text-sm"
+                        placeholder="Optional payment description or note"
+                    ></textarea>
+                </div>
+            </div>
+            
+            <!-- Transaction Details Summary -->
+            <div x-show="amount > 0 && withdrawMethod !== ''" class="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-700/50 rounded-2xl p-4 mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+                <div class="flex items-center mb-3">
+                    <i class="fa-solid fa-clipboard-list text-primary-500 dark:text-primary-400 text-sm mr-2"></i>
+                    <h3 class="text-xs font-medium text-gray-700 dark:text-gray-300">Transaction Summary</h3>
+                </div>
+                <div class="space-y-2">
+                    <!-- Amount Row -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">Amount</span>
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs" x-text="amount ? '$' + parseFloat(amount).toFixed(2) : '$0.00'"></span>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs" x-text="amount ? parseFloat(amount).toFixed(8) + ' BTC' : '0.00000000 BTC'"></span>
+                        </template>
+                    </div>
+                    
+                    <!-- Source Balance Row -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">Source</span>
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs">Account Balance</span>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs">Bitcoin Balance</span>
+                        </template>
+                    </div>
+                    
+                    <!-- Fee Row -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">Fee</span>
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs">$0.00</span>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <span class="font-medium text-gray-700 dark:text-gray-300 text-xs">0.00000000 BTC</span>
+                        </template>
+                    </div>
+                    
+                    <!-- Total Row -->
+                    <div class="border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700 dark:text-gray-300 font-medium text-xs">Total</span>
+                            <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                <span class="font-bold text-sm text-gray-900 dark:text-white" x-text="amount ? '$' + parseFloat(amount).toFixed(2) : '$0.00'"></span>
+                            </template>
+                            <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                <span class="font-bold text-sm text-gray-900 dark:text-white" x-text="amount ? parseFloat(amount).toFixed(8) + ' BTC' : '0.00000000 BTC'"></span>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- New Balance Row -->
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="font-medium text-gray-500 dark:text-gray-400 text-xs">New Balance After Transfer</span>
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <span class="text-gray-900 dark:text-white text-xs" x-text="'$' + (20369651 - (parseFloat(amount) || 0)).toFixed(2)"></span>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <span class="text-gray-900 dark:text-white text-xs" x-text="(12.5760278 - (parseFloat(amount) || 0)).toFixed(8) + ' BTC'"></span>
+                        </template>
+                    </div>
+                    
+                    <!-- Equivalent Value Row (shown only when amount is entered) -->
+                    <div class="flex justify-between items-center pt-1" x-show="amount && parseFloat(amount) > 0">
+                        <span class="font-medium text-gray-500 dark:text-gray-400 text-xs">Equivalent Value</span>
+                        <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                            <span class="text-gray-700 dark:text-gray-300 text-xs" x-text="'≈ ' + (parseFloat(amount) / 87570).toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8}) + ' BTC'"></span>
+                        </template>
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <span class="text-gray-700 dark:text-gray-300 text-xs" x-text="'≈ $' + (parseFloat(amount) * 87570).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})"></span>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row sm:space-x-3 space-y-2 sm:space-y-0">
+                <button 
+                    type="button" 
+                    class="w-full inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors"
+                    @click="previewTransfer()"
+                    :disabled="!withdrawMethod || !amount"
+                >
+                    <i class="fa-solid fa-paper-plane text-xs mr-2"></i>
+                    <span>Continue to Transfer</span>
+                </button>
+                <a 
+                    href="index.html" 
+                    class="w-full inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors"
+                >
+                    <i class="fa-solid fa-arrow-left text-xs mr-2"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </form>
+    </div>
+</div>    </div>
+
+    
+    <!-- Security Notice -->
+<div class="mt-4 mb-4 p-4 border border-gray-200 dark:border-gray-700 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl shadow-sm">
+    <div class="flex items-start">
+        <div class="flex-shrink-0 mt-0.5">
+            <i class="fa-solid fa-shield-halved text-primary-500 dark:text-primary-400 text-sm"></i>
+        </div>
+        <div class="ml-3">
+            <h3 class="text-xs font-medium text-gray-900 dark:text-white">Secure Transaction</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">All transfers are encrypted and processed securely. Never share your PIN with anyone.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Transfer Preview Modal -->
+<div x-show="showPreview" class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div 
+            x-show="showPreview" 
+            x-transition:enter="ease-out duration-300" 
+            x-transition:enter-start="opacity-0" 
+            x-transition:enter-end="opacity-100" 
+            x-transition:leave="ease-in duration-200" 
+            x-transition:leave-start="opacity-100" 
+            x-transition:leave-end="opacity-0" 
+            class="fixed inset-0 transition-opacity" 
+            @click="showPreview = false"
+        >
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <div 
+            x-show="showPreview" 
+            x-transition:enter="ease-out duration-300" 
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+            x-transition:leave="ease-in duration-200" 
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+            class="inline-block align-bottom bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl text-left overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/50 transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            @click.away="showPreview = false"
+        >
+            <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary-100 dark:bg-primary-900/30 sm:mx-0 sm:h-10 sm:w-10">
+                        <i class="fa-solid fa-circle-check text-primary-600 dark:text-primary-400 text-lg"></i>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                            Confirm Your Transfer
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Please review your transfer details before confirming. Once submitted, this transaction cannot be reversed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5 border-t border-gray-200 dark:border-gray-600 pt-4">
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="font-medium text-gray-500 dark:text-gray-400">Transfer Method</span>
+                            <span class="text-gray-900 dark:text-white" x-text="withdrawMethod"></span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="font-medium text-gray-500 dark:text-gray-400">Amount</span>
+                            <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                <span class="text-gray-900 dark:text-white font-bold" x-text="'$' + parseFloat(amount).toFixed(2)"></span>
+                            </template>
+                            <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                <span class="text-gray-900 dark:text-white font-bold" x-text="parseFloat(amount).toFixed(8) + ' BTC'"></span>
+                            </template>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="font-medium text-gray-500 dark:text-gray-400">Source</span>
+                            <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                <span class="text-gray-900 dark:text-white">Account Balance</span>
+                            </template>
+                            <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                <span class="text-gray-900 dark:text-white">Bitcoin Balance</span>
+                            </template>
+                        </div>
+                        
+                        <!-- Wire Transfer Details -->
+                        <template x-if="withdrawMethod === 'Wire Transfer'">
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-medium text-gray-500 dark:text-gray-400">Recipient</span>
+                                    <span class="text-gray-900 dark:text-white" x-text="accountName"></span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-medium text-gray-500 dark:text-gray-400">Account Number</span>
+                                    <span class="text-gray-900 dark:text-white" x-text="accountNumber"></span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-medium text-gray-500 dark:text-gray-400">Bank</span>
+                                    <span class="text-gray-900 dark:text-white" x-text="bankName"></span>
+                                </div>
+                            </div>
+                        </template>
+                        
+                        <!-- Cryptocurrency Details -->
+                        <template x-if="withdrawMethod === 'Cryptocurrency'">
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-medium text-gray-500 dark:text-gray-400">Cryptocurrency</span>
+                                    <span class="text-gray-900 dark:text-white" x-text="cryptoCurrency + ' (' + cryptoNetwork + ')'"></span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-medium text-gray-500 dark:text-gray-400">Wallet Address</span>
+                                    <span class="text-gray-900 dark:text-white truncate max-w-[220px]" x-text="walletAddress"></span>
+                                </div>
+                            </div>
+                        </template>
+                        
+                        <!-- Common fields -->
+                        <div class="pt-3 border-t border-gray-200 dark:border-gray-600">
+                            <div class="flex justify-between text-sm">
+                                <span class="font-medium text-gray-500 dark:text-gray-400">Total Amount</span>
+                                <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white font-bold" x-text="'$' + parseFloat(amount).toFixed(2)"></span>
+                                </template>
+                                <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white font-bold" x-text="parseFloat(amount).toFixed(8) + ' BTC'"></span>
+                                </template>
+                            </div>
+                            <div class="flex justify-between text-sm mt-1">
+                                <span class="font-medium text-gray-500 dark:text-gray-400">New Balance</span>
+                                <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white" x-text="'$' + (20369651 - parseFloat(amount)).toFixed(2)"></span>
+                                </template>
+                                <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white" x-text="(12.5760278 - parseFloat(amount)).toFixed(8) + ' BTC'"></span>
+                                </template>
+                            </div>
+                            <div class="flex justify-between text-sm mt-1" x-show="amount && parseFloat(amount) > 0">
+                                <span class="font-medium text-gray-500 dark:text-gray-400">Equivalent Value</span>
+                                <template x-if="withdrawMethod !== 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white" x-text="'≈ ' + (parseFloat(amount) / 87570).toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8}) + ' BTC'"></span>
+                                </template>
+                                <template x-if="withdrawMethod === 'Cryptocurrency'">
+                                    <span class="text-gray-900 dark:text-white" x-text="'≈ $' + (parseFloat(amount) * 87570).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})"></span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PIN Input Section -->
+                <div class="mt-4 px-4">
+                    <label for="pin_input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fa-solid fa-lock mr-1"></i>Enter Your PIN to Confirm
+                    </label>
+                    <input 
+                        type="password" 
+                        id="pin_input" 
+                        name="pin"
+                        x-model="pin"
+                        maxlength="6"
+                        pattern="[0-9]{4,6}"
+                        class="block w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-lg tracking-widest font-bold"
+                        placeholder="••••••"
+                        required
+                    />
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter your 4-6 digit transaction PIN</p>
+                </div>
+                
+                <div class="bg-gray-50/80 dark:bg-gray-700/50 backdrop-blur-sm px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200/50 dark:border-gray-600/50">
+                    <button 
+                        type="button" 
+                        class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-lg px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-base font-semibold text-white hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] sm:ml-3 sm:w-auto sm:text-sm"
+                        @click="submitForm()"
+                    >
+                        <span class="flex items-center">
+                            <i class="fa-solid fa-circle-check text-sm mr-2"></i>
+                            Confirm Transfer
+                        </span>
+                    </button>
+                    <button 
+                        type="button" 
+                        class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 dark:border-gray-600 shadow-sm px-6 py-3 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        @click="showPreview = false"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Processing Modal (Hidden by default) -->
+<div id="processingModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-900/75 backdrop-blur-sm"></div>
+        
+        <!-- Modal panel -->
+        <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 sm:align-middle sm:max-w-lg">
+            <!-- Processing animation and content -->
+            <div class="text-center py-6">
+                <!-- Animated bank card with pulse effect -->
+                <div class="relative mx-auto w-64 h-40 mb-8 perspective-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-700 rounded-xl shadow-lg transform rotate-y-10 rotate-x-5 animate-card-float">
+                        <!-- Card chip -->
+                        <div class="absolute top-6 left-6 w-10 h-8 bg-yellow-300 bg-opacity-80 rounded-md grid grid-cols-3 grid-rows-3 gap-px p-1">
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                        </div>
+                        
+                        <!-- Animated pulse circles -->
+                        <div class="absolute bottom-6 right-8 w-8 h-8 rounded-full bg-blue-400 bg-opacity-70 flex items-center justify-center">
+                            <div class="absolute w-full h-full rounded-full bg-blue-400 animate-ping opacity-75"></div>
+                            <div class="absolute w-8 h-8 rounded-full border-2 border-white border-opacity-50"></div>
+                            <div class="absolute w-6 h-6 rounded-full border-2 border-white border-opacity-50"></div>
+                        </div>
+                        
+                        <!-- Card number dots -->
+                        <div class="absolute bottom-14 left-6 right-6 flex justify-between">
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                        </div>
+                        
+                        <!-- Card holder info -->
+                        <div class="absolute bottom-6 left-6 text-white text-opacity-80 text-xs font-medium tracking-wider">
+                            <span id="cardHolderName"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="processingMessage">Initiating transfer...</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Please do not close this window</p>
+                
+                <!-- Progress bar with percentage -->
+                <div class="mb-6">
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-primary-500 to-primary-600 h-3 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                    </div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-2"><span id="progressPercentage">0</span>% Complete</p>
+                </div>
+                
+                <!-- Transaction details -->
+                <div class="bg-gray-50/80 dark:bg-gray-700/50 backdrop-blur-sm rounded-xl p-4 text-left border border-gray-200/50 dark:border-gray-600/50 mb-4">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Amount</p>
+                            <p class="font-medium text-gray-900 dark:text-white">$<span id="modalAmount"></span></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Method</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalMethod"></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Recipient</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalRecipient"></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Country</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalCountry"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security message -->
+                <div class="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+                    <i class="fa-solid fa-shield-halved h-4 w-4 mr-2 text-primary-500 dark:text-primary-400"></i>
+                    <span>Secured by bank-level encryption</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Status Modal (Hidden by default) -->
+<div id="accountStatusModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-900/75 backdrop-blur-sm"></div>
+        
+        <!-- Modal panel -->
+        <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 sm:align-middle sm:max-w-lg">
+            <div class="text-center py-6">
+                <div class="mx-auto w-16 h-16 mb-6 flex items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-900/50">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-600 dark:text-amber-400"></i>
+                </div>
+                
+                <h3 id="accountStatusTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Account Status</h3>
+                <p id="accountStatusMessage" class="text-gray-500 dark:text-gray-400 mb-6">Your account status requires attention.</p>
+                
+                <div class="mt-6">
+                    <button type="button" onclick="window.location.href='index.html'" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-semibold rounded-xl shadow-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                        <i class="fa-solid fa-home mr-2"></i>
+                        Return to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+    
+    .perspective-500 {
+        perspective: 500px;
+    }
+    
+    .rotate-y-10 {
+        transform: rotateY(10deg);
+    }
+    
+    .rotate-x-5 {
+        transform: rotateX(5deg);
+    }
+    
+    @keyframes  card-float {
+        0%, 100% { transform: translateY(0) rotateY(10deg) rotateX(5deg); }
+        50% { transform: translateY(-10px) rotateY(15deg) rotateX(5deg); }
+    }
+    
+    .animate-card-float {
+        animation: card-float 3s ease-in-out infinite;
+    }
+</style>
+
+<script>
+  // ── OTP Request ─────────────────────────────────────────────────────────────
+  function requestOTP(purpose) {
+    const btn = document.getElementById("otpRequestBtn");
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+    fetch("/api/otp/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ purpose }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) {
+          btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>OTP Sent!';
+          showToast("OTP sent to your email. Valid for 10 minutes.", "success");
+          document.getElementById("otp_code_input")?.focus();
+          setTimeout(() => { btn.disabled = false; btn.innerHTML = originalHTML; }, 30000);
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          showToast(data.message || "Failed to send OTP.", "error");
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        showToast("Connection error. Please try again.", "error");
+      });
+  }
+
+  // ── Toast ────────────────────────────────────────────────────────────────────
+  function showToast(message, type) {
+    document.getElementById("it-toast")?.remove();
+    const colors = { success: "bg-green-500", error: "bg-red-500", info: "bg-blue-500" };
+    const icons  = { success: "fa-circle-check", error: "fa-circle-xmark", info: "fa-circle-info" };
+    const t = document.createElement("div");
+    t.id = "it-toast";
+    t.className = `fixed top-5 right-5 z-[9999] flex items-center gap-3 px-5 py-3 rounded-xl text-white shadow-xl text-sm font-medium ${colors[type] || colors.success}`;
+    t.innerHTML = `<i class="fas ${icons[type] || icons.success}"></i><span>${message}</span>`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 4000);
+  }
+
+  // ── Submit Transfer ──────────────────────────────────────────────────────────
+  window.submitTransfer = async function (alpineData) {
+    if (!alpineData.pin || String(alpineData.pin).length < 4) {
+      showToast("Please enter your transaction PIN.", "error");
+      return;
+    }
+
+    const otp = document.getElementById("otp_code_input")?.value || "";
+    if (!otp || otp.length !== 6) {
+      showToast("Please enter the 6-digit OTP.", "error");
+      return;
+    }
+
+    alpineData.showPreview = false;
+    document.getElementById("processingModal")?.classList.remove("hidden");
+
+    const payload = {
+      withdrawMethod:  alpineData.withdrawMethod,
+      amount:          alpineData.amount,
+      pin:             alpineData.pin,
+      otp_code:        otp,
+      Description:     alpineData.description,
+      balance_type:    alpineData.withdrawMethod === "Cryptocurrency" ? "btc" : "fiat",
+      // Wire Transfer
+      accountName:     alpineData.accountName,
+      accountNumber:   alpineData.accountNumber,
+      bankName:        alpineData.bankName,
+      bankaddress:     alpineData.bankAddress,
+      Accounttype:     alpineData.accountType,
+      country:         alpineData.country,
+      iban:            alpineData.iban,
+      swiftCode:       alpineData.swiftCode,
+      routingNumber:   alpineData.routingNumber,
+      // Crypto
+      cryptoCurrency:  alpineData.cryptoCurrency,
+      cryptoNetwork:   alpineData.cryptoNetwork,
+      wallet_address:  alpineData.walletAddress,
+      // PayPal
+      paypalEmail:     alpineData.paypalEmail,
+      // Wise
+      wiseFullName:    alpineData.wiseFullName,
+      wiseEmail:       alpineData.wiseEmail,
+      wiseCountry:     alpineData.wiseCountry,
+      // Skrill
+      skrillEmail:     alpineData.skrillEmail,
+      skrillFullName:  alpineData.skrillFullName,
+      // Venmo
+      venmoUsername:   alpineData.venmoUsername,
+      venmoPhone:      alpineData.venmoPhone,
+      // Zelle
+      zelleEmail:      alpineData.zelleEmail,
+      zellePhone:      alpineData.zellePhone,
+      zelleName:       alpineData.zelleName,
+      // Cash App
+      cashAppTag:      alpineData.cashAppTag,
+      cashAppFullName: alpineData.cashAppFullName,
+      // Revolut
+      revolutFullName: alpineData.revolutFullName,
+      revolutEmail:    alpineData.revolutEmail,
+      revolutPhone:    alpineData.revolutPhone,
+      // Alipay
+      alipayId:        alpineData.alipayId,
+      alipayFullName:  alpineData.alipayFullName,
+      // WeChat Pay
+      wechatId:        alpineData.wechatId,
+      wechatName:      alpineData.wechatName,
+    };
+
+    try {
+      const res  = await fetch("/api/international-transfer/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+
+      document.getElementById("processingModal")?.classList.add("hidden");
+
+      if (data.success) {
+        showToast("Transfer submitted! Pending review.", "success");
+        setTimeout(() => { window.location.href = "accounthistory.html"; }, 1500);
+      } else {
+        showToast(data.message || "Transfer failed. Please try again.", "error");
+      }
+    } catch (err) {
+      document.getElementById("processingModal")?.classList.add("hidden");
+      showToast("Connection error. Please try again.", "error");
+      console.error("[Transfer]", err);
+    }
+  };
+</script>
+
+</div>            </main>
+
+            <!-- Mobile Floating Navigation -->
+            <div x-show="!isDesktop" x-cloak class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40">
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                        <div class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300">
+                            <a href="index.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-house text-base"></i>
+                                <span>Home</span>
+                            </a>
+                            <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400 text-primary-700 dark:text-primary-300">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                                <span>Transfer</span>
+                            </a>
+                            <a href="cards.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-credit-card text-base"></i>
+                                <span>Cards</span>
+                            </a>
+                            <button @click="showMobileMenu = true" type="button" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-bars text-base"></i>
+                                <span>Menu</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Modal - Sleek Bottom Sheet Design -->
+            <div x-show="showMobileMenu" 
+                 x-transition:enter="transition ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="transition ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-50 lg:hidden" 
+                 style="display: none;">
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="showMobileMenu = false"></div>
+                <div class="fixed inset-x-0 bottom-0 z-50">
+                    <div x-show="showMobileMenu"
+                         x-transition:enter="transition ease-out duration-300 transform"
+                         x-transition:enter-start="translate-y-full"
+                         x-transition:enter-end="translate-y-0"
+                         x-transition:leave="transition ease-in duration-200 transform"
+                         x-transition:leave-start="translate-y-0"
+                         x-transition:leave-end="translate-y-full"
+                         class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden">
+                        <div class="flex justify-center pt-3 pb-2">
+                            <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                        </div>
+                        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center">
+                                        <i class="fa-solid fa-user text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="user-fullname font-bold text-gray-900 dark:text-white"></h3>
+                                        <p class="user-email text-sm text-gray-500 dark:text-gray-400"></p>
+                                    </div>
+                                </div>
+                                <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    <i class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main</h4>
+                                <div class="space-y-1">
+                                    <a href="index.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-house text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Dashboard</span>
+                                    </a>
+                                    <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Transactions</span>
+                                    </a>
+                                    <a href="cards.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Cards</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Transfers</h4>
+                                <div class="space-y-1">
+                                    <a href="localtransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Local Transfer</span>
+                                    </a>
+                                    <a href="internationaltransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 group">
+                                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center">
+                                            <i class="fa-solid fa-globe text-primary-700 dark:text-white text-sm"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-primary-700 dark:text-primary-200">International</span>
+                                    </a>
+                                    <a href="deposits.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-plus text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Deposit</span>
+                                    </a>
+                                    <a href="swap.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-arrows-rotate text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Currency Swap</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
+                                <div class="space-y-1">
+                                  
+                                    
+                                    <a href="account-settings.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-800/50 transition-colors">
+                                            <i class="fa-solid fa-gear text-teal-600 dark:text-teal-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-semibold text-gray-900 dark:text-white">Settings</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"></i>
+                                    </a>
+                                    
+  <button onclick="handleLogout()" class="w-full text-left flex items-center space-x-4 p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 group transition-colors">
+    <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-content group-hover:bg-red-200 dark:group-hover:bg-red-800/50 transition-colors">
+        <i class="fa-solid fa-right-from-bracket text-red-600 dark:text-red-400"></i>
+    </div>
+    <div class="flex-1">
+        <p class="font-semibold text-red-900 dark:text-red-400">Sign Out</p>
+        <p class="text-xs text-red-600 dark:text-red-500">Logout from account</p>
+    </div>
+    <i class="fa-solid fa-chevron-right text-red-400 dark:text-red-500 text-xs"></i>
+</button>
+<script src="/auth-script/logout.js"></script>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mobile Support Widget -->
+                        <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="text-base font-semibold text-gray-900 dark:text-white">Need Help?</h3>
+                                <a href="support.html" class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+                                    Support Center
+                                    <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+                                </a>
+                            </div>
+                            
+                            <!-- Support Options -->
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <a href="support.html" class="block">
+                                    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 p-3 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                                        <div class="text-center">
+                                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                                <i class="fa-solid fa-message text-blue-600 dark:text-blue-400 text-sm"></i>
+                                            </div>
+                                            <h4 class="text-xs font-semibold text-gray-900 dark:text-white mb-1">Live Chat</h4>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-tight">Get instant help from our team</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="mailto:support@regalheritageob.com" class="block">
+                                    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 p-3 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                                        <div class="text-center">
+                                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                                <i class="fa-solid fa-envelope text-green-600 dark:text-green-400 text-sm"></i>
+                                            </div>
+                                            <h4 class="text-xs font-semibold text-gray-900 dark:text-white mb-1">Email Support</h4>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-tight">Send us a detailed message</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- Contact Information Card -->
+                            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+                                <div class="px-4 py-3 bg-gradient-to-r from-primary-50/80 to-blue-50/50 dark:from-gray-900/80 dark:to-gray-800/50 border-b border-primary-100/50 dark:border-gray-700/50">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 bg-primary-500 rounded-lg flex items-center justify-center mr-2">
+                                            <i class="fa-solid fa-headset text-white text-xs"></i>
+                                        </div>
+                                        <h4 class="text-sm font-bold text-primary-900 dark:text-primary-100">24/7 Support</h4>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-4 bg-gray-50 dark:bg-gray-800/50">
+                                    <div class="text-center">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">We're here to help you anytime</p>
+                                        <div class="flex items-center justify-center space-x-4">
+                                            <div class="text-center">
+                                                <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                                                    <i class="fa-solid fa-clock text-primary-600 dark:text-primary-400 text-xs"></i>
+                                                </div>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">24/7</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                                                    <i class="fa-solid fa-headset text-green-600 dark:text-green-400 text-xs"></i>
+                                                </div>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">Support</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                                                    <i class="fa-solid fa-bolt text-blue-600 dark:text-blue-400 text-xs"></i>
+                                                </div>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">Fast</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    
+    </script>
+
+      <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+    
+                <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script>
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+  <!-- New  -->
+   <script src="/auth-script/user-ui.js"></script>
+   <script src="/auth-script/international-transfer.js"></script>
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+        
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!-- Desktop Sidebar -->
+<div
+  x-show="isDesktop"
+  x-cloak
+  class="w-72 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 flex flex-col shadow-xl h-screen"
+>
+  <!-- Logo Section -->
+  <div class="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
+    <div class="flex items-center space-x-3">
+      <div class="w-full">
+        <div class="flex items-center space-x-3">
+          <div
+            class="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 shadow-lg"
+          >
+            <div
+              class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent"
+            ></div>
+            <svg
+              class="w-6 h-6 text-white relative z-10"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+              ></path>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span
+              class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-indigo-100 leading-tight tracking-tight"
+              >First Direct</span
+            >
+            <span
+              class="text-[10px] font-bold text-blue-600 dark:text-blue-400 leading-tight tracking-[0.15em] uppercase"
+              >Bank</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 px-4 py-6 space-y-6 overflow-y-auto custom-scrollbar">
+    <div class="mb-8">
+      <h3
+        class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-4"
+      >
+        Main
+      </h3>
+      <div class="space-y-2">
+        <a
+          href="/dashboard"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-white/20 transition-colors"
+          >
+            <i class="fa-solid fa-house text-white transition-colors"></i>
+          </div>
+          <span class="font-semibold">Dashboard</span>
+          <div
+            class="ml-auto w-2 h-2 bg-white dark:bg-gray-300 rounded-full"
+          ></div>
+        </a>
+        <a
+          href="accounthistory.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-chart-line text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Transactions</span>
+        </a>
+        <a
+          href="/dashboard/cards.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-credit-card text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Cards</span>
+        </a>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h3
+        class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-4"
+      >
+        Transfers
+      </h3>
+      <div class="space-y-2">
+        <a
+          href="/dashboard/localtransfer.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Local Transfer</span>
+        </a>
+        <a
+          href="/dashboard/internationaltransfer.html"
+          class="sidebar-linkgroup flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-globe text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">International</span>
+        </a>
+        <a
+          href="/dashboard/deposits.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-plus text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Deposit</span>
+        </a>
+        <a
+          href="/dashboard/swap.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-arrows-rotate text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Currency Swap</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h3
+        class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-4"
+      >
+        Account
+      </h3>
+      <div class="space-y-2">
+        <a
+          href="/dashboard/account-settings.html"
+          class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-700 dark:hover:text-primary-400"
+        >
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-gear text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+            ></i>
+          </div>
+          <span class="font-semibold">Settings</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- User Profile Section -->
+  <div class="p-4 border-t border-gray-200/50 dark:border-gray-700/50">
+    <div
+      class="flex items-center space-x-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border border-gray-200/50 dark:border-gray-700/50"
+    >
+      <div class="relative user-avatar">
+        <!-- Image avatar -->
+        <img
+          class="user-avatar-img h-10 w-10 rounded-full object-cover border-2 border-primary-100 hidden"
+          alt="User Avatar"
+        />
+
+        <!-- Letter avatar fallback -->
+        <div
+          class="user-avatar-fallback h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-sky-500 border-2 border-primary-100 hidden"
+        >
+          <span class="user-avatar-initials"></span>
+        </div>
+
+        <!-- Online status -->
+        <div
+          class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-600"
+        ></div>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <p
+          class="user-fullname text-sm font-bold text-gray-900 dark:text-white truncate"
+        ></p>
+        <p
+          class="user-email text-xs text-gray-500 dark:text-gray-400 truncate"
+        ></p>
+      </div>
+      <button
+        type="submit"
+        onclick="logout()"
+        class="w-8 h-8 rounded-xl bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors flex items-center justify-center"
+      >
+        <i class="fa-solid fa-right-from-bracket text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>

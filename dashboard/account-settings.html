@@ -1,0 +1,968 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFV Wealth | Account Settings</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff'
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a'
+                        },
+                        accent: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff'
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: { DEFAULT: '#ffffff', foreground: '#1e293b' },
+                        muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        'mobile-header-bg': '#1e293b',
+                        'mobile-header-text': '#f1f5f9',
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444'
+                    },
+                    boxShadow: {
+                        soft: '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        top: '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)'
+                    },
+                    borderRadius: { lg: '0.75rem', xl: '0.75rem', '2xl': '1rem', '3xl': '1.5rem' },
+                    keyframes: {
+                        pulse: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' },
+                            '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' }
+                        },
+                        shine: {
+                            '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                            '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' }
+                        }
+                    },
+                    animation: { 'pulse-slow': 'pulse 2.5s infinite', 'shine-once': 'shine 1.5s ease-in-out' }
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: theme('colors.background'); color: theme('colors.foreground'); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        .dark ::-webkit-scrollbar-track { background: #374151; }
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); opacity: 0; transition: opacity 0.5s; }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+    </style>
+
+    <style>
+        .page-loading { position: fixed; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; transition: all .6s cubic-bezier(0.4, 0, 0.2, 1); background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%); backdrop-filter: blur(2px); visibility: hidden; z-index: 9999; }
+        .dark .page-loading { background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%); }
+        .page-loading.active { opacity: 1; visibility: visible; }
+        .page-loading-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
+        .page-loading.active>.page-loading-inner { opacity: 1; }
+        .loading-container { display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; }
+        .loading-particles { position: absolute; width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        .particle { position: absolute; width: 4px; height: 4px; background: linear-gradient(45deg, #0ea5e9, #4f46e5); border-radius: 50%; opacity: 0.6; animation: floatParticle 4s ease-in-out infinite; }
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        .loading-animation { display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; margin-bottom: 2rem; position: relative; filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2)); }
+        .loading-animation .orbit-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(14, 165, 233, 0.2); animation: rotateOrbit 8s linear infinite; }
+        .orbit-ring:nth-child(1) { width: 100%; height: 100%; border-top: 2px solid #0ea5e9; border-right: 2px solid rgba(14, 165, 233, 0.3); animation-duration: 2s; }
+        .orbit-ring:nth-child(2) { width: 80%; height: 80%; top: 10%; left: 10%; border-bottom: 2px solid #0ea5e9; border-left: 2px solid rgba(14, 165, 233, 0.3); animation-duration: 2.5s; animation-direction: reverse; }
+        .orbit-ring:nth-child(3) { width: 60%; height: 60%; top: 20%; left: 20%; border-top: 2px solid #0ea5e9; border-right: 2px solid rgba(14, 165, 233, 0.3); animation-duration: 3s; }
+        .loading-animation .inner-circle { position: absolute; width: 15px; height: 15px; border-radius: 50%; background: #0ea5e9; box-shadow: 0 0 10px rgba(14, 165, 233, 0.6); animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+        .inner-circle:nth-child(4) { border-top: 3px solid #0ea5e9; border-right: 3px solid rgba(14, 165, 233, 0.4); animation-delay: 0s; }
+        .inner-circle:nth-child(5) { border-bottom: 3px solid #0ea5e9; border-left: 3px solid rgba(14, 165, 233, 0.4); animation-delay: 0.3s; animation-direction: reverse; }
+        .loading-animation .core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #0ea5e9, #4f46e5); background-size: 200% 200%; box-shadow: 0 0 20px rgba(14, 165, 233, 0.6), 0 0 40px rgba(14, 165, 233, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.3); animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite; }
+        .page-loading .text { font-weight: 700; letter-spacing: 0.1em; margin-top: 1.5rem; font-size: 1.1rem; position: relative; background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: textShimmer 3s linear infinite; text-shadow: 0 0 30px rgba(14, 165, 233, 0.3); }
+        .page-loading .text::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent); border-radius: 4px; z-index: -1; animation: textGlow 2s ease-in-out infinite alternate; }
+        .page-loading .subtitle { font-size: 0.75rem; color: #64748b; font-weight: 500; margin-top: 0.5rem; letter-spacing: 0.05em; animation: subtitleFade 2s ease-in-out infinite; }
+        .loading-progress { width: 200px; height: 2px; background: #f1f5f9; border-radius: 1px; margin-top: 1.5rem; overflow: hidden; position: relative; }
+        .loading-progress::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, #0ea5e9, transparent); animation: progressSlide 2s ease-in-out infinite; }
+        @keyframes floatParticle { 0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; } 50% { transform: translateY(-20px) rotate(180deg); opacity: 1; } }
+        @keyframes rotateOrbit { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spinInner { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
+        @keyframes coreGlow { 0% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 20px rgba(14, 165, 233, 0.6), 0 0 40px rgba(14, 165, 233, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.3); } 100% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 30px rgba(14, 165, 233, 0.8), 0 0 60px rgba(14, 165, 233, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.5); } }
+        @keyframes morphCore { 0%, 100% { border-radius: 50%; background-position: 0% 50%; } 25% { border-radius: 40%; background-position: 100% 50%; } 50% { border-radius: 30%; background-position: 0% 50%; } 75% { border-radius: 40%; background-position: 100% 50%; } }
+        @keyframes textShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes textGlow { 0% { opacity: 0.3; } 100% { opacity: 0.7; } }
+        @keyframes subtitleFade { 0%, 100% { opacity: 0.5; transform: translateY(0px); } 50% { opacity: 1; transform: translateY(-2px); } }
+        @keyframes progressSlide { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
+    </style>
+
+    <link rel="manifest" href="https://regalheritageob.com/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Aurevia Trust">
+    <link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+    <link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+    <link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/serviceworker.js', { scope: '.' }).then(function (registration) {
+                console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+            }, function (err) {
+                console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+            });
+        }
+    </script>
+</head>
+
+<body class="bg-background text-foreground">
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <div class="loading-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+                <div class="loading-animation"><div class="orbit-ring"></div><div class="orbit-ring"></div><div class="orbit-ring"></div><div class="inner-circle"></div><div class="inner-circle"></div><div class="core"></div></div>
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+
+    <div x-data="{
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        showProfilePictureModal: false,
+        showTransactionPinModal: false,
+        showPasswordModal: false,
+        selectedFile: null,
+        selectedFileName: '',
+        currentRoute: 'account-settings',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { this.darkMode = !this.darkMode; localStorage.setItem('darkMode', this.darkMode); document.documentElement.classList.toggle('dark', this.darkMode); },
+        initDarkMode() { document.documentElement.classList.toggle('dark', this.darkMode); },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; if (this.isDesktop) { this.showMobileMenu = false; } };
+            if (mq.addEventListener) { mq.addEventListener('change', handler); } else if (mq.addListener) { mq.addListener(handler); }
+            this.$watch('showMobileMenu', (value) => { document.body.classList.toggle('overflow-hidden', value && !this.isDesktop); });
+        }
+    }" x-init="
+        initDarkMode(); 
+        initResponsiveLayout(); 
+        console.log('Alpine initialized', { showProfilePictureModal, showTransactionPinModal, showPasswordModal });
+        $watch('showProfilePictureModal', value => console.log('showProfilePictureModal changed to:', value));
+        $watch('showTransactionPinModal', value => console.log('showTransactionPinModal changed to:', value));
+        $watch('showPasswordModal', value => console.log('showPasswordModal changed to:', value));
+    " @click.away="closeDropdowns()" class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+        <style>[x-cloak] { display: none !important; }</style>
+
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                                 <div id="sidebar-slot"></div>
+
+
+            <div class="flex-1 flex flex-col min-h-0">
+               <!-- Header -->
+                              <div id="header-slot"></div>
+
+            <!-- 
+  DROP THIS INTO YOUR <main> TAG
+  Replace the existing <main> content with this block.
+  Scripts needed: user-data.js, profile-actions.js, account-settings.js
+-->
+
+<main class="flex-1 overflow-y-auto">
+  <div class="relative min-h-full">
+    <div class="absolute inset-0 bg-gradient-to-b from-primary-50/60 via-transparent to-transparent dark:from-slate-900/50 pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative px-4 lg:px-8 pt-5 lg:pt-7 pb-28 lg:pb-12">
+
+      <!-- Mobile page header -->
+      <div class="lg:hidden mb-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <i class="fa-solid fa-user-gear text-white text-sm"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Manage</p>
+            <h1 class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Account Settings</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button @click="toggleDarkMode()" class="w-9 h-9 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center shadow-sm border border-gray-100 dark:border-gray-700">
+            <i x-show="!darkMode" class="fa-solid fa-moon text-gray-600 text-sm"></i>
+            <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="grid gap-5 lg:grid-cols-5">
+
+          <!-- ══════════════════════════════════════════
+               LEFT COLUMN  (lg:col-span-2)
+          ══════════════════════════════════════════ -->
+          <div class="lg:col-span-2 space-y-4">
+
+            <!-- Profile card -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 overflow-hidden">
+
+              <!-- Gradient header -->
+              <div class="bg-gradient-to-br from-primary-600 via-primary-500 to-cyan-400 px-5 pt-5 pb-10 relative">
+                <div class="absolute top-3 right-3">
+                  <span id="verified-badge" class="hidden px-2.5 py-1 text-[10px] font-bold bg-white/25 backdrop-blur-sm text-white rounded-full border border-white/30 tracking-wide">
+                    ✓ VERIFIED
+                  </span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <!-- Avatar -->
+                  <div class="relative">
+                    <div class="w-16 h-16 rounded-2xl border-2 border-white/40 overflow-hidden bg-white/20 shadow-lg">
+                      <img data-user-avatar src="https://ui-avatars.com/api/?name=User&background=0284c7&color=fff&size=128"
+                           alt="Avatar" class="w-full h-full object-cover">
+                    </div>
+                    <button type="button" @click.prevent="showProfilePictureModal = true"
+                      class="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+                      <i class="fa-solid fa-camera text-primary-600 text-[10px]"></i>
+                    </button>
+                  </div>
+                  <div>
+                    <p class="user-full-name text-base font-bold text-white leading-tight"></p>
+                    <p class="text-xs text-white/70 mt-0.5">
+                      Acct # <span class="user-account-number font-mono font-semibold text-white/90"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Info rows -->
+              <div class="-mt-4 mx-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/60 shadow-sm divide-y divide-gray-50 dark:divide-gray-700/60">
+
+                <!-- Email -->
+                <div class="flex items-center justify-between px-4 py-3">
+                  <div class="min-w-0">
+                    <p class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Email</p>
+                    <p class="user-email text-sm font-semibold text-gray-800 dark:text-white truncate"></p>
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 ml-3">
+                    <i class="fa-solid fa-envelope text-primary-500 text-xs"></i>
+                  </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="flex items-center justify-between px-4 py-3">
+                  <div class="min-w-0">
+                    <p class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Phone</p>
+                    <p class="user-phone text-sm font-semibold text-gray-800 dark:text-white truncate"></p>
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 ml-3">
+                    <i class="fa-solid fa-phone text-primary-500 text-xs"></i>
+                  </div>
+                </div>
+
+                <!-- Account Number + copy -->
+                <div class="flex items-center justify-between px-4 py-3">
+                  <div class="min-w-0">
+                    <p class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Account Number</p>
+                    <p class="user-account-number text-sm font-semibold text-gray-800 dark:text-white font-mono truncate"></p>
+                  </div>
+                  <button type="button" id="copy-acct-btn"
+                    @click="
+                      const num = document.querySelector('.user-account-number')?.textContent?.trim();
+                      if (num) {
+                        navigator.clipboard.writeText(num);
+                        $el.querySelector('i').className = 'fa-solid fa-check text-xs text-green-500';
+                        setTimeout(() => $el.querySelector('i').className = 'fa-solid fa-copy text-xs text-gray-500 dark:text-gray-400', 2000);
+                      }
+                    "
+                    class="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center flex-shrink-0 ml-3 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors group">
+                    <i class="fa-solid fa-copy text-xs text-gray-500 dark:text-gray-400 group-hover:text-primary-500"></i>
+                  </button>
+                </div>
+
+              </div><!-- /info rows -->
+
+              <!-- Action buttons -->
+              <div class="px-4 pb-4 pt-3 grid grid-cols-2 gap-2 mt-1">
+                <button type="button" @click.prevent="showProfilePictureModal = true"
+                  class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  <i class="fa-solid fa-camera text-gray-500 dark:text-gray-400 text-xs"></i>
+                  Update Photo
+                </button>
+                <button type="button" @click.prevent="showTransactionPinModal = true"
+                  class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-primary-600 text-white text-xs font-semibold hover:bg-primary-700 transition-colors shadow-sm shadow-primary-500/30">
+                  <i class="fa-solid fa-key text-xs"></i>
+                  Change PIN
+                </button>
+              </div>
+
+            </div><!-- /profile card -->
+
+            <!-- Security shortcuts -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                  <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-gray-900 dark:text-white">Security</p>
+                  <p class="text-[11px] text-gray-400 dark:text-gray-500">Keep your account protected</p>
+                </div>
+              </div>
+              <button type="button" @click.prevent="showPasswordModal = true"
+                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/60 transition-colors group">
+                <span class="flex items-center gap-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  <i class="fa-solid fa-lock text-primary-500 text-xs w-4 text-center"></i>
+                  Password settings
+                </span>
+                <i class="fa-solid fa-chevron-right text-[10px] text-gray-300 dark:text-gray-600 group-hover:text-primary-500 transition-colors"></i>
+              </button>
+            </div>
+
+          </div><!-- /left col -->
+
+          <!-- ══════════════════════════════════════════
+               RIGHT COLUMN (lg:col-span-3)
+          ══════════════════════════════════════════ -->
+          <div class="lg:col-span-3 space-y-4">
+
+            <!-- Profile info card -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 overflow-hidden">
+              <div class="px-5 py-4 border-b border-gray-50 dark:border-gray-700/60 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-id-card text-primary-500 text-sm"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-sm font-bold text-gray-900 dark:text-white">Profile Information</h2>
+                    <p class="text-[11px] text-gray-400 dark:text-gray-500">Your verified account details</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/60 px-2.5 py-1 rounded-lg">
+                  <i class="fa-solid fa-lock text-[10px]"></i>
+                  <span>Read-only</span>
+                </div>
+              </div>
+
+              <div class="p-5 space-y-4">
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">First name</label>
+                    <input type="text" name="name" class="settings-input w-full px-3.5 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Last name</label>
+                    <input type="text" name="lastname" class="settings-input w-full px-3.5 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                  </div>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Account Number</label>
+                    <div class="relative">
+                      <input type="text" name="accountNumber" class="settings-input w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-mono font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                      <button type="button"
+                        @click="
+                          const inp = $el.previousElementSibling;
+                          navigator.clipboard.writeText(inp.value);
+                          $el.querySelector('i').className = 'fa-solid fa-check text-[10px] text-green-500';
+                          setTimeout(() => $el.querySelector('i').className = 'fa-solid fa-copy text-[10px] text-gray-400', 2000);
+                        "
+                        class="absolute inset-y-0 right-0 px-3 hover:text-primary-500 transition-colors">
+                        <i class="fa-solid fa-copy text-[10px] text-gray-400"></i>
+                      </button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-1">Share only with trusted payers.</p>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Email</label>
+                    <input type="email" name="email" class="settings-input w-full px-3.5 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                  </div>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Phone</label>
+                    <input type="text" name="phone" class="settings-input w-full px-3.5 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Account Type</label>
+                    <input type="text" name="accounttype" class="settings-input w-full px-3.5 py-2.5 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 text-sm font-medium text-gray-800 dark:text-white cursor-default" readonly>
+                  </div>
+                </div>
+
+                <!-- Info banner -->
+                <div class="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/40 rounded-xl p-3.5">
+                  <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-800/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <i class="fa-solid fa-circle-info text-blue-500 dark:text-blue-400 text-xs"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold text-blue-800 dark:text-blue-200">Need to change something?</p>
+                    <p class="text-[11px] text-blue-600 dark:text-blue-300 mt-0.5">Contact support to update details tied to your verification.</p>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /profile info -->
+
+            <!-- Bottom links -->
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm cursor-pointer hover:border-primary-200 dark:hover:border-primary-800 transition-colors group">
+                <div class="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
+                  <i class="fa-solid fa-file-contract text-primary-500 text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Terms & Privacy</p>
+                  <p class="text-[11px] text-gray-400 dark:text-gray-500">How we protect your data</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm cursor-pointer hover:border-primary-200 dark:hover:border-primary-800 transition-colors group">
+                <div class="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
+                  <i class="fa-solid fa-headset text-primary-500 text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Support Center</p>
+                  <p class="text-[11px] text-gray-400 dark:text-gray-500">Chat with us 24/7</p>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /right col -->
+
+        </div><!-- /grid -->
+      </div><!-- /max-w -->
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     PASTE THESE 3 MODALS just before the closing </div> of
+     the main Alpine x-data wrapper (before the preloader script)
+     
+     REMOVE the old:
+       - showProfilePictureModal div
+       - showTransactionPinModal div  
+       - showPasswordModal div
+     
+     REPLACE with these 3 below
+════════════════════════════════════════════════════════════ -->
+
+
+<!-- ── 1. AVATAR UPLOAD MODAL ──────────────────────────────────────────── -->
+<div x-show="showProfilePictureModal" x-cloak
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+
+  <!-- Backdrop -->
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="showProfilePictureModal = false"></div>
+
+  <!-- Sheet -->
+  <div class="relative w-full sm:max-w-sm bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border border-gray-100 dark:border-gray-800 z-10"
+       x-transition:enter="transition ease-out duration-300 transform"
+       x-transition:enter-start="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0"
+       x-transition:enter-end="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave="transition ease-in duration-200 transform"
+       x-transition:leave-start="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave-end="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0">
+
+    <!-- Drag handle (mobile) -->
+    <div class="flex justify-center pt-3 pb-1 sm:hidden">
+      <div class="w-10 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+    </div>
+
+    <div class="px-5 pt-4 pb-6">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-900/40 flex items-center justify-center">
+            <i class="fa-solid fa-camera text-primary-600 dark:text-primary-400 text-sm"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Update Photo</h3>
+            <p class="text-[11px] text-gray-400 dark:text-gray-500">PNG or JPG, max 2MB</p>
+          </div>
+        </div>
+        <button @click="showProfilePictureModal = false"
+          class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <i class="fa-solid fa-times text-gray-500 dark:text-gray-400 text-xs"></i>
+        </button>
+      </div>
+
+      <form id="avatar-form" enctype="multipart/form-data" class="space-y-4">
+
+        <!-- Preview -->
+        <div x-show="selectedFile" class="relative">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+            <img :src="selectedFile" class="w-14 h-14 rounded-xl object-cover border border-gray-200 dark:border-gray-700" alt="Preview">
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-gray-800 dark:text-white truncate" x-text="selectedFileName"></p>
+              <p class="text-[11px] text-green-500 font-medium mt-0.5">Ready to upload</p>
+            </div>
+            <button type="button"
+              @click="selectedFile = null; selectedFileName = ''; document.getElementById('photo-upload').value = ''"
+              class="w-7 h-7 rounded-lg bg-red-50 dark:bg-red-900/30 flex items-center justify-center hover:bg-red-100 transition-colors">
+              <i class="fa-solid fa-times text-red-400 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Drop zone -->
+        <label x-show="!selectedFile"
+          class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/60 hover:border-primary-400 hover:bg-primary-50/50 dark:hover:bg-primary-900/20 cursor-pointer transition-all duration-200 group">
+          <div class="flex flex-col items-center gap-1.5 text-gray-400 group-hover:text-primary-500 transition-colors">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+            <span class="text-xs font-semibold">Click to select photo</span>
+            <span class="text-[11px]">PNG, JPG up to 2MB</span>
+          </div>
+          <input id="photo-upload" type="file" name="photo" accept="image/jpeg,image/png,image/jpg" class="hidden"
+            @change="
+              const file = $event.target.files[0];
+              if (file) {
+                selectedFileName = file.name;
+                const reader = new FileReader();
+                reader.onload = (e) => { selectedFile = e.target.result; };
+                reader.readAsDataURL(file);
+              }
+            ">
+        </label>
+
+        <!-- Submit -->
+        <button type="submit"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-600 text-white text-sm font-bold hover:bg-primary-700 active:scale-[0.98] transition-all shadow-sm shadow-primary-500/30">
+          <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
+          Upload Photo
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── 2. CHANGE PIN MODAL ──────────────────────────────────────────────── -->
+<div x-show="showTransactionPinModal" x-cloak
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="showTransactionPinModal = false"></div>
+
+  <div class="relative w-full sm:max-w-sm bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border border-gray-100 dark:border-gray-800 z-10"
+       x-transition:enter="transition ease-out duration-300 transform"
+       x-transition:enter-start="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0"
+       x-transition:enter-end="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave="transition ease-in duration-200 transform"
+       x-transition:leave-start="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave-end="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0">
+
+    <div class="flex justify-center pt-3 pb-1 sm:hidden">
+      <div class="w-10 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+    </div>
+
+    <div class="px-5 pt-4 pb-6">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+            <i class="fa-solid fa-key text-amber-500 text-sm"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Change PIN</h3>
+            <p class="text-[11px] text-gray-400 dark:text-gray-500">Update your transaction PIN</p>
+          </div>
+        </div>
+        <button @click="showTransactionPinModal = false"
+          class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <i class="fa-solid fa-times text-gray-500 dark:text-gray-400 text-xs"></i>
+        </button>
+      </div>
+
+      <form id="pin-form" class="space-y-4">
+
+        <!-- New PIN -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">New PIN <span class="text-gray-400">(4 digits)</span></label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <i class="fa-solid fa-hashtag text-gray-300 dark:text-gray-600 text-xs"></i>
+            </div>
+            <input type="password" name="pin" inputmode="numeric" maxlength="4"
+              class="w-full pl-9 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="••••••" required>
+          </div>
+        </div>
+
+        <!-- Current Password -->
+        <div x-data="{ show: false }">
+          <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Current Pin</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <i class="fa-solid fa-lock text-gray-300 dark:text-gray-600 text-xs"></i>
+            </div>
+            <input :type="show ? 'text' : 'password'" name="current_password"
+              class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="Enter your Pin" required>
+            <button type="button" @click="show = !show"
+              class="absolute inset-y-0 right-0 px-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <i :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Warning -->
+        <div class="flex items-start gap-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/40 rounded-xl p-3">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xs mt-0.5 flex-shrink-0"></i>
+          <p class="text-[11px] text-amber-700 dark:text-amber-300 font-medium leading-relaxed">Never share your PIN with anyone — not even support staff.</p>
+        </div>
+
+        <button type="submit"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-600 text-white text-sm font-bold hover:bg-primary-700 active:scale-[0.98] transition-all shadow-sm shadow-primary-500/30">
+          <i class="fa-solid fa-check text-xs"></i>
+          Update PIN
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── 3. CHANGE PASSWORD MODAL ────────────────────────────────────────── -->
+<div x-show="showPasswordModal" x-cloak
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="showPasswordModal = false"></div>
+
+  <div class="relative w-full sm:max-w-sm bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border border-gray-100 dark:border-gray-800 z-10"
+       x-transition:enter="transition ease-out duration-300 transform"
+       x-transition:enter-start="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0"
+       x-transition:enter-end="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave="transition ease-in duration-200 transform"
+       x-transition:leave-start="translate-y-0 sm:scale-100 sm:opacity-100"
+       x-transition:leave-end="translate-y-full sm:translate-y-0 sm:scale-95 sm:opacity-0">
+
+    <div class="flex justify-center pt-3 pb-1 sm:hidden">
+      <div class="w-10 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+    </div>
+
+    <div class="px-5 pt-4 pb-6">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+            <i class="fa-solid fa-lock text-blue-500 text-sm"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Change Password</h3>
+            <p class="text-[11px] text-gray-400 dark:text-gray-500">Keep your account secure</p>
+          </div>
+        </div>
+        <button @click="showPasswordModal = false"
+          class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <i class="fa-solid fa-times text-gray-500 dark:text-gray-400 text-xs"></i>
+        </button>
+      </div>
+
+      <form id="password-form" class="space-y-4">
+
+        <!-- Current Password -->
+        <div x-data="{ show: false }">
+          <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Current Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <i class="fa-solid fa-lock text-gray-300 dark:text-gray-600 text-xs"></i>
+            </div>
+            <input :type="show ? 'text' : 'password'" name="current_password_for_change"
+              class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="Enter current password" required>
+            <button type="button" @click="show = !show"
+              class="absolute inset-y-0 right-0 px-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <i :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div x-data="{ show: false }">
+          <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">New Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <i class="fa-solid fa-key text-gray-300 dark:text-gray-600 text-xs"></i>
+            </div>
+            <input :type="show ? 'text' : 'password'" name="new_password"
+              class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="Min. 6 characters" required>
+            <button type="button" @click="show = !show"
+              class="absolute inset-y-0 right-0 px-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <i :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div x-data="{ show: false }">
+          <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Confirm New Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <i class="fa-solid fa-key text-gray-300 dark:text-gray-600 text-xs"></i>
+            </div>
+            <input :type="show ? 'text' : 'password'" name="confirm_password"
+              class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="Repeat new password" required>
+            <button type="button" @click="show = !show"
+              class="absolute inset-y-0 right-0 px-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <i :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="flex items-start gap-2.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/40 rounded-xl p-3">
+          <i class="fa-solid fa-shield-check text-blue-400 text-xs mt-0.5 flex-shrink-0"></i>
+          <p class="text-[11px] text-blue-700 dark:text-blue-300 font-medium leading-relaxed">Use a mix of uppercase, numbers and symbols for a stronger password.</p>
+        </div>
+
+        <button type="submit"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-600 text-white text-sm font-bold hover:bg-primary-700 active:scale-[0.98] transition-all shadow-sm shadow-primary-500/30">
+          <i class="fa-solid fa-check text-xs"></i>
+          Update Password
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+  </div>
+</main>
+            </div>
+        </div>
+
+        <div x-show="!isDesktop" x-cloak class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40">
+            <div class="relative max-w-4xl mx-auto">
+                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                    <div class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300">
+                        <a href="index.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-house text-base"></i>
+                            <span>Home</span>
+                        </a>
+                        <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400 text-primary-700 dark:text-primary-300">
+                            <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                            <span>Transfer</span>
+                        </a>
+                        <a href="cards.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-credit-card text-base"></i>
+                            <span>Cards</span>
+                        </a>
+                        <button @click="showMobileMenu = true" type="button" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-bars text-base"></i>
+                            <span>Menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="showMobileMenu" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 lg:hidden" style="display: none;">
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="showMobileMenu = false"></div>
+            <div class="fixed inset-x-0 bottom-0 z-50">
+                <div x-show="showMobileMenu" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-y-0" x-transition:leave-end="translate-y-full" class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden">
+                    <div class="flex justify_center pt-3 pb-2"><div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div></div>
+                    <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-user text-white text-sm"></i></div>
+                                <div>
+                                    <h3 class="user-fullname font-bold text-gray-900 dark:text-white"></h3>
+                                    <p class="user-email text-sm text-gray-500 dark:text-gray-400"></p>
+                                </div>
+                            </div>
+                            <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"><i class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main</h4>
+                            <div class="space-y-1">
+                                <a href="index.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-house text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Dashboard</span></a>
+                                <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Transactions</span></a>
+                                <a href="cards.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Cards</span></a>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Transfers</h4>
+                            <div class="space-y-1">
+                                <a href="localtransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Local Transfer</span></a>
+                                <a href="internationaltransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-globe text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">International</span></a>
+                                <a href="deposits.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify_center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-plus text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Deposit</span></a>
+                                <a href="swap.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-arrows-rotate text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Currency Swap</span></a>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
+                            <div class="space-y-1">
+                                <a href="loan.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"><div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors"><i class="fa-solid fa-landmark text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i></div><span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Loans</span></a>
+                                <a href="account-settings.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 group"><div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center"><i class="fa-solid fa-gear text-primary-700 dark:text-white text-sm"></i></div><span class="text-sm font-semibold text-primary-700 dark:text-primary-200">Settings</span></a>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+    </div> 
+
+                </div>
+            </div>
+        </div>
+
+  
+
+        <script>window.onload = function() { const preloader = document.querySelector('.page-loading'); setTimeout(function() { preloader.classList.remove('active'); setTimeout(function() { preloader.remove(); }, 500); }, 800); };</script>
+    </div>
+
+      <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+
+            <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script>
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+  <!-- New -->
+   <script src="/auth-script/account-settings.js"></script>
+      <script src="/auth-script/load-user-data.js"></script>
+      <script src="/auth-script/profile-actions.js"></script>
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+
+</body>
+</html>

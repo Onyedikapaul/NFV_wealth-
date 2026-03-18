@@ -1,0 +1,451 @@
+<!-- components/mobile-nav.html -->
+
+<!-- Mobile Floating Navigation -->
+<div
+  x-show="!isDesktop"
+  x-cloak
+  class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40"
+>
+  <div class="relative max-w-4xl mx-auto">
+    <div
+      class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+    >
+      <div
+        class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300"
+      >
+        <a
+          href="/dashboard/index.html"
+          class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          <i class="fa-solid fa-house text-base"></i>
+          <span>Home</span>
+        </a>
+
+        <a
+          href="/dashboard/localtransfer.html"
+          class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+          <span>Transfer</span>
+        </a>
+
+        <a
+          href="/dashboard/cards.html"
+          class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          <i class="fa-solid fa-credit-card text-base"></i>
+          <span>Cards</span>
+        </a>
+
+        <button
+          @click="showMobileMenu = true"
+          type="button"
+          class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          <i class="fa-solid fa-bars text-base"></i>
+          <span>Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Menu Modal - Sleek Bottom Sheet Design -->
+<div
+  x-show="showMobileMenu"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed inset-0 z-50 lg:hidden"
+  style="display: none"
+>
+  <!-- Backdrop with Blur -->
+  <div
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm"
+    @click="showMobileMenu = false"
+  ></div>
+
+  <!-- Bottom Sheet Container -->
+  <div class="fixed inset-x-0 bottom-0 z-50">
+    <div
+      x-show="showMobileMenu"
+      x-transition:enter="transition ease-out duration-300 transform"
+      x-transition:enter-start="translate-y-full"
+      x-transition:enter-end="translate-y-0"
+      x-transition:leave="transition ease-in duration-200 transform"
+      x-transition:leave-start="translate-y-0"
+      x-transition:leave-end="translate-y-full"
+      class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden"
+    >
+      <!-- Handle Bar -->
+      <div class="flex justify-center pt-3 pb-2">
+        <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+      </div>
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="relative user-avatar">
+              <!-- Image avatar -->
+              <img
+                class="user-avatar-img h-10 w-10 rounded-full object-cover border-2 border-primary-100 hidden"
+                alt="User Avatar"
+              />
+
+              <!-- Letter avatar fallback -->
+              <div
+                class="user-avatar-fallback h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-sky-500 border-2 border-primary-100 hidden"
+              >
+                <span class="user-avatar-initials"></span>
+              </div>
+
+              <!-- Online status -->
+              <div
+                class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-600"
+              ></div>
+            </div>
+
+            <div>
+              <h3
+                class="font-bold text-gray-900 dark:text-white user-fullname"
+              ></h3>
+              <p
+                class="user-email text-sm text-gray-500 dark:text-gray-400"
+              ></p>
+            </div>
+          </div>
+
+          <button
+            @click="showMobileMenu = false"
+            class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          >
+            <i
+              class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"
+            ></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Content -->
+      <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+        <!-- Main Section -->
+        <div class="mb-6">
+          <h4
+            class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3"
+          >
+            Main
+          </h4>
+          <div class="space-y-1">
+            <a
+              href="/dashboard/index.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-slate-700/80 border border-primary-100 dark:border-slate-600 group"
+            >
+              <div
+                class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-500 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-house text-primary-600 dark:text-white"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-primary-900 dark:text-white">
+                  Dashboard
+                </p>
+                <p class="text-xs text-primary-600 dark:text-slate-300">
+                  Overview &amp; balance
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-primary-400 dark:text-slate-400 text-xs"
+              ></i>
+            </a>
+
+            <a
+              href="/dashboard/accounthistory.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-chart-line text-blue-600 dark:text-blue-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Transactions
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  View transaction history
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+
+            <a
+              href="/dashboard/cards.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-credit-card text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">Cards</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Manage your cards
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Transfers Section -->
+        <div class="mb-6">
+          <h4
+            class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3"
+          >
+            Transfers
+          </h4>
+          <div class="space-y-1">
+            <a
+              href="/dashboard/localtransfer.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-paper-plane text-orange-600 dark:text-orange-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Local Transfer
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Send to local accounts
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+
+            <a
+              href="/dashboard/internationaltransfer.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-globe text-indigo-600 dark:text-indigo-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  International
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Global transfers
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+
+            <a
+              href="/dashboard/deposits.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-plus text-green-600 dark:text-green-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Deposit
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Add funds to account
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+
+            <a
+              href="/dashboard/swap.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center group-hover:bg-yellow-200 dark:group-hover:bg-yellow-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-arrows-rotate text-yellow-600 dark:text-yellow-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Currency Swap
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Exchange currencies
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Account Section -->
+        <div class="mb-4">
+          <h4
+            class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3"
+          >
+            Account
+          </h4>
+          <div class="space-y-1">
+            <!-- <button
+              @click="showBankAccount = true; showMobileMenu = false"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors w-full text-left"
+              type="button"
+            >
+              <div
+                class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-building-columns text-blue-600 dark:text-blue-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Bank Details
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  View account info
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </button> -->
+
+            <a
+              href="/dashboard/account-settings.html"
+              class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-gear text-teal-600 dark:text-teal-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 dark:text-white">
+                  Settings
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Manage your account
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"
+              ></i>
+            </a>
+
+            <button
+              type="button"
+              onclick="logout()"
+              class="w-full text-left flex items-center space-x-4 p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 group transition-colors"
+            >
+              <div
+                class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center group-hover:bg-red-200 dark:group-hover:bg-red-800/50 transition-colors"
+              >
+                <i
+                  class="fa-solid fa-right-from-bracket text-red-600 dark:text-red-400"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-red-900 dark:text-red-400">
+                  Sign Out
+                </p>
+                <p class="text-xs text-red-600 dark:text-red-500">
+                  Logout from account
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right text-red-400 dark:text-red-500 text-xs"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700"
+      >
+        <div class="flex items-center justify-center space-x-6">
+          <div class="text-center">
+            <div
+              class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-1"
+            >
+              <i
+                class="fa-solid fa-shield-alt text-primary-600 dark:text-primary-400 text-xs"
+              ></i>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">
+              Secure
+            </p>
+          </div>
+          <div class="text-center">
+            <div
+              class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-1"
+            >
+              <i
+                class="fa-solid fa-clock text-green-600 dark:text-green-400 text-xs"
+              ></i>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">
+              24/7
+            </p>
+          </div>
+          <div class="text-center">
+            <div
+              class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-1"
+            >
+              <i
+                class="fa-solid fa-phone text-blue-600 dark:text-blue-400 text-xs"
+              ></i>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">
+              Support
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

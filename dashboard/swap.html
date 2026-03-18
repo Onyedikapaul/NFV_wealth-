@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+       <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFV Wealth | Currency Swap</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+  
+    
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+        
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'swap',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => {
+                this.isDesktop = event.matches;
+                if (this.isDesktop) { this.showMobileMenu = false; }
+            };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+            this.$watch('showMobileMenu', (value) => {
+                document.body.classList.toggle('overflow-hidden', value && !this.isDesktop);
+            });
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+        <!-- Responsive Layout Shell -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                                   <div id="sidebar-slot"></div>
+
+                    
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col min-h-0">
+                <!-- Desktop Header -->
+                                              <div id="header-slot"></div>
+
+
+                <main class="flex-1 overflow-y-auto">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-b from-primary-50/60 via-transparent to-transparent dark:from-slate-900/50 pointer-events-none" aria-hidden="true"></div>
+                        <div class="relative px-4 lg:px-8 pt-4 lg:pt-6 pb-24 lg:pb-10">
+                            <div class="lg:hidden mb-6">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/30">
+                                            <i class="fa-solid fa-arrows-rotate text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Transfers</p>
+                                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Currency Swap</h1>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button @click="toggleDarkMode()" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                            <i x-show="!darkMode" class="fa-solid fa-moon text-gray-700 text-base"></i>
+                                            <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-base"></i>
+                                        </button>
+                                        <!-- <button @click="toggleNotifications()" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors relative">
+                                            <i class="fa-solid fa-bell text-gray-700 dark:text-gray-300 text-base"></i>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            
+                            <div class="max-w-5xl mx-auto space-y-6">
+                                <div class="bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 dark:border-gray-800 overflow-hidden" x-data="{ 
+    fromCurrency: 'fiat',
+    toCurrency: 'btc',
+    amount: '',
+    isSubmitting: false,
+    calculateConversionText(amountValue) {
+        const amount = parseFloat(amountValue) || 0;
+        const btcRate = 87468;
+        if (amount <= 0) return 'Enter an amount to see conversion';
+        if (this.fromCurrency === 'fiat') {
+            const btcAmount = amount / btcRate;
+            return `${amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD ≈ ${btcAmount.toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8})} BTC`;
+        }
+        const fiatAmount = amount * btcRate;
+        return `${amount.toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8})} BTC ≈ $${fiatAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+    }
+}">
+                                    <div class="p-4 lg:p-6">
+                                        <div class="flex items-start justify-between mb-6">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                                    <i class="fa-solid fa-arrow-right-arrow-left text-white"></i>
+                                                </div>
+                                                <div>
+                                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Swap currencies</h2>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-400">Live rate and instant preview</p>
+                                                </div>
+                                            </div>
+                                            <div class="hidden lg:flex items-center space-x-2">
+                                                <button class="px-3 py-2 text-xs font-semibold rounded-xl bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 border border-primary-100 dark:border-primary-800">BTC • USD</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+                                            <div class="bg-gray-50/70 dark:bg-gray-800/60 rounded-xl p-4 border border-gray-200/60 dark:border-gray-700/60">
+                                                <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">Current balances</h3>
+                                                <div class="space-y-3">
+                                                    <div class="flex items-center justify-between p-3 bg-white/90 dark:bg-gray-900/70 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
+                                                        <div class="flex items-center">
+                                                            <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mr-3">
+                                                                <i class="fa-solid fa-wallet text-blue-600 dark:text-blue-400 text-sm"></i>
+                                                            </div>
+                                                            <span class="text-gray-700 dark:text-gray-300 text-sm">USD Balance</span>
+                                                        </div>
+                                                        <!-- USD Balance -->
+                                                        <span class="font-semibold text-gray-900 dark:text-white text-sm" id="usd-balance-display">Loading...</span>
+
+                                                    </div>
+                                                    <div class="flex items-center justify-between p-3 bg-white/90 dark:bg-gray-900/70 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
+                                                        <div class="flex items-center">
+                                                            <div class="bg-amber-100 dark:bg-amber-900/30 p-2 rounded-full mr-3">
+                                                                <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-sm"></i>
+                                                            </div>
+                                                            <span class="text-gray-700 dark:text-gray-300 text-sm">Bitcoin Balance</span>
+                                                        </div>
+                                                       <!-- BTC Balance -->
+                                                  <span class="font-semibold text-gray-900 dark:text-white text-sm" id="btc-balance-display">Loading...</span>
+
+                                                    </div>
+                                                    <div class="p-3 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border border-primary-100/70 dark:border-gray-700">
+                                                        <h4 class="text-xs font-medium text-primary-700 dark:text-primary-300 mb-2 text-center">Current Exchange Rate</h4>
+                                                        <div class="flex justify-center items-center space-x-2">
+                                                            <div class="bg-amber-100 dark:bg-amber-900/50 p-1.5 rounded-full">
+                                                                <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-xs"></i>
+                                                            </div>
+                                                            <!-- BTC Rate -->
+<span class="font-semibold text-gray-900 dark:text-white text-xs" id="btc-rate-display">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-white/90 dark:bg-gray-900/70 rounded-xl p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm">
+                                                <form action="" method="POST" id="swapForm">
+                                                    <input type="hidden" name="_token" value="FZZWwxlVbrK38DQUzT0jxHbibxqNaH4AEaI3RV0l">                        
+                                                    <div class="mb-4">
+                                                        <label for="from_currency" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">From Currency</label>
+                                                        <select 
+                                                            id="from_currency" 
+                                                            name="from_currency" 
+                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 text-sm"
+                                                            required
+                                                        >
+                                                            <option value="fiat">USD ($20,369,651.00)</option>
+                                                            <option value="btc">BTC (12.57602780)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="to_currency" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">To Currency</label>
+                                                        <select 
+                                                            id="to_currency" 
+                                                            name="to_currency" 
+                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 text-sm"
+                                                            required
+                                                        >
+                                                            <option value="btc">BTC</option>
+                                                            <option value="fiat">USD</option>
+                                                        </select>
+                                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Destination currency is automatically selected</p>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="amount" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                                                        <div class="relative rounded-md shadow-sm">
+                                                            <input 
+                                                                type="number" 
+                                                                id="amount" 
+                                                                name="amount" 
+                                                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 pr-16 text-sm" 
+                                                                step="any" 
+                                                                min="0.00000001" 
+                                                                placeholder="0.00" 
+                                                                required
+                                                            >
+                                                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                                                <span class="h-full inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-300 text-xs currency-label">USD</span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter the amount you want to swap</p>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Conversion</label>
+                                                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg" id="conversionResult">
+                                                            <div class="text-center text-gray-500 dark:text-gray-400 text-xs">Enter an amount to see conversion</div>
+                                                        </div>
+                                                    </div>
+                                                    <button 
+                                                        type="submit" 
+                                                        class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 flex items-center justify-center text-sm"
+                                                    >
+                                                        <i class="fa-solid fa-arrows-rotate text-xs mr-2"></i>
+                                                        <span>Swap Currencies</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <style>
+    [x-cloak] { display: none !important; }
+</style>
+
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                
+            </div>
+        </div>
+
+        <!-- Mobile Floating Navigation -->
+        <div x-show="!isDesktop" x-cloak class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40">
+            <div class="relative max-w-4xl mx-auto">
+                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                    <div class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300">
+                        <a href="index.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-house text-base"></i>
+                            <span>Home</span>
+                        </a>
+                        <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400 text-primary-700 dark:text-primary-300">
+                            <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                            <span>Transfer</span>
+                        </a>
+                        <a href="cards.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-credit-card text-base"></i>
+                            <span>Cards</span>
+                        </a>
+                        <button @click="showMobileMenu = true" type="button" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fa-solid fa-bars text-base"></i>
+                            <span>Menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Modal - Sleek Bottom Sheet Design -->
+        <div x-show="showMobileMenu" 
+             x-transition:enter="transition ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="transition ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 lg:hidden" 
+             style="display: none;">
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="showMobileMenu = false"></div>
+            <div class="fixed inset-x-0 bottom-0 z-50">
+                <div x-show="showMobileMenu"
+                     x-transition:enter="transition ease-out duration-300 transform"
+                     x-transition:enter-start="translate-y-full"
+                     x-transition:enter-end="translate-y-0"
+                     x-transition:leave="transition ease-in duration-200 transform"
+                     x-transition:leave-start="translate-y-0"
+                     x-transition:leave-end="translate-y-full"
+                     class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden">
+                    <div class="flex justify-center pt-3 pb-2">
+                        <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                    </div>
+                    <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="user-fullname font-bold text-gray-900 dark:text-white"></h3>
+                                    <p class="user-email text-sm text-gray-500 dark:text-gray-400">real12@gmail.com</p>
+                                </div>
+                            </div>
+                            <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main</h4>
+                            <div class="space-y-1">
+                                <a href="index.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-house text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Dashboard</span>
+                                </a>
+                                <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Transactions</span>
+                                </a>
+                                <a href="cards.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Cards</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Transfers</h4>
+                            <div class="space-y-1">
+                                <a href="localtransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Local Transfer</span>
+                                </a>
+                                <a href="internationaltransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-globe text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">International</span>
+                                </a>
+                                <a href="deposits.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                        <i class="fa-solid fa-plus text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Deposit</span>
+                                </a>
+                                <a href="swap.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 group">
+                                    <div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center">
+                                        <i class="fa-solid fa-arrows-rotate text-primary-700 dark:text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-primary-700 dark:text-primary-200">Currency Swap</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
+                            <div class="space-y-1">
+                                <!-- <button @click="showBankAccount = true" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors w-full text-left">
+                                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
+                                        <i class="fa-solid fa-building-columns text-blue-600 dark:text-blue-400"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900 dark:text-white">Bank Details</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">View account info</p>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"></i>
+                                </button> -->
+                                
+                                <a href="account-settings.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                    <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-800/50 transition-colors">
+                                        <i class="fa-solid fa-gear text-teal-600 dark:text-teal-400"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900 dark:text-white">Settings</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"></i>
+                                </a>
+                                
+<button onclick="handleLogout()" class="w-full text-left flex items-center space-x-4 p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 group transition-colors">
+    <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-content group-hover:bg-red-200 dark:group-hover:bg-red-800/50 transition-colors">
+        <i class="fa-solid fa-right-from-bracket text-red-600 dark:text-red-400"></i>
+    </div>
+    <div class="flex-1">
+        <p class="font-semibold text-red-900 dark:text-red-400">Sign Out</p>
+        <p class="text-xs text-red-600 dark:text-red-500">Logout from account</p>
+    </div>
+    <i class="fa-solid fa-chevron-right text-red-400 dark:text-red-500 text-xs"></i>
+</button>
+<script src="/auth-script/logout.js"></script>
+
+                            </div> 
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Support Widget -->
+                    
+                </div>
+            </div>
+        </div>
+    
+        <script src="/auth-script/swap.js"></script>
+    
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    </script>
+
+      <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+    
+               <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script> 
+         <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+  
+</body>
+</html>

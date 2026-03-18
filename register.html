@@ -1,0 +1,2010 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+   
+  <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register | NFV Wealth</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    <!-- Tailwind CSS -->
+    <script src="3.4.17"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#38bdf8",
+                100: "#38bdf8",
+                200: "#38bdf8",
+                300: "#38bdf8",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0ea5e9",
+                700: "#0369a1",
+                800: "#0369a1",
+                900: "#0369a1",
+              },
+              secondary: {
+                50: "#5eead4",
+                100: "#5eead4",
+                200: "#5eead4",
+                300: "#5eead4",
+                400: "#5eead4",
+                500: "#14b8a6",
+                600: "#14b8a6",
+                700: "#0f766e",
+                800: "#0f766e",
+                900: "#0f766e",
+              },
+            },
+            fontFamily: {
+              sans: ["Lato", "sans-serif"],
+            },
+            animation: {
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Alpine.js -->
+    <script defer="" src="npm/alpinejs%403.x.x/dist/cdn.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="lucide%400.562.0/dist/umd/lucide.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Custom Toast Styles -->
+    <style>
+      .custom-toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        max-width: 400px;
+      }
+
+      .custom-toast {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 10px;
+        padding: 16px;
+        display: flex;
+        align-items: start;
+        animation: slideIn 0.3s ease-out;
+        border-left: 4px solid;
+      }
+
+      .custom-toast.success {
+        border-left-color: #10b981;
+      }
+
+      .custom-toast.error {
+        border-left-color: #ef4444;
+      }
+
+      .custom-toast-icon {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+      }
+
+      .custom-toast.success .custom-toast-icon {
+        background-color: #d1fae5;
+        color: #059669;
+      }
+
+      .custom-toast.error .custom-toast-icon {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+
+      .custom-toast-content {
+        flex: 1;
+      }
+
+      .custom-toast-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #111827;
+        margin-bottom: 4px;
+      }
+
+      .custom-toast-message {
+        font-size: 13px;
+        color: #6b7280;
+        line-height: 1.4;
+      }
+
+      .custom-toast-field {
+        display: inline-block;
+        background: #f3f4f6;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #374151;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .custom-toast-close {
+        flex-shrink: 0;
+        margin-left: 12px;
+        cursor: pointer;
+        color: #9ca3af;
+        transition: color 0.2s;
+      }
+
+      .custom-toast-close:hover {
+        color: #374151;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+
+      .custom-toast.removing {
+        animation: slideOut 0.3s ease-out forwards;
+      }
+    </style>
+
+    <link
+      href="css2-1e027.html?family=Lato:wght@300;400;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Variables -->
+    <script>
+      // Set CSS theme variables
+      document.documentElement.style.setProperty("--primary-color", "#0ea5e9");
+      document.documentElement.style.setProperty(
+        "--primary-color-dark",
+        "#0369a1",
+      );
+      document.documentElement.style.setProperty(
+        "--primary-color-light",
+        "#38bdf8",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color",
+        "#14b8a6",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color-dark",
+        "#0f766e",
+      );
+      document.documentElement.style.setProperty(
+        "--secondary-color-light",
+        "#5eead4",
+      );
+      document.documentElement.style.setProperty("--text-color", "#111827");
+      document.documentElement.style.setProperty("--bg-color", "#f9fafb");
+      document.documentElement.style.setProperty("--card-bg-color", "#ffffff");
+    </script>
+
+    <!-- Modern Loading Animation -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 0.4s 0.2s ease-in-out;
+        background-color: #ffffff;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        transform: translateY(-50%);
+        transition: opacity 0.2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+
+      .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .loading-animation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .loading-animation .circle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid transparent;
+        mix-blend-mode: overlay;
+        animation: rotateCircle 1.5s linear infinite;
+      }
+
+      .loading-animation .circle:nth-child(1) {
+        border-top-color: var(--primary-color);
+        animation-delay: 0s;
+      }
+
+      .loading-animation .circle:nth-child(2) {
+        border-right-color: var(--primary-color-light);
+        animation-delay: 0.2s;
+      }
+
+      .loading-animation .circle:nth-child(3) {
+        border-bottom-color: var(--secondary-color);
+        animation-delay: 0.4s;
+      }
+
+      .loading-animation .circle:nth-child(4) {
+        border-left-color: var(--primary-color-light);
+        animation-delay: 0.6s;
+      }
+
+      .loading-animation .core {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(
+          45deg,
+          var(--primary-color-light),
+          var(--primary-color-dark)
+        );
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        animation: pulse 1s ease-in-out infinite alternate;
+      }
+
+      .page-loading .text {
+        color: var(--primary-color);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-dark),
+          var(--primary-color-light),
+          var(--primary-color-dark)
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient 2s linear infinite;
+      }
+
+      @keyframes rotateCircle {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        from {
+          transform: scale(0.8);
+          opacity: 0.8;
+        }
+        to {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Floating elements animation */
+      .floating {
+        animation: floating 3s ease-in-out infinite;
+      }
+      .floating-slow {
+        animation: floating 6s ease-in-out infinite;
+      }
+      .floating-slower {
+        animation: floating 8s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      /* Interactive elements */
+      .input-wrapper {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .input-wrapper:focus-within {
+        transform: translateY(-2px);
+      }
+
+      .input-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 1rem;
+        color: #94a3b8;
+        transition: color 0.3s ease;
+      }
+
+      .input-wrapper:focus-within .input-icon {
+        color: var(--primary-color);
+      }
+
+      input:focus + .input-toggle {
+        color: var(--primary-color);
+      }
+    </style>
+
+
+  </head>
+
+  <body class="font-sans bg-gray-50 text-gray-900 flex min-h-screen">
+    <!-- Custom Toast Container -->
+    <div class="custom-toast-container" id="customToastContainer"></div>
+
+    <!-- Page Loader -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="loading-container">
+          <div class="loading-animation">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="core"></div>
+          </div>
+          <div class="text">NFV Wealth </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full">
+      <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Left Side - Branding & Illustration (Desktop Only) -->
+        <div
+          class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 relative overflow-hidden"
+        >
+          <!-- Animated Shapes -->
+          <div class="absolute inset-0 overflow-hidden opacity-10">
+            <div
+              class="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full mix-blend-overlay floating-slow"
+            ></div>
+            <div
+              class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay floating"
+            ></div>
+            <div
+              class="absolute top-2/3 left-1/3 w-40 h-40 bg-white rounded-full mix-blend-overlay floating-slower"
+            ></div>
+
+            <!-- Grid pattern -->
+            <div
+              class="absolute inset-0"
+              style="
+                background-image: radial-gradient(
+                  rgba(255, 255, 255, 0.1) 1px,
+                  transparent 1px
+                );
+                background-size: 20px 20px;
+              "
+            ></div>
+          </div>
+
+          <!-- Content -->
+          <div
+            class="relative flex flex-col justify-center items-center w-full h-full text-white p-12 z-10"
+          >
+            <!-- Logo -->
+            <!--<a href="index.php" class="mb-6">-->
+            <!--    <img src="storage/app/public/photos/3cMq7m61LjUH5wFLMqxp2Ac6XYWKgZlqYH1AKQc5.png" alt="Logo" class="h-16 filter brightness-0 invert">-->
+            <!--</a>-->
+
+            <!-- Title -->
+            <h1 class="text-4xl font-extrabold mb-6 text-center">
+              Start System with Us
+            </h1>
+
+            <!-- Description -->
+            <p class="text-xl mb-8 max-w-md text-center text-white/80">
+              Create your NFV Wealth  account in just a few
+              steps and enjoy our full range of System services.
+            </p>
+
+            <!-- Benefits -->
+            <div class="w-full max-w-md space-y-4">
+              <div class="flex items-start space-x-3">
+                <div
+                  class="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5"
+                >
+                  <i data-lucide="check" class="h-3 w-3"></i>
+                </div>
+                <p class="text-sm text-white/80">
+                  <span class="font-medium text-white"
+                    >Secure System Platform</span
+                  >
+                  - Industry-leading security protocols to keep your funds safe
+                </p>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <div
+                  class="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5"
+                >
+                  <i data-lucide="check" class="h-3 w-3"></i>
+                </div>
+                <p class="text-sm text-white/80">
+                  <span class="font-medium text-white">Fast Transfers</span> -
+                  Send and receive money quickly to anyone, anywhere
+                </p>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <div
+                  class="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5"
+                >
+                  <i data-lucide="check" class="h-3 w-3"></i>
+                </div>
+                <p class="text-sm text-white/80">
+                  <span class="font-medium text-white"
+                    >24/7 Account Access</span
+                  >
+                  - Manage your finances anytime, anywhere on any device
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side - Registration Form -->
+        <div
+          class="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12"
+        >
+          <div class="w-full max-w-2xl">
+            <!-- Mobile Logo -->
+            <div class="lg:hidden text-center mb-8">
+              <!--<a href="index.php">-->
+              <!--    <img src="storage/app/public/photos/3cMq7m61LjUH5wFLMqxp2Ac6XYWKgZlqYH1AKQc5.png" alt="Logo" class="h-12 mx-auto">-->
+              <!--</a>-->
+            </div>
+
+            <!-- Alerts -->
+
+            <!-- Registration Card -->
+            <div
+              x-data="{ 
+                step: 1,
+                totalSteps: 4,
+                formData: {
+                    name: '',
+                    middlename: '',
+                    lastname: '',
+                    username: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    accounttype: '',
+                    pin: '',
+                    password: '',
+                    password_confirmation: '',
+                    terms: false
+                },
+                nextStep() {
+                    if (this.validateCurrentStep()) {
+                        if (this.step < this.totalSteps) {
+                            this.step++;
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                },
+                prevStep() {
+                    if (this.step > 1) {
+                        this.step--;
+                        window.scrollTo(0, 0);
+                    }
+                },
+                validateCurrentStep() {
+                    // Basic validation logic based on current step
+                    if (this.step === 1) {
+                        return this.formData.name && this.formData.lastname && this.formData.username;
+                    } else if (this.step === 2) {
+                        return this.formData.email && this.formData.phone && this.formData.country;
+                    } else if (this.step === 3) {
+                        return this.formData.accounttype && this.formData.pin;
+                    } else if (this.step === 4) {
+                        return this.formData.password && this.formData.password_confirmation && this.formData.terms;
+                    }
+                    return true;
+                },
+                get progress() {
+                    return (this.step / this.totalSteps) * 100;
+                }
+            }"
+              class="bg-white rounded-2xl shadow-xl overflow-hidden"
+            >
+              <!-- Progress Header -->
+              <div class="bg-gray-50 px-8 py-6 border-b border-gray-200">
+                <div class="flex justify-between items-center mb-2">
+                  <h2 class="text-2xl font-bold text-gray-900">
+                    Create Your Account
+                  </h2>
+                  <span class="text-sm font-medium text-gray-500"
+                    >Step <span x-text="step"></span> of
+                    <span x-text="totalSteps"></span
+                  ></span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div
+                  class="h-2 w-full bg-gray-200 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="h-full bg-primary-600 rounded-full transition-all duration-300 ease-in-out"
+                    :style="'width: ' + progress + '%'"
+                  ></div>
+                </div>
+
+                <!-- Step Titles -->
+                <div class="flex justify-between mt-2 text-xs text-gray-500">
+                  <div
+                    class="text-center"
+                    :class="{ 'text-primary-600 font-medium': step >= 1 }"
+                  >
+                    Personal Info
+                  </div>
+                  <div
+                    class="text-center"
+                    :class="{ 'text-primary-600 font-medium': step >= 2 }"
+                  >
+                    Contact Details
+                  </div>
+                  <div
+                    class="text-center"
+                    :class="{ 'text-primary-600 font-medium': step >= 3 }"
+                  >
+                    Account Setup
+                  </div>
+                  <div
+                    class="text-center"
+                    :class="{ 'text-primary-600 font-medium': step >= 4 }"
+                  >
+                    Security
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Container -->
+              <div class="px-8 py-6">
+                <form
+                  action="https://www.regalheritageob.com/register"
+                  method="post"
+                  id="registration-form"
+                >
+                  <input
+                    type="hidden"
+                    name="_token"
+                    value="tr2fIN8lLEJl8fK5XUCxbTpOPx26egWFHrKt6FPV"
+                  />
+                  <!-- Step 1: Personal Information -->
+                  <div
+                    x-show="step === 1"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                  >
+                    <div class="text-center mb-6">
+                      <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4"
+                      >
+                        <i
+                          data-lucide="user"
+                          class="h-8 w-8 text-primary-600"
+                        ></i>
+                      </div>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        Personal Information
+                      </h3>
+                      <p class="mt-1 text-sm text-gray-500">
+                        Please provide your legal name as it appears on official
+                        documents
+                      </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <!-- First Name -->
+                      <div>
+                        <label
+                          for="name"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Legal First Name *</label
+                        >
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          x-model="formData.name"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="John"
+                        />
+                      </div>
+
+                      <!-- Middle Name -->
+                      <div>
+                        <label
+                          for="middlename"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Middle Name</label
+                        >
+                        <input
+                          type="text"
+                          id="middlename"
+                          name="middlename"
+                          x-model="formData.middlename"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="David"
+                        />
+                      </div>
+
+                      <!-- Last Name -->
+                      <div>
+                        <label
+                          for="lastname"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Legal Last Name *</label
+                        >
+                        <input
+                          type="text"
+                          id="lastname"
+                          name="lastname"
+                          x-model="formData.lastname"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="Smith"
+                        />
+                      </div>
+
+                      <!-- Username -->
+                      <div>
+                        <label
+                          for="username"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Username *</label
+                        >
+                        <input
+                          type="text"
+                          id="username"
+                          name="username"
+                          x-model="formData.username"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="johnsmith123"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 2: Contact Information -->
+                  <div
+                    x-show="step === 2"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                  >
+                    <div class="text-center mb-6">
+                      <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4"
+                      >
+                        <i
+                          data-lucide="mail"
+                          class="h-8 w-8 text-primary-600"
+                        ></i>
+                      </div>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        Contact Information
+                      </h3>
+                      <p class="mt-1 text-sm text-gray-500">
+                        We'll use these details to communicate with you about
+                        your account
+                      </p>
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                      <!-- Email -->
+                      <div>
+                        <label
+                          for="email"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Email Address *</label
+                        >
+                        <div class="relative">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="mail"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            x-model="formData.email"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="john.smith@example.com"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Phone -->
+                      <div>
+                        <label
+                          for="phone"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Phone Number *</label
+                        >
+                        <div class="relative">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="phone"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            x-model="formData.phone"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="+1 (234) 567-8901"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Country -->
+                      <div>
+                        <label
+                          for="country"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Country *</label
+                        >
+                        <div class="relative">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="globe"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <select
+                            id="country"
+                            name="country"
+                            x-model="formData.country"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none"
+                          >
+                            <option value="" disabled="" selected="">
+                              Select your country
+                            </option>
+                            <option value="Afganistan">Afghanistan</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="American Samoa">
+                              American Samoa
+                            </option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Angola">Angola</option>
+                            <option value="Anguilla">Anguilla</option>
+                            <option value="Antigua &amp; Barbuda">
+                              Antigua &amp; Barbuda
+                            </option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Armenia">Armenia</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Belize">Belize</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bonaire">Bonaire</option>
+                            <option value="Bosnia &amp; Herzegovina">
+                              Bosnia &amp; Herzegovina
+                            </option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="British Indian Ocean Ter">
+                              British Indian Ocean Ter
+                            </option>
+                            <option value="Brunei">Brunei</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Canary Islands">
+                              Canary Islands
+                            </option>
+                            <option value="Cape Verde">Cape Verde</option>
+                            <option value="Cayman Islands">
+                              Cayman Islands
+                            </option>
+                            <option value="Central African Republic">
+                              Central African Republic
+                            </option>
+                            <option value="Chad">Chad</option>
+                            <option value="Channel Islands">
+                              Channel Islands
+                            </option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Christmas Island">
+                              Christmas Island
+                            </option>
+                            <option value="Cocos Island">Cocos Island</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="Congo">Congo</option>
+                            <option value="Cook Islands">Cook Islands</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Cote DIvoire">Cote D'Ivoire</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Curaco">Curacao</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czech Republic">
+                              Czech Republic
+                            </option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Dominica">Dominica</option>
+                            <option value="Dominican Republic">
+                              Dominican Republic
+                            </option>
+                            <option value="East Timor">East Timor</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Equatorial Guinea">
+                              Equatorial Guinea
+                            </option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Estonia">Estonia</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="Falkland Islands">
+                              Falkland Islands
+                            </option>
+                            <option value="Faroe Islands">Faroe Islands</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="Finland">Finland</option>
+                            <option value="France">France</option>
+                            <option value="French Guiana">French Guiana</option>
+                            <option value="French Polynesia">
+                              French Polynesia
+                            </option>
+                            <option value="French Southern Ter">
+                              French Southern Ter
+                            </option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Gibraltar">Gibraltar</option>
+                            <option value="Great Britain">Great Britain</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Greenland">Greenland</option>
+                            <option value="Grenada">Grenada</option>
+                            <option value="Guadeloupe">Guadeloupe</option>
+                            <option value="Guam">Guam</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guinea">Guinea</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Haiti">Haiti</option>
+                            <option value="Hawaii">Hawaii</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hong Kong">Hong Kong</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Isle of Man">Isle of Man</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Kiribati">Kiribati</option>
+                            <option value="Korea North">Korea North</option>
+                            <option value="Korea Sout">Korea South</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Macau">Macau</option>
+                            <option value="Macedonia">Macedonia</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Marshall Islands">
+                              Marshall Islands
+                            </option>
+                            <option value="Martinique">Martinique</option>
+                            <option value="Mauritania">Mauritania</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mayotte">Mayotte</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Midway Islands">
+                              Midway Islands
+                            </option>
+                            <option value="Moldova">Moldova</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Myanmar">Myanmar</option>
+                            <option value="Nambia">Nambia</option>
+                            <option value="Nauru">Nauru</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherland Antilles">
+                              Netherland Antilles
+                            </option>
+                            <option value="Netherlands">
+                              Netherlands (Holland, Europe)
+                            </option>
+                            <option value="Nevis">Nevis</option>
+                            <option value="New Caledonia">New Caledonia</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="Niger">Niger</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Niue">Niue</option>
+                            <option value="Norfolk Island">
+                              Norfolk Island
+                            </option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Palau Island">Palau Island</option>
+                            <option value="Palestine">Palestine</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Papua New Guinea">
+                              Papua New Guinea
+                            </option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Phillipines">Philippines</option>
+                            <option value="Pitcairn Island">
+                              Pitcairn Island
+                            </option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Puerto Rico">Puerto Rico</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Republic of Montenegro">
+                              Republic of Montenegro
+                            </option>
+                            <option value="Republic of Serbia">
+                              Republic of Serbia
+                            </option>
+                            <option value="Reunion">Reunion</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="St Barthelemy">St Barthelemy</option>
+                            <option value="St Eustatius">St Eustatius</option>
+                            <option value="St Helena">St Helena</option>
+                            <option value="St Kitts-Nevis">
+                              St Kitts-Nevis
+                            </option>
+                            <option value="St Lucia">St Lucia</option>
+                            <option value="St Maarten">St Maarten</option>
+                            <option value="St Pierre &amp; Miquelon">
+                              St Pierre &amp; Miquelon
+                            </option>
+                            <option value="St Vincent &amp; Grenadines">
+                              St Vincent &amp; Grenadines
+                            </option>
+                            <option value="Saipan">Saipan</option>
+                            <option value="Samoa">Samoa</option>
+                            <option value="Samoa American">
+                              Samoa American
+                            </option>
+                            <option value="San Marino">San Marino</option>
+                            <option value="Sao Tome &amp; Principe">
+                              Sao Tome &amp; Principe
+                            </option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Sierra Leone">Sierra Leone</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">
+                              Solomon Islands
+                            </option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Swaziland">Swaziland</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Tahiti">Tahiti</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Tajikistan">Tajikistan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Togo">Togo</option>
+                            <option value="Tokelau">Tokelau</option>
+                            <option value="Tonga">Tonga</option>
+                            <option value="Trinidad &amp; Tobago">
+                              Trinidad &amp; Tobago
+                            </option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkmenistan">Turkmenistan</option>
+                            <option value="Turks &amp; Caicos Is">
+                              Turks &amp; Caicos Is
+                            </option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Erimates">
+                              United Arab Emirates
+                            </option>
+                            <option value="United Kingdom">
+                              United Kingdom
+                            </option>
+                            <option value="United States of America">
+                              United States of America
+                            </option>
+                            <option value="Uraguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vanuatu">Vanuatu</option>
+                            <option value="Vatican City State">
+                              Vatican City State
+                            </option>
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Virgin Islands (Brit)">
+                              Virgin Islands (Brit)
+                            </option>
+                            <option value="Virgin Islands (USA)">
+                              Virgin Islands (USA)
+                            </option>
+                            <option value="Wake Island">Wake Island</option>
+                            <option value="Wallis &amp; Futana Is">
+                              Wallis &amp; Futana Is
+                            </option>
+                            <option value="Yemen">Yemen</option>
+                            <option value="Zaire">Zaire</option>
+                            <option value="Zambia">Zambia</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+                          </select>
+                          <div
+                            class="absolute inset-y-0 right-0 flex items-center pr-3"
+                          >
+                            <i
+                              data-lucide="chevron-down"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 3: Account Setup -->
+                  <div
+                    x-show="step === 3"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                  >
+                    <div class="text-center mb-6">
+                      <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4"
+                      >
+                        <i
+                          data-lucide="landmark"
+                          class="h-8 w-8 text-primary-600"
+                        ></i>
+                      </div>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        Account Setup
+                      </h3>
+                      <p class="mt-1 text-sm text-gray-500">
+                        Choose your account type and set up your transaction PIN
+                      </p>
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                      <!-- Account Type -->
+                      <div>
+                        <label
+                          for="accounttype"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Account Type *</label
+                        >
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <label
+                            @click="formData.accounttype = 'Checking Account'"
+                            class="relative block cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name="accounttype"
+                              value="Checking Account"
+                              x-model="formData.accounttype"
+                              class="sr-only"
+                            />
+                            <div
+                              class="border rounded-lg p-4 transition-all"
+                              :class="formData.accounttype === 'Checking Account' ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500' : 'border-gray-300 hover:border-primary-300'"
+                            >
+                              <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                  <div
+                                    class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center"
+                                  >
+                                    <i
+                                      data-lucide="credit-card"
+                                      class="h-5 w-5 text-primary-600"
+                                    ></i>
+                                  </div>
+                                </div>
+                                <div class="ml-3">
+                                  <h4 class="text-sm font-medium text-gray-900">
+                                    Checking Account
+                                  </h4>
+                                  <p class="text-xs text-gray-500">
+                                    Perfect for daily transactions and bill
+                                    payments
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                x-show="formData.accounttype === 'Checking Account'"
+                                class="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center"
+                              >
+                                <i
+                                  data-lucide="check"
+                                  class="h-3 w-3 text-white"
+                                ></i>
+                              </div>
+                            </div>
+                          </label>
+
+                          <label
+                            @click="formData.accounttype = 'Savings Account'"
+                            class="relative block cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name="accounttype"
+                              value="Savings Account"
+                              x-model="formData.accounttype"
+                              class="sr-only"
+                            />
+                            <div
+                              class="border rounded-lg p-4 transition-all"
+                              :class="formData.accounttype === 'Savings Account' ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500' : 'border-gray-300 hover:border-primary-300'"
+                            >
+                              <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                  <div
+                                    class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center"
+                                  >
+                                    <i
+                                      data-lucide="piggy-"
+                                      class="h-5 w-5 text-primary-600"
+                                    ></i>
+                                  </div>
+                                </div>
+                                <div class="ml-3">
+                                  <h4 class="text-sm font-medium text-gray-900">
+                                    Savings Account
+                                  </h4>
+                                  <p class="text-xs text-gray-500">
+                                    Earn interest on your deposits
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                x-show="formData.accounttype === 'Savings Account'"
+                                class="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center"
+                              >
+                                <i
+                                  data-lucide="check"
+                                  class="h-3 w-3 text-white"
+                                ></i>
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+
+                        <!-- Additional account types dropdown for more options -->
+                        <div class="mt-4" x-data="{ open: false }">
+                          <button
+                            type="button"
+                            @click="open = !open"
+                            class="w-full text-left flex items-center justify-between text-sm text-primary-600 hover:text-primary-700 focus:outline-none"
+                          >
+                            <span>Show more account types</span>
+                            <i
+                              data-lucide="chevron-down"
+                              class="h-4 w-4"
+                              :class="{'transform rotate-180': open}"
+                            ></i>
+                          </button>
+
+                          <div
+                            x-show="open"
+                            x-transition=""
+                            class="mt-2 space-y-2"
+                          >
+                            <template
+                              x-for="(type, index) in [
+                                                {value: 'Fixed Deposit Account', label: 'Fixed Deposit Account', desc: 'Highest interest rates for fixed terms', icon: 'calendar'},
+                                                {value: 'Current Account', label: 'Current Account', desc: 'For everyday business transactions', icon: 'briefcase'},
+                                                {value: 'Crypto Currency Account', label: 'Crypto Currency Account', desc: 'For digital currency management', icon: 'bitcoin'},
+                                                {value: 'Business Account', label: 'Business Account', desc: 'For small to medium businesses', icon: 'building'},
+                                                {value: 'Non Resident Account', label: 'Non Resident Account', desc: 'For international customers', icon: 'globe'},
+                                                {value: 'Cooperate Business Account', label: 'Cooperate Business Account', desc: 'For large corporations', icon: 'landmark'},
+                                                {value: 'Investment Account', label: 'Investment Account', desc: 'For stocks and securities', icon: 'trending-up'}
+                                            ]"
+                              :key="index"
+                            >
+                              <label
+                                @click="formData.accounttype = type.value"
+                                class="relative block cursor-pointer"
+                              >
+                                <input
+                                  type="radio"
+                                  name="accounttype"
+                                  :value="type.value"
+                                  x-model="formData.accounttype"
+                                  class="sr-only"
+                                />
+                                <div
+                                  class="border rounded-lg p-4 transition-all"
+                                  :class="formData.accounttype === type.value ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500' : 'border-gray-300 hover:border-primary-300'"
+                                >
+                                  <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                      <div
+                                        class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center"
+                                      >
+                                        <i
+                                          :data-lucide="type.icon"
+                                          class="h-5 w-5 text-primary-600"
+                                        ></i>
+                                      </div>
+                                    </div>
+                                    <div class="ml-3">
+                                      <h4
+                                        class="text-sm font-medium text-gray-900"
+                                        x-text="type.label"
+                                      ></h4>
+                                      <p
+                                        class="text-xs text-gray-500"
+                                        x-text="type.desc"
+                                      ></p>
+                                    </div>
+                                  </div>
+                                  <div
+                                    x-show="formData.accounttype === type.value"
+                                    class="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center"
+                                  >
+                                    <i
+                                      data-lucide="check"
+                                      class="h-3 w-3 text-white"
+                                    ></i>
+                                  </div>
+                                </div>
+                              </label>
+                            </template>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Transaction PIN -->
+                      <div>
+                        <label
+                          for="pin"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Transaction PIN (4 digits) *</label
+                        >
+                        <div class="relative" x-data="{ showPin: false }">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="key"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <input
+                            :type="showPin ? 'text' : 'password'"
+                            id="pin"
+                            name="pin"
+                            x-model="formData.pin"
+                            class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="••••"
+                            maxlength="4"
+                            pattern="[0-9]{4}"
+                          />
+                          <button
+                            type="button"
+                            @click="showPin = !showPin"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3"
+                          >
+                            <i
+                              data-lucide="eye"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="!showPin"
+                            ></i>
+                            <i
+                              data-lucide="eye-off"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="showPin"
+                            ></i>
+                          </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">
+                          Your PIN will be required to authorize transactions
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 4: Security -->
+                  <div
+                    x-show="step === 4"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                  >
+                    <div class="text-center mb-6">
+                      <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4"
+                      >
+                        <i
+                          data-lucide="shield"
+                          class="h-8 w-8 text-primary-600"
+                        ></i>
+                      </div>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        Secure Your Account
+                      </h3>
+                      <p class="mt-1 text-sm text-gray-500">
+                        Create a strong password to protect your account
+                      </p>
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                      <!-- Password -->
+                      <div x-data="{ showPassword: false }">
+                        <label
+                          for="password"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Password *</label
+                        >
+                        <div class="relative">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="lock"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <input
+                            :type="showPassword ? 'text' : 'password'"
+                            id="password"
+                            name="password"
+                            x-model="formData.password"
+                            class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            @click="showPassword = !showPassword"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3"
+                          >
+                            <i
+                              data-lucide="eye"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="!showPassword"
+                            ></i>
+                            <i
+                              data-lucide="eye-off"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="showPassword"
+                            ></i>
+                          </button>
+                        </div>
+
+                        <!-- Password Strength Meter -->
+                        <div
+                          class="mt-2"
+                          x-data="{ 
+                                        get strength() {
+                                            let score = 0;
+                                            
+                                            // Length check
+                                            if (formData.password.length > 7) score += 1;
+                                            if (formData.password.length > 10) score += 1;
+                                            
+                                            // Complexity checks
+                                            if (/[A-Z]/.test(formData.password)) score += 1;
+                                            if (/[0-9]/.test(formData.password)) score += 1;
+                                            if (/[^A-Za-z0-9]/.test(formData.password)) score += 1;
+                                            
+                                            return score;
+                                        },
+                                        get strengthLabel() {
+                                            const labels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+                                            return labels[this.strength] || 'Very Weak';
+                                        },
+                                        get strengthColor() {
+                                            const colors = [
+                                                'bg-red-500', // Very Weak
+                                                'bg-red-500', // Weak
+                                                'bg-yellow-500', // Fair
+                                                'bg-yellow-500', // Good
+                                                'bg-green-500', // Strong
+                                                'bg-green-500'  // Very Strong
+                                            ];
+                                            return colors[this.strength] || 'bg-red-500';
+                                        }
+                                    }"
+                          x-show="formData.password.length > 0"
+                        >
+                          <div class="flex justify-between items-center mb-1">
+                            <p class="text-xs text-gray-500">
+                              Password strength:
+                              <span
+                                x-text="strengthLabel"
+                                :class="{
+                                                'text-red-600': strength < 2,
+                                                'text-yellow-600': strength >= 2 && strength < 4,
+                                                'text-green-600': strength >= 4
+                                            }"
+                              ></span>
+                            </p>
+                          </div>
+                          <div
+                            class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"
+                          >
+                            <div
+                              class="h-full transition-all duration-300 ease-in-out"
+                              :class="strengthColor"
+                              :style="`width: ${(strength / 5) * 100}%`"
+                            ></div>
+                          </div>
+                          <ul class="mt-2 space-y-1 text-xs text-gray-500">
+                            <li
+                              class="flex items-center"
+                              :class="{ 'text-green-600': formData.password.length > 7 }"
+                            >
+                              <i
+                                data-lucide="check-circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="formData.password.length > 7"
+                              ></i>
+                              <i
+                                data-lucide="circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="formData.password.length <= 7"
+                              ></i>
+                              At least 8 characters
+                            </li>
+                            <li
+                              class="flex items-center"
+                              :class="{ 'text-green-600': /[A-Z]/.test(formData.password) }"
+                            >
+                              <i
+                                data-lucide="check-circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="/[A-Z]/.test(formData.password)"
+                              ></i>
+                              <i
+                                data-lucide="circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="!/[A-Z]/.test(formData.password)"
+                              ></i>
+                              At least one uppercase letter
+                            </li>
+                            <li
+                              class="flex items-center"
+                              :class="{ 'text-green-600': /[0-9]/.test(formData.password) }"
+                            >
+                              <i
+                                data-lucide="check-circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="/[0-9]/.test(formData.password)"
+                              ></i>
+                              <i
+                                data-lucide="circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="!/[0-9]/.test(formData.password)"
+                              ></i>
+                              At least one number
+                            </li>
+                            <li
+                              class="flex items-center"
+                              :class="{ 'text-green-600': /[^A-Za-z0-9]/.test(formData.password) }"
+                            >
+                              <i
+                                data-lucide="check-circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="/[^A-Za-z0-9]/.test(formData.password)"
+                              ></i>
+                              <i
+                                data-lucide="circle"
+                                class="h-3 w-3 mr-1"
+                                x-show="!/[^A-Za-z0-9]/.test(formData.password)"
+                              ></i>
+                              At least one special character
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <!-- Confirm Password -->
+                      <div x-data="{ showPassword: false }">
+                        <label
+                          for="password_confirmation"
+                          class="block text-sm font-medium text-gray-700 mb-2"
+                          >Confirm Password *</label
+                        >
+                        <div class="relative">
+                          <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3"
+                          >
+                            <i
+                              data-lucide="lock"
+                              class="h-5 w-5 text-gray-400"
+                            ></i>
+                          </div>
+                          <input
+                            :type="showPassword ? 'text' : 'password'"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            x-model="formData.password_confirmation"
+                            class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            @click="showPassword = !showPassword"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3"
+                          >
+                            <i
+                              data-lucide="eye"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="!showPassword"
+                            ></i>
+                            <i
+                              data-lucide="eye-off"
+                              class="h-5 w-5 text-gray-400"
+                              x-show="showPassword"
+                            ></i>
+                          </button>
+                        </div>
+                        <p
+                          class="mt-1 text-sm"
+                          x-show="formData.password && formData.password_confirmation"
+                          :class="formData.password === formData.password_confirmation ? 'text-green-600' : 'text-red-600'"
+                        >
+                          <span
+                            x-show="formData.password === formData.password_confirmation"
+                          >
+                            <i data-lucide="check" class="inline h-3 w-3"></i>
+                            Passwords match
+                          </span>
+                          <span
+                            x-show="formData.password !== formData.password_confirmation"
+                          >
+                            <i data-lucide="x" class="inline h-3 w-3"></i>
+                            Passwords do not match
+                          </span>
+                        </p>
+                      </div>
+
+                      <!-- Terms and Conditions -->
+                      <div>
+                        <label class="flex items-start">
+                          <input
+                            type="checkbox"
+                            id="terms"
+                            name="terms"
+                            x-model="formData.terms"
+                            class="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 mt-1"
+                          />
+                          <span class="ml-2 text-sm text-gray-600">
+                            I agree to the
+                            <a
+                              href="terms-of-service.html"
+                              class="text-primary-600 hover:text-primary-500 underline"
+                              >Terms of Service</a
+                            >
+                            and
+                            <a
+                              href="terms-of-service.html"
+                              class="text-primary-600 hover:text-primary-500 underline"
+                              >Privacy Policy</a
+                            >
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step Navigation -->
+                  <div
+                    class="flex justify-between pt-4 border-t border-gray-200"
+                  >
+                    <button
+                      type="button"
+                      x-show="step > 1"
+                      @click="prevStep"
+                      class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    >
+                      <i data-lucide="chevron-left" class="h-4 w-4 mr-2"></i>
+                      Previous
+                    </button>
+                    <div x-show="step === 1"></div>
+
+                    <button
+                      type="button"
+                      x-show="step < totalSteps"
+                      @click="nextStep"
+                      class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    >
+                      Next
+                      <i data-lucide="chevron-right" class="h-4 w-4 ml-2"></i>
+                    </button>
+
+                    <button
+                      type="submit"
+                      x-show="step === totalSteps"
+                      class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    >
+                      <i data-lucide="check" class="h-4 w-4 mr-2"></i>
+                      Create Account
+                    </button>
+                  </div>
+
+                  <!-- Hidden form fields to ensure data is submitted even if user doesn't visit every step -->
+                  <input type="hidden" name="name" :value="formData.name" />
+                  <input
+                    type="hidden"
+                    name="middlename"
+                    :value="formData.middlename"
+                  />
+                  <input
+                    type="hidden"
+                    name="lastname"
+                    :value="formData.lastname"
+                  />
+                  <input
+                    type="hidden"
+                    name="username"
+                    :value="formData.username"
+                  />
+                  <input type="hidden" name="email" :value="formData.email" />
+                  <input type="hidden" name="phone" :value="formData.phone" />
+                  <input
+                    type="hidden"
+                    name="country"
+                    :value="formData.country"
+                  />
+                  <input
+                    type="hidden"
+                    name="accounttype"
+                    :value="formData.accounttype"
+                  />
+                  <input type="hidden" name="pin" :value="formData.pin" />
+                  <input
+                    type="hidden"
+                    name="password"
+                    :value="formData.password"
+                  />
+                  <input
+                    type="hidden"
+                    name="password_confirmation"
+                    :value="formData.password_confirmation"
+                  />
+                </form>
+              </div>
+
+              <!-- Login Link -->
+              <div class="text-center mt-4 pb-4">
+                <p class="text-sm text-gray-600">
+                  Already have an account?
+                  <a
+                    href="login.html"
+                    class="text-primary-600 hover:text-primary-500 font-medium"
+                  >
+                    Sign in instead
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+      window.onload = function () {
+        const preloader = document.querySelector(".page-loading");
+
+        // Add a slight delay to make loading animation more noticeable
+        setTimeout(function () {
+          preloader.classList.remove("active");
+          setTimeout(function () {
+            preloader.remove();
+          }, 500);
+        }, 800);
+      };
+    </script>
+
+    <script>
+      // login-register-protect.js
+      async function redirectIfLoggedIn() {
+        try {
+          const res = await fetch("/api/user/check-auth", {
+            credentials: "include",
+          });
+
+          if (res.ok) {
+            // Already logged in → go to dashboard
+            window.location.href = "/dashboard/index.html";
+          }
+        } catch (err) {
+          // Not logged in → stay on page
+        }
+      }
+
+      redirectIfLoggedIn();
+    </script>
+
+    <script>
+      // Custom Toast Function
+      function showToast(
+        message,
+        type = "error",
+        fieldName = null,
+        duration = 8000,
+      ) {
+        const container = $("#customToastContainer");
+        const toastId = "toast-" + Date.now();
+
+        let icon =
+          type === "success"
+            ? '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>'
+            : '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>';
+
+        let title = type === "success" ? "Success" : "Registration Error";
+        let fieldLabel = fieldName
+          ? '<div class="custom-toast-field">Field: ' + fieldName + "</div>"
+          : "";
+
+        const toast = $(`
+            <div class="custom-toast ${type}" id="${toastId}">
+                <div class="custom-toast-icon">
+                    ${icon}
+                </div>
+                <div class="custom-toast-content">
+                    <div class="custom-toast-title">${title}</div>
+                    <div class="custom-toast-message">${message}</div>
+                    ${fieldLabel}
+                </div>
+                <div class="custom-toast-close" onclick="removeToast('${toastId}')">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+        `);
+
+        $("#customToastContainer").append(toast);
+
+        // Auto remove after specified duration
+        setTimeout(function () {
+          removeToast(toastId);
+        }, duration);
+      }
+
+      function removeToast(toastId) {
+        const toast = $("#" + toastId);
+        toast.addClass("removing");
+        setTimeout(function () {
+          toast.remove();
+        }, 300);
+      }
+    </script>
+
+    <script>
+      // Replace the existing form submit <script> block in register.html with this
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  // Include terms checkbox
+  data.terms = document.querySelector('input[name="terms"]').checked;
+
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalButtonText = submitButton.innerHTML;
+
+  submitButton.disabled = true;
+  submitButton.innerHTML = "Creating Account...";
+
+  try {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    submitButton.disabled = false;
+    submitButton.innerHTML = originalButtonText;
+
+    if (!res.ok) {
+      showToast(result.message || "Registration failed", "error");
+      return;
+    }
+
+    showToast("Account created! Redirecting to email verification...", "success");
+
+    // Save email so verify page can read it
+    sessionStorage.setItem("pendingVerifyEmail", result.email);
+
+    setTimeout(() => {
+      window.location.href = `/verify-email.html?email=${encodeURIComponent(result.email)}`;
+    }, 1500);
+
+  } catch (err) {
+    console.error(err);
+    submitButton.disabled = false;
+    submitButton.innerHTML = originalButtonText;
+    showToast("Something went wrong. Please try again.", "error");
+  }
+});
+    </script>
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+
+  </body>
+
+</html>

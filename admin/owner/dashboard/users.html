@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/users.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    <style>
+      .search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .search-input-wrap {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+      }
+
+      .search-input-wrap svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: #9ca3af;
+        pointer-events: none;
+      }
+
+      #userSearchInput {
+        width: 100%;
+        padding: 9px 12px 9px 38px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        background: #fff;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        box-sizing: border-box;
+      }
+
+      #userSearchInput:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+      }
+
+      #userSearchInput::placeholder {
+        color: #9ca3af;
+      }
+
+      #searchClearBtn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px 8px;
+        color: #6b7280;
+        font-size: 18px;
+        line-height: 1;
+        border-radius: 6px;
+      }
+
+      #searchClearBtn:hover {
+        background: #f3f4f6;
+        color: #111;
+      }
+
+      #searchResultCount {
+        font-size: 13px;
+        color: #6b7280;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Topnav -->
+    <header id="topnav-mount"></header>
+
+    <div class="admin-shell">
+      <!-- Sidebar -->
+      <aside id="sidebar-mount" class="admin-sidebar"></aside>
+
+      <!-- Main -->
+      <main class="admin-main">
+        <div class="admin-container">
+          <h1>All Users</h1>
+
+          <div class="admin-card">
+            <!-- Search Bar -->
+            <div class="search-wrap">
+              <div class="search-input-wrap">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
+                </svg>
+                <input
+                  type="text"
+                  id="userSearchInput"
+                  placeholder="Search by name or email…"
+                  autocomplete="off"
+                />
+              </div>
+              <button id="searchClearBtn" title="Clear search">×</button>
+              <span id="searchResultCount"></span>
+            </div>
+
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Deposit</th>
+                    <th>Transfer</th>
+                    <th>Login</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTbody">
+                  <tr>
+                    <td colspan="5">Loading...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Reason Modal -->
+    <div id="reasonModal" class="modal">
+      <div class="modal-content">
+        <h3>Disable Transfers</h3>
+        <p>
+          Please provide a reason why you're disabling transfers for this user.
+          This message will be shown to the user when they attempt to make a
+          transfer.
+        </p>
+
+        <textarea
+          id="transferReasonInput"
+          rows="4"
+          placeholder="Enter reason for disabling transfers..."
+        ></textarea>
+
+        <div class="modal-buttons">
+          <button id="cancelReasonBtn" class="modal-btn modal-btn-secondary">
+            Cancel
+          </button>
+          <button id="submitReasonBtn" class="modal-btn modal-btn-primary">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- More Actions Modal -->
+    <div id="moreActionsModal" class="am-modal d-none" aria-hidden="true">
+      <div class="am-backdrop" data-am-close="1"></div>
+      <div
+        class="am-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="amTitle"
+      >
+        <div class="am-header">
+          <div>
+            <div id="amTitle" class="am-title">User Actions</div>
+            <div class="am-sub">Choose what you want to do</div>
+          </div>
+          <button type="button" class="am-x" data-am-close="1">×</button>
+        </div>
+        <div class="am-body">
+          <div class="am-userline">
+            <div class="am-name" id="amUserName">—</div>
+            (<span class="am-email" id="amUserEmail">—</span>)
+          </div>
+
+          <div style="display: flex; gap: 12px">
+            <button id="amEditBtn" class="am-btn am-primary" style="flex: 1">
+              Edit User
+            </button>
+            <button id="amEmailBtn" class="am-btn am-light" style="flex: 1">
+              Send Email
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; gap: 12px">
+            <button id="amDepositsBtn" class="am-btn am-light" style="flex: 1">
+              User Deposits
+            </button>
+            <button id="amTransferBtn" class="am-btn am-light" style="flex: 1">
+              User Local Transfers
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; gap: 12px">
+            <button
+              id="amAddDepositBtn"
+              class="am-btn am-primary"
+              style="flex: 1"
+            >
+              Add Deposit
+            </button>
+            <button
+              id="amAddTransferBtn"
+              class="am-btn am-danger"
+              style="flex: 1"
+            >
+              Add Local Transfer
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; gap: 12px">
+            <button
+              id="amInternationalTransfers"
+              class="am-btn am-primary"
+              style="flex: 1"
+            >
+              User International Transfer
+            </button>
+            <button
+              id="amAddInternationalTransferBtn"
+              class="am-btn am-danger"
+              style="flex: 1"
+            >
+              Add International Transfer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer-mount"></footer>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/get-all-users.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      (function () {
+        const searchInput = document.getElementById("userSearchInput");
+        const clearBtn = document.getElementById("searchClearBtn");
+        const resultCount = document.getElementById("searchResultCount");
+
+        function filterUsers() {
+          const query = searchInput.value.trim().toLowerCase();
+          const tbody = document.getElementById("usersTbody");
+          const rows = tbody.querySelectorAll("tr");
+
+          clearBtn.style.display = query ? "inline-block" : "none";
+
+          let visible = 0;
+          rows.forEach((row) => {
+            // Name is col 0, Email is col 1
+            const name = (row.cells[0]?.textContent || "").toLowerCase();
+            const email = (row.cells[1]?.textContent || "").toLowerCase();
+            const match =
+              !query || name.includes(query) || email.includes(query);
+            row.style.display = match ? "" : "none";
+            if (match) visible++;
+          });
+
+          // Show count only when searching
+          if (query) {
+            resultCount.textContent = `${visible} result${visible !== 1 ? "s" : ""}`;
+          } else {
+            resultCount.textContent = "";
+          }
+        }
+
+        searchInput.addEventListener("input", filterUsers);
+
+        clearBtn.addEventListener("click", function () {
+          searchInput.value = "";
+          filterUsers();
+          searchInput.focus();
+        });
+
+        // Re-run filter after the table loads (in case get-all-users.js populates it async)
+        const tbody = document.getElementById("usersTbody");
+        const observer = new MutationObserver(function () {
+          if (searchInput.value.trim()) filterUsers();
+        });
+        observer.observe(tbody, { childList: true, subtree: true });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+
+    <style>
+      :root {
+        --card-bg: #ffffff;
+        --card-border: rgba(0, 0, 0, 0.08);
+        --muted: rgba(0, 0, 0, 0.62);
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        --radius: 16px;
+      }
+
+      .page-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+      }
+
+      .page-subtitle {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .head-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .btnx {
+        appearance: none;
+        border: 1px solid var(--card-border);
+        background: var(--card-bg);
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+        transition:
+          transform 120ms ease,
+          box-shadow 120ms ease,
+          border-color 120ms ease;
+      }
+      .btnx:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+        border-color: rgba(0, 0, 0, 0.14);
+      }
+      .btnx.primary {
+        border-color: rgba(3, 61, 117, 0.25);
+        background: rgba(3, 61, 117, 0.08);
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(12, 1fr);
+        margin-bottom: 14px;
+      }
+
+      .cardx {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        padding: 14px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+      }
+
+      .kpi {
+        grid-column: span 4;
+        min-height: 92px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .kpi .label {
+        color: var(--muted);
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(3, 61, 117, 0.55);
+      }
+
+      .kpi .value {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .kpi .meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: -0.01em;
+      }
+
+      .pill {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--card-border);
+        color: var(--muted);
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      .tablex {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .tablex th,
+      .tablex td {
+        padding: 10px 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        text-align: left;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .tablex th {
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 900px) {
+        .kpi {
+          grid-column: span 12;
+        }
+        .page-head {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .head-actions {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header id="topnav-mount"></header>
+
+    <div class="admin-shell">
+      <aside id="sidebar-mount" class="admin-sidebar"></aside>
+
+      <main class="admin-main">
+        <div class="admin-container" style="margin-top: 50px">
+          <div class="page-head">
+            <div>
+              <h1 class="page-title">Dashboard</h1>
+              <p class="page-subtitle">Users overview.</p>
+            </div>
+
+            <div class="head-actions">
+              <button class="btnx" type="button" id="refreshBtn">
+                Refresh
+              </button>
+              <button
+                class="btnx primary"
+                type="button"
+                onclick="
+                  window.location.href = '/admin/owner/dashboard/users.html'
+                "
+              >
+                View All Users
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI -->
+          <div class="grid kpi-grid">
+            <div class="cardx kpi">
+              <div class="label"><span class="dot"></span> Total Users</div>
+              <div>
+                <div class="value" id="userCount">—</div>
+                <div class="meta" id="lastUpdated">Last updated: —</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent users -->
+          <section class="cardx">
+            <div class="section-title">
+              <h2>Recent Registrations</h2>
+              <span class="pill">Latest 5</span>
+            </div>
+
+            <div style="overflow: auto">
+              <table class="tablex">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="recentUsersBody">
+                  <tr>
+                    <td colspan="3" class="muted">Loading…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <footer id="footer-mount"></footer>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+
+    <script src="/admin-script/admin-logout.js"></script>
+
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      (function () {
+        const API_URL = "/api/admin/users"; // change to "/ap1/admin/users" if that's your real route
+
+        const $ = (id) => document.getElementById(id);
+
+        function fullName(u) {
+          return String(u.name || "").trim() || "—";
+        }
+
+        function fmtDate(d) {
+          const dt = new Date(d);
+          if (Number.isNaN(dt.getTime())) return String(d || "");
+          return dt.toLocaleString();
+        }
+
+        function setLoading() {
+          $("userCount").textContent = "—";
+          $("lastUpdated").textContent = "Last updated: —";
+          $("recentUsersBody").innerHTML =
+            `<tr><td colspan="3" class="muted">Loading…</td></tr>`;
+        }
+
+        function setError(message) {
+          $("recentUsersBody").innerHTML =
+            `<tr><td colspan="3" class="muted">${message}</td></tr>`;
+        }
+
+        async function loadUsers() {
+          setLoading();
+
+          try {
+            const res = await fetch(API_URL, {
+              method: "GET",
+              credentials: "include", // keep cookies for admin auth
+              headers: { Accept: "application/json" },
+            });
+
+            if (!res.ok) {
+              const text = await res.text().catch(() => "");
+              throw new Error(`Failed (${res.status}). ${text}`.trim());
+            }
+
+            const users = await res.json();
+
+            if (!Array.isArray(users)) {
+              throw new Error("Unexpected response shape (expected array).");
+            }
+
+            $("userCount").textContent = String(users.length);
+            $("lastUpdated").textContent =
+              "Last updated: " + new Date().toLocaleTimeString();
+
+            const recent = users.slice(0, 5);
+
+            if (recent.length === 0) {
+              $("recentUsersBody").innerHTML =
+                `<tr><td colspan="3" class="muted">No users found.</td></tr>`;
+              return;
+            }
+
+            $("recentUsersBody").innerHTML = recent
+              .map((u) => {
+                const name = fullName(u) || "—";
+                const email = u.email || "—";
+                const date = fmtDate(u.createdAt);
+
+                return `
+                  <tr>
+                    <td>${escapeHtml(name)}</td>
+                    <td>${escapeHtml(email)}</td>
+                    <td>${escapeHtml(date)}</td>
+                  </tr>
+                `;
+              })
+              .join("");
+          } catch (err) {
+            console.error("Dashboard loadUsers error:", err);
+            setError("Could not load users. Check API route / admin auth.");
+          }
+        }
+
+        // Basic HTML escaping (avoid XSS from user data)
+        function escapeHtml(str) {
+          return String(str || "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          loadUsers();
+          const btn = $("refreshBtn");
+          if (btn) btn.addEventListener("click", loadUsers);
+        });
+      })();
+    </script>
+  </body>
+</html>

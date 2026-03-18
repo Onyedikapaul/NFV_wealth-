@@ -1,0 +1,2343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFV Wealth | Local Transfer</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+        
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    
+        
+        
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'dashboard',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+                <!-- Desktop Layout -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                                  <div id="sidebar-slot"></div>
+
+                    
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col w-full">
+                <!-- Desktop Header -->
+                              <div id="header-slot"></div>
+
+                <!-- Main Content -->
+                <main class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-0">
+                    <div class="h-full overflow-y-auto">
+                        
+<div class="min-h-screen lg:min-h-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4 lg:p-6 pb-24 lg:pb-10">
+    <div class="max-w-8xl mx-auto">
+        <!-- Mobile Header -->
+        <div class="lg:hidden mb-2">
+            <div class="lg:hidden" x-data="{ showMobileNotifications: false }">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2">
+                            <!-- Back Button -->
+                <a href="index.html" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 mr-2">
+                    <i class="fa-solid fa-arrow-left text-gray-700 dark:text-gray-300 text-base"></i>
+                </a>
+                        
+            <div>
+                                    <!-- Custom Title -->
+                    <p class="text-gray-900 dark:text-white font-semibold text-base">Local Transfer</p>
+                            </div>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+                            <!-- Dark Mode Toggle -->
+                <button @click="toggleDarkMode()" 
+                        class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i x-show="!darkMode" class="fa-solid fa-moon text-gray-700 text-base"></i>
+                    <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-base"></i>
+                </button>
+                        
+                            <!-- Notifications -->
+                <div class="relative">
+                    <!-- <button @click="showMobileNotifications = !showMobileNotifications" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fa-solid fa-bell text-gray-700 dark:text-gray-300 text-base"></i>
+                    </button> -->
+                                                        </div>
+                    </div>
+    </div>
+
+            <!-- Mobile Notifications Panel -->
+        <div x-show="showMobileNotifications" 
+             x-transition:enter="transition ease-out duration-300" 
+             x-transition:enter-start="opacity-0 -translate-y-4" 
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200" 
+             x-transition:leave-start="opacity-100 translate-y-0" 
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm" 
+             @click="showMobileNotifications = false">
+            
+            <div @click.stop class="absolute top-0 left-0 right-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white rounded-b-3xl shadow-2xl dark:shadow-slate-900/50 max-h-[80vh] overflow-hidden">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-4 border-b border-white/10 dark:border-white/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/10 dark:bg-white/20 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-bell text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Notifications</h3>
+                                                                                        <p class="text-xs text-white/60">All caught up!</p>
+                                                    </div>
+                    </div>
+                    <button @click="showMobileNotifications = false" class="w-8 h-8 bg-white/10 dark:bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/20 dark:hover:bg-white/30 transition-colors">
+                        <i class="fa-solid fa-times text-white text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Notifications List -->
+                <div class="overflow-y-auto max-h-96 custom-scrollbar">
+                                        
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Deposit Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your deposit of $1000 via Bank Transfer has been received and is pending approval.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Loan Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your loan application for 102500 has been submitted successfully and is pending approval. You will be notified once it is processed.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Grant Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your grant application has been submitted successfully and is now being processed.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Card Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your card application has been submitted and is awaiting approval. You will be notified when the status changes.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        5 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+                
+                <!-- Footer Actions -->
+                                <div class="p-4 border-t border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/10">
+                    <div class="flex items-center justify-between">
+                        <button class="text-sm font-semibold text-white/70 dark:text-white/80 hover:text-white transition-colors">
+                            Mark all as read
+                        </button>
+                        <a href="notifications.html" class="text-sm font-semibold text-primary-400 dark:text-primary-300 hover:text-primary-300 dark:hover:text-primary-200 transition-colors flex items-center">
+                            View All
+                            <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                            </div>
+        </div>
+    </div>         </div>
+
+        <!-- Desktop Header -->
+        <div class="hidden lg:block mb-4">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                    <i class="fas fa-paper-plane text-white text-lg"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Local Transfer</h1>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 ml-13">Send money to any local bank account securely and instantly</p>
+        </div>
+
+        <!-- Delete Confirm Modal -->
+<div id="deleteConfirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/50 w-full max-w-sm p-6">
+    <div class="text-center mb-5">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/30 mb-3">
+        <i class="fa-solid fa-trash text-xl text-red-500"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white">Delete Beneficiary</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" id="deleteConfirmText">Are you sure?</p>
+    </div>
+    <div class="flex gap-3">
+      <button id="deleteCancelBtn" class="flex-1 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition">Cancel</button>
+      <button id="deleteConfirmBtn" class="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-medium text-sm transition">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+                <div id="transferFormData" x-data="{
+            amount: '',
+            accountname: '',
+            accountnumber: '',
+            bankname: '',
+            Accounttype: 'Online System',
+            routing_number: '',
+            swift_code: '',
+            pin: '',
+            otp_code: '',
+            Description: '',
+            isSubmitting: false,
+            showPreview: false,
+
+validateAmount() {
+    const maxBalance = window._userBalance || 0;
+    const minTransfer = window._transactionMin || 100;
+    const maxTransfer = window._transactionMax || 500000;
+    if (this.amount > maxBalance) this.amount = maxBalance;
+    if (this.amount > 0 && this.amount < minTransfer) return false;
+    if (this.amount > maxTransfer) return false;
+    return true;
+  },
+
+  getMaxBalance() {
+    return window._userBalance || 0;
+  },
+
+            // Handle beneficiary selection
+            handleBeneficiarySelection(beneficiary) {
+                this.accountname = beneficiary.account_name || '';
+                this.accountnumber = beneficiary.account_number || '';
+                this.bankname = beneficiary.bank_name || '';
+                this.Accounttype = beneficiary.account_type || 'Online System';
+                this.routing_number = beneficiary.routing_number || '';
+                this.swift_code = beneficiary.swift_code || '';
+                this.Description = 'Transfer to ' + beneficiary.name;
+            },
+
+            // Get current form data for saving as beneficiary
+            getCurrentFormData() {
+                return {
+                    account_name: this.accountname,
+                    account_number: this.accountnumber,
+                    bank_name: this.bankname,
+                    account_type: this.Accounttype,
+                    routing_number: this.routing_number,
+                    swift_code: this.swift_code,
+                    method_type: null // For local transfers
+                };
+            }
+        }"
+        @beneficiary-selected="handleBeneficiarySelection($event.detail)"
+        class="pt-4">
+
+        <script>
+        // Make quickTransfer function available globally
+        function quickTransfer() {
+            return {
+                beneficiaries: [],
+                loading: false,
+                showBeneficiaryForm: false,
+                beneficiaryName: '',
+                beneficiaryIsFavorite: false,
+                savingBeneficiary: false,
+                transferType: 'local',
+                methodType: '',
+
+                init() {
+                    this.loadBeneficiaries();
+
+                    // Listen for show beneficiary form event on window
+                    window.addEventListener('show-beneficiary-form', () => {
+                        this.showBeneficiaryForm = true;
+
+                        // Scroll to the form after a short delay to ensure it's rendered
+                        setTimeout(() => {
+                            const formElement = this.$el.querySelector('[x-show="showBeneficiaryForm"]');
+                            if (formElement) {
+                                formElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'center'
+                                });
+                            }
+                        }, 100);
+                    });
+                },
+
+                async loadBeneficiaries() {
+                    this.loading = true;
+                    try {
+                        const response = await fetch(`beneficiaries.php`, {
+                            headers: {
+                                'Accept': 'application/json',
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.beneficiaries = data.beneficiaries;
+                        }
+                    } catch (error) {
+                        console.error('Error loading beneficiaries:', error);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async selectBeneficiary(beneficiary) {
+                    try {
+                        // Directly emit the beneficiary data we already have
+                        this.$dispatch('beneficiary-selected', beneficiary);
+                        
+                        // Show success message
+                        this.showNotification('Beneficiary details loaded successfully!', 'success');
+                    } catch (error) {
+                        console.error('Error loading beneficiary data:', error);
+                        this.showNotification('Error loading beneficiary details', 'error');
+                    }
+                },
+
+                async toggleFavorite(beneficiary) {
+                    try {
+                        const response = await fetch(`beneficiaries.php`, {
+                            method: 'PUT',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id: beneficiary.id,
+                                is_favorite: !beneficiary.is_favorite
+                            })
+                        });
+  
+                        const data = await response.json();
+                        if (data.success) {
+                            beneficiary.is_favorite = !beneficiary.is_favorite;
+                            this.showNotification(data.message, 'success');
+                        }
+                    } catch (error) {
+                        console.error('Error toggling favorite:', error);
+                        this.showNotification('Error updating favorite status', 'error');
+                    }
+                },
+
+              async deleteBeneficiary(beneficiary) {
+    // Show custom confirm modal
+    const confirmed = await new Promise((resolve) => {
+        const modal = document.getElementById('deleteConfirmModal');
+        document.getElementById('deleteConfirmText').textContent = 
+            `Are you sure you want to delete "${beneficiary.name}"?`;
+        modal.classList.remove('hidden');
+
+        document.getElementById('deleteConfirmBtn').onclick = () => {
+            modal.classList.add('hidden');
+            resolve(true);
+        };
+        document.getElementById('deleteCancelBtn').onclick = () => {
+            modal.classList.add('hidden');
+            resolve(false);
+        };
+    });
+
+    if (!confirmed) return;
+
+    try {
+        const response = await fetch('/api/beneficiaries', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ id: beneficiary._id })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            this.beneficiaries = this.beneficiaries.filter(b => b._id !== beneficiary._id);
+            this.showNotification(data.message, 'success');
+        } else {
+            this.showNotification(data.message || 'Failed to delete', 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting beneficiary:', error);
+        this.showNotification('Error deleting beneficiary', 'error');
+    }
+},
+                async saveBeneficiary() {
+                    if (!this.beneficiaryName.trim()) return;
+
+                    this.savingBeneficiary = true;
+                    try {
+                        // Get current form data from parent
+                        const formData = this.getCurrentFormData();
+
+                        const beneficiaryData = {
+                            name: this.beneficiaryName,
+                            type: this.transferType,
+                            is_favorite: this.beneficiaryIsFavorite,
+                            ...formData
+                        };
+
+                        const response = await fetch('beneficiaries.php', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(beneficiaryData)
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.beneficiaries.unshift(data.beneficiary);
+                            this.showBeneficiaryForm = false;
+                            this.resetBeneficiaryForm();
+                            this.showNotification(data.message, 'success');
+                        } else {
+                            this.showNotification('Error saving beneficiary: ' + (data.message || 'Unknown error'), 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error saving beneficiary:', error);
+                        this.showNotification('Error saving beneficiary', 'error');
+                    } finally {
+                        this.savingBeneficiary = false;
+                    }
+                },
+
+                getCurrentFormData() {
+                    // Try to get form data from parent Alpine component
+                    const parentData = this.$root.__x_data_stack?.[0];
+                    if (parentData && parentData.getCurrentFormData) {
+                        return parentData.getCurrentFormData();
+                    }
+
+                    // Fallback: try to get data directly from form inputs
+                    const accountname = document.getElementById('accountname')?.value || '';
+                    const accountnumber = document.getElementById('accountnumber')?.value || '';
+                    const bankname = document.getElementById('bankname')?.value || '';
+                    const accounttype = document.querySelector('select[name="Accounttype"]')?.value || 'Online System';
+                    const routingNumber = document.getElementById('routing_number')?.value || '';
+                    const swiftCode = document.getElementById('swift_code')?.value || '';
+
+                    return {
+                        account_name: accountname,
+                        account_number: accountnumber,
+                        bank_name: bankname,
+                        account_type: accounttype,
+                        routing_number: routingNumber,
+                        swift_code: swiftCode,
+                        method_type: null // For local transfers
+                    };
+                },
+
+                resetBeneficiaryForm() {
+                    this.beneficiaryName = '';
+                    this.beneficiaryIsFavorite = false;
+                },
+
+                showNotification(message, type = 'info') {
+                    // Simple notification system - can be enhanced
+                    const notification = document.createElement('div');
+                    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
+                        type === 'success' ? 'bg-green-500 text-white' :
+                        type === 'error' ? 'bg-red-500 text-white' :
+                        'bg-blue-500 text-white'
+                    }`;
+                    notification.textContent = message;
+                    document.body.appendChild(notification);
+
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 3000);
+                }
+            }
+        }
+        </script>
+            <!-- Alerts -->
+            <div class="mb-2">
+                                            </div>
+
+            <!-- Main Transfer Card -->
+            <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden">
+                <!-- Modern Header -->
+                <div class="relative bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 dark:from-primary-600 dark:via-primary-700 dark:to-primary-800 p-6 lg:p-8">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <i class="fas fa-paper-plane text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl lg:text-2xl font-bold text-white">Local Transfer</h2>
+                                    <p class="text-white/80 text-sm">Send money instantly</p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:flex items-center space-x-2 text-white/60">
+                                <i class="fas fa-shield-alt"></i>
+                                <span class="text-xs font-medium">Secure</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                                <div class="flex items-center space-x-1 mb-1">
+                                    <i class="fas fa-clock text-white/80 text-xs"></i>
+                                    <span class="text-white/80 text-xs font-medium">Time</span>
+                                </div>
+                                <p class="text-white font-bold text-sm">Instant</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                                <div class="flex items-center space-x-1 mb-1">
+                                    <i class="fas fa-percentage text-white/80 text-xs"></i>
+                                    <span class="text-white/80 text-xs font-medium">Fee</span>
+                                </div>
+                                <p class="text-white font-bold text-sm">Free</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                                <div class="flex items-center space-x-1 mb-1">
+                                    <i class="fas fa-university text-white/80 text-xs"></i>
+                                    <span class="text-white/80 text-xs font-medium">Banks</span>
+                                </div>
+                                <p class="text-white font-bold text-sm">All Local</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-white transform translate-x-16 -translate-y-16"></div>
+                        <div class="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white transform -translate-x-12 translate-y-12"></div>
+                    </div>
+                </div>
+
+                <!-- Form Content -->
+                <div class="p-4 lg:p-6 space-y-6">
+                    <!-- Quick Transfer Component -->
+                    <div x-data="quickTransfer()" x-init="loadBeneficiaries()">
+                        <div class="mb-6" x-show="!showBeneficiaryForm">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="text-base font-semibold text-gray-900 dark:text-white">Quick Transfer</h3>
+        <button 
+            @click="loadBeneficiaries()"
+            class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+        >
+            <i class="fa-solid fa-refresh mr-1 text-xs" :class="{'fa-spin': loading}"></i>
+            Refresh
+        </button>
+    </div>
+    
+    <div class="flex space-x-3 overflow-x-auto pb-2" x-show="!loading">
+        <!-- Add New Beneficiary -->
+        <button 
+            @click="showBeneficiaryForm = true"
+            class="flex-shrink-0 flex flex-col items-center justify-center group"
+        >
+            <div class="w-14 h-14 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 flex items-center justify-center mb-1 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:border-primary-400 dark:group-hover:border-primary-500 transition-all duration-200">
+                <i class="fa-solid fa-plus text-gray-400 dark:text-gray-500 text-base group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors"></i>
+            </div>
+            <span class="text-xs text-gray-500 dark:text-gray-400 text-center group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Add New</span>
+        </button>
+
+        <!-- Beneficiaries List -->
+        <template x-for="beneficiary in beneficiaries" :key="beneficiary.id">
+            <div class="flex-shrink-0 flex flex-col items-center justify-center group relative">
+                <button 
+                    @click="selectBeneficiary(beneficiary)"
+                    class="relative w-14 h-14 rounded-full flex items-center justify-center mb-1 border-2 border-white dark:border-gray-800 shadow-sm dark:shadow-gray-900/25 hover:scale-105 transition-all duration-200"
+                    :class="beneficiary.color"
+                >
+                    <span class="text-white font-semibold text-sm" x-text="beneficiary.initials"></span>
+                    
+                    <!-- Favorite Star -->
+                    <div 
+                        x-show="beneficiary.is_favorite" 
+                        class="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center"
+                    >
+                        <i class="fa-solid fa-star text-white text-xs"></i>
+                    </div>
+                </button>
+                
+                <span class="text-xs text-gray-700 dark:text-gray-300 text-center max-w-16 truncate" x-text="beneficiary.name"></span>
+                
+                <!-- Quick Actions on Hover -->
+                <div class="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                    <div class="flex flex-col space-y-1">
+                        <button 
+                            @click.stop="toggleFavorite(beneficiary)"
+                            class="w-6 h-6 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
+                            :class="beneficiary.is_favorite ? 'text-yellow-500' : 'text-gray-400'"
+                        >
+                            <i class="fa-solid fa-star text-xs"></i>
+                        </button>
+                        <button 
+                            @click.stop="deleteBeneficiary(beneficiary)"
+                            class="w-6 h-6 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Loading State -->
+        <template x-if="loading">
+            <div class="flex space-x-3">
+                <template x-for="i in 4">
+                    <div class="flex-shrink-0 flex flex-col items-center justify-center">
+                        <div class="w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse mb-1"></div>
+                        <div class="w-12 h-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template x-if="!loading && beneficiaries.length === 0">
+            <div class="flex-shrink-0 flex flex-col items-center justify-center py-8 px-4">
+                <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-users text-gray-400 dark:text-gray-500 text-xl"></i>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center">No saved beneficiaries yet</p>
+                <p class="text-xs text-gray-400 dark:text-gray-500 text-center mt-1">Add one to get started</p>
+            </div>
+        </template>
+    </div>
+</div>
+
+<!-- Add/Save Beneficiary Form -->
+<div x-show="showBeneficiaryForm" x-cloak class="mb-6">
+    <div class="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-sm rounded-xl border border-blue-200/50 dark:border-blue-700/50 p-4">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                    <i class="fas fa-bookmark text-white text-xs"></i>
+                </div>
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white">Save as Beneficiary</h3>
+            </div>
+            <button 
+                @click="showBeneficiaryForm = false; resetBeneficiaryForm()"
+                class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 transition-colors"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Beneficiary Name</label>
+                <input 
+                    type="text" 
+                    x-model="beneficiaryName"
+                    class="block w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                    placeholder="Enter a name for this beneficiary"
+                />
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <label class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        x-model="beneficiaryIsFavorite"
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    />
+                    <span class="ml-2 text-xs text-gray-700 dark:text-gray-300">Mark as favorite</span>
+                </label>
+            </div>
+
+            <div class="flex space-x-2">
+                <button 
+                    @click="saveBeneficiary()"
+                    :disabled="!beneficiaryName.trim() || savingBeneficiary"
+                    class="flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <template x-if="!savingBeneficiary">
+                        <div class="flex items-center">
+                            <i class="fas fa-save mr-2"></i>
+                            Save Beneficiary
+                        </div>
+                    </template>
+                    <template x-if="savingBeneficiary">
+                        <div class="flex items-center">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Saving...
+                        </div>
+                    </template>
+                </button>
+                <button 
+                    @click="showBeneficiaryForm = false; resetBeneficiaryForm()"
+                    class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+</style>                    </div>
+
+                <form @submit.prevent="showPreview = true" id="transferForm">
+                    <input type="hidden" name="_token" value="FZZWwxlVbrK38DQUzT0jxHbibxqNaH4AEaI3RV0l">
+                    <!-- Account Balance Display -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-wallet text-white text-xs"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Available Balance</h3>
+                        </div>
+
+                        <!-- Fiat Balance Card -->
+                        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-lg">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                        <i class="fas fa-university text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Account Balance</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">USD Currency</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex items-baseline space-x-1">
+
+                                    <!-- User Balance -->
+                                    <span class="text-2xl font-bold text-gray-900 dark:text-white" id="balance-display">Loading...</span>
+
+                                </div>
+                                <div class="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-circle text-green-500 text-xs"></i>
+                                    <span>Available for transfer</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden input for balance type (always fiat for local transfers) -->
+                        <input type="hidden" name="balance_type" value="fiat">
+                    </div>
+
+                    <!-- Amount Input Section -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-white text-xs"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Transfer Amount</h3>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 p-4">
+                            <!-- Amount Input -->
+                            <div class="relative mb-4">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                    <span class="text-gray-400 dark:text-gray-500 text-xl font-bold">$</span>
+                                </div>
+                               <input
+    type="number"
+    name="amount"
+    id="amount"
+    x-model="amount"
+    @input="validateAmount()"
+    min="1"
+    step="0.01"
+                                    class="block w-full pl-12 pr-16 py-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-2xl font-bold text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                                    placeholder="0.00"
+                                    required
+                                />
+                            </div>
+
+                            <!-- Quick Amount Buttons -->
+                            <div class="space-y-2">
+                                <p class="text-xs font-medium text-gray-700 dark:text-gray-300">Quick amounts:</p>
+
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" @click="amount = '100'" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-primary-100 dark:hover:bg-primary-900/50 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-primary-700 dark:hover:text-primary-300 transition-all duration-200 border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600">$100</button>
+                                    <button type="button" @click="amount = '500'" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-primary-100 dark:hover:bg-primary-900/50 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-primary-700 dark:hover:text-primary-300 transition-all duration-200 border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600">$500</button>
+                                    <button type="button" @click="amount = '1000'" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-primary-100 dark:hover:bg-primary-900/50 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-primary-700 dark:hover:text-primary-300 transition-all duration-200 border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600">$1000</button>
+                                    <button type="button" @click="amount = Math.floor(getMaxBalance())" class="px-3 py-1.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 rounded-lg text-xs font-medium text-white transition-all duration-200 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-wallet mr-1"></i>All
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Amount Info -->
+                            <div class="mt-6 p-4 bg-primary-50/50 dark:bg-primary-900/20 rounded-xl border border-primary-200/50 dark:border-primary-700/50" x-show="amount && parseFloat(amount) > 0">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-info-circle text-primary-500 dark:text-primary-400"></i>
+                                    <span class="text-sm font-medium text-primary-700 dark:text-primary-300">Transfer Information</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Transfer amount: <span class="font-semibold text-gray-900 dark:text-white" x-text="'$' + parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' USD'"></span></p>
+                            </div>
+
+                            <!-- Transfer Limits Info -->
+                            <div class="mt-4 p-3 bg-gray-50/80 dark:bg-gray-800/80 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-shield-alt text-gray-500 dark:text-gray-400 text-xs"></i>
+                                    <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Transfer Limits</span>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                                    <span>Minimum: 
+                                        <!-- Transfer Limit Min -->
+                                          <span class="font-semibold text-gray-900 dark:text-white">$100.00</span>
+
+                                </span>
+                                    <span>Maximum:
+                                        <!-- Transfer Limit Max -->
+                                         <span class="font-semibold text-gray-900 dark:text-white" id="transfer-max-display">$500,000.00</span>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Beneficiary Details Section -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-xs"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Beneficiary Details</h3>
+                        </div>
+
+                        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 p-4 space-y-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <!-- Beneficiary Account Name -->
+                                <div class="space-y-2">
+                                    <label for="accountname" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Account Holder Name</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="accountname"
+                                            id="accountname"
+                                            x-model="accountname"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                            placeholder="Enter full name as on bank account"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Beneficiary Account Number -->
+                                <div class="space-y-2">
+                                    <label for="accountnumber" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Account Number</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-hashtag text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="accountnumber"
+                                            id="accountnumber"
+                                            x-model="accountnumber"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                            placeholder="Enter account number"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <!-- Bank Name -->
+                                <div class="space-y-2">
+                                    <label for="bankname" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Bank Name</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-university text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="bankname"
+                                            id="bankname"
+                                            x-model="bankname"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                            placeholder="Enter bank name"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Account Type -->
+                                <div class="space-y-2">
+                                    <label for="Accounttype" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Account Type</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-credit-card text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <select
+                                            name="Accounttype"
+                                            id="Accounttype"
+                                            x-model="Accounttype"
+                                            class="block w-full pl-10 pr-10 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none text-gray-900 dark:text-white text-sm"
+                                            required
+                                        >
+                                            <option value="Online System">Online System</option>
+                                            <option value="Joint Account">Joint Account</option>
+                                            <option value="Checking">Checking</option>
+                                            <option value="Savings Account">Savings Account</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-chevron-down text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <!-- Routing Number -->
+                                <div class="space-y-2">
+                                    <label for="routing_number" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Routing Number</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-route text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="routing_number"
+                                            id="routing_number"
+                                            x-model="routing_number"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                            placeholder="Enter 9-digit routing number"
+                                            maxlength="9"
+                                        />
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">9-digit number found on your checks</p>
+                                </div>
+
+                                <!-- SWIFT Code -->
+                                <div class="space-y-2">
+                                    <label for="swift_code" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">SWIFT Code</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-globe text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="swift_code"
+                                            id="swift_code"
+                                            x-model="swift_code"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                            placeholder="Enter SWIFT/BIC code"
+                                            maxlength="11"
+                                        />
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">8-11 character bank identifier code</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information Section -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-info-circle text-white text-xs"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Additional Information</h3>
+                        </div>
+
+                        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 p-4 space-y-4">
+                            <!-- Description -->
+                            <div class="space-y-2">
+                                <label for="Description" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Description/Memo</label>
+                                <div class="relative">
+                                    <div class="absolute top-3 left-3 flex items-start pointer-events-none z-10">
+                                        <i class="fas fa-comment-alt text-gray-400 dark:text-gray-500"></i>
+                                    </div>
+                                    <textarea
+                                        name="Description"
+                                        id="Description"
+                                        x-model="Description"
+                                        class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all resize-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                        placeholder="Enter transaction description or purpose of payment (optional)"
+                                        rows="2"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Transaction PIN -->
+                            <div class="space-y-2">
+                                <label for="pin" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">Transaction PIN</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                        <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
+                                    </div>
+                                    <input
+                                        type="password"
+                                        name="pin"
+                                        id="pin"
+                                        x-model="pin"
+                                        autocomplete="current-password"
+                                        class="block w-full pl-10 pr-10 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                                        placeholder="Enter your transaction PIN"
+                                        required
+                                    />
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center z-10">
+                                        <button
+                                            type="button"
+                                            class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none transition-colors"
+                                            @click="document.getElementById('pin').type = document.getElementById('pin').type === 'password' ? 'text' : 'password'"
+                                        >
+                                            <i class="fas fa-eye" x-show="document.getElementById('pin').type === 'password'"></i>
+                                            <i class="fas fa-eye-slash" x-show="document.getElementById('pin').type === 'text'" style="display: none;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1 mt-2">
+                                    <i class="fas fa-shield-alt text-primary-500 dark:text-primary-400 text-xs"></i>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">This is your transaction PIN, not your login password</p>
+                                </div>
+                            </div>
+
+                            <!-- OTP Code -->
+                            <div class="space-y-2">
+                                <label for="otp_code" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">One-Time Password (OTP)</label>
+                                <div class="flex gap-2">
+                                    <button
+                                        type="button"
+                                        onclick="requestOTP('local_transfer')"
+                                        id="otpRequestBtn"
+                                        class="px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg text-sm whitespace-nowrap"
+                                    >
+                                        <i class="fas fa-envelope mr-2"></i>Request OTP
+                                    </button>
+                                    <div class="relative flex-1">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                                            <i class="fas fa-key text-gray-400 dark:text-gray-500"></i>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="otp_code"
+                                            id="otp_code"
+                                            x-model="otp_code"
+                                            maxlength="6"
+                                            pattern="[0-9]{6}"
+                                            class="block w-full pl-10 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm tracking-widest text-center font-mono"
+                                            placeholder="000000"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1 mt-2">
+                                    <i class="fas fa-info-circle text-blue-500 dark:text-blue-400 text-xs"></i>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Enter the 6-digit code sent to your email (valid for 10 minutes)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Summary -->
+                    <div x-show="amount > 0" class="bg-gradient-to-br from-primary-50/80 to-blue-50/80 dark:from-primary-900/30 dark:to-slate-800/60 backdrop-blur-sm rounded-xl border border-primary-200/50 dark:border-primary-700/50 p-4 shadow-lg mt-4">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-receipt text-white text-xs"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Transaction Summary</h3>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-gray-700 dark:text-gray-300 font-medium text-sm">Transfer Amount</span>
+                                <span class="font-bold text-gray-900 dark:text-white">$<span x-text="parseFloat(amount || 0).toFixed(2)"></span></span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-gray-700 dark:text-gray-300 font-medium text-sm">Payment Source</span>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-university text-blue-600 dark:text-blue-400 text-xs"></i>
+                                    <span class="font-semibold text-gray-900 dark:text-white text-sm">Account Balance</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-gray-700 dark:text-gray-300 font-medium text-sm">Transfer Fee</span>
+                                <div class="flex items-center space-x-1">
+                                    <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-full text-xs font-medium">FREE</span>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-300 dark:border-gray-600 pt-3 mt-3">
+                                <div class="flex justify-between items-center py-1">
+                                    <span class="text-gray-900 dark:text-white font-bold">Total Amount</span>
+                                    <span class="font-bold text-xl text-primary-700 dark:text-primary-300">$<span x-text="parseFloat(amount || 0).toFixed(2)"></span></span>
+                                </div>
+
+                                <div class="flex justify-between items-center py-1 mt-1">
+                                    <span class="text-gray-700 dark:text-gray-300 font-medium text-sm">Remaining Balance</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white text-sm">$<span x-text="(getMaxBalance() - parseFloat(amount || 0)).toFixed(2)"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col lg:flex-row lg:space-x-3 space-y-2 lg:space-y-0 pt-4">
+                        <button
+                            type="submit"
+                            class="w-full lg:flex-1 inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-xl shadow-lg text-base font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+                            :disabled="!amount || !accountname || !accountnumber || !bankname || !pin"
+                            :class="{ 'opacity-60 cursor-not-allowed hover:scale-100': !amount || !accountname || !accountnumber || !bankname || !pin }"
+                        >
+                            <i class="fas fa-eye mr-2"></i>
+                            Preview Transfer
+                        </button>
+                        <button
+                            type="button"
+                            @click="window.dispatchEvent(new CustomEvent('show-beneficiary-form'))"
+                            :disabled="!accountname || !accountnumber || !bankname"
+                            class="w-full lg:w-auto inline-flex items-center justify-center px-6 py-3 border border-blue-300 dark:border-blue-600 rounded-xl shadow-sm text-base font-semibold text-blue-700 dark:text-blue-300 bg-blue-50/70 dark:bg-blue-900/20 backdrop-blur-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            :class="{ 'opacity-50 cursor-not-allowed': !accountname || !accountnumber || !bankname }"
+                        >
+                            <i class="fas fa-bookmark mr-2"></i>
+                            Save Beneficiary
+                        </button>
+                        <a
+                            href="index.html"
+                            class="w-full lg:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm text-base font-semibold text-gray-700 dark:text-gray-300 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-600/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300"
+                        >
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="mt-4 p-4 border border-gray-200/50 dark:border-gray-700/50 rounded-xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm shadow-lg">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">Bank-Level Security</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                            All transfers are protected with 256-bit SSL encryption and processed through secure System channels.
+                            Your financial information is never stored on our servers and all transactions are monitored for fraud protection.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-lock text-green-500 text-xs"></i>
+                                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">SSL Encrypted</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-eye-slash text-green-500 text-xs"></i>
+                                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Zero Data Storage</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-clock text-green-500 text-xs"></i>
+                                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">24/7 Monitoring</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Modal -->
+    <div
+        x-show="showPreview"
+        x-cloak
+        class="fixed inset-0 z-50 overflow-y-auto"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+    >
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div
+                class="fixed inset-0 transition-opacity bg-gray-900/75 backdrop-blur-sm"
+                aria-hidden="true"
+                @click="showPreview = false"
+            ></div>
+
+            <!-- Modal panel -->
+            <div
+                class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 sm:align-middle sm:max-w-lg"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+                <!-- Modal header -->
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                            <i class="fas fa-file-check text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Confirm Transfer</h3>
+                    </div>
+                    <button
+                        type="button"
+                        class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none transition-colors"
+                        @click="showPreview = false"
+                    >
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Modal content -->
+                <div class="space-y-6">
+                    <!-- Transfer summary -->
+                    <div class="bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-700/50 dark:to-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50">
+                        <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-600">
+                            <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-receipt text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Transfer Summary</h4>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Transfer Amount</span>
+                                <span class="font-bold text-gray-900 dark:text-white text-lg">$<span x-text="parseFloat(amount).toFixed(2)"></span></span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Recipient</span>
+                                <span class="font-semibold text-gray-900 dark:text-white" x-text="accountname"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Account Number</span>
+                                <span class="font-semibold text-gray-900 dark:text-white font-mono" x-text="accountnumber"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Bank</span>
+                                <span class="font-semibold text-gray-900 dark:text-white" x-text="bankname"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Account Type</span>
+                                <span class="font-semibold text-gray-900 dark:text-white" x-text="Accounttype"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center" x-show="routing_number && routing_number.trim() !== ''">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Routing Number</span>
+                                <span class="font-semibold text-gray-900 dark:text-white font-mono" x-text="routing_number"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center" x-show="swift_code && swift_code.trim() !== ''">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">SWIFT Code</span>
+                                <span class="font-semibold text-gray-900 dark:text-white font-mono" x-text="swift_code"></span>
+                            </div>
+
+                            <div class="flex justify-between items-center" x-show="Description && Description.trim() !== ''">
+                                <span class="text-gray-600 dark:text-gray-400 font-medium">Description</span>
+                                <span class="font-semibold text-gray-900 dark:text-white" x-text="Description"></span>
+                            </div>
+
+                            <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-900 dark:text-white font-bold text-lg">Total Amount</span>
+                                    <span class="font-bold text-2xl text-primary-600 dark:text-primary-400">$<span x-text="parseFloat(amount).toFixed(2)"></span></span>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-gray-600 dark:text-gray-400 font-medium">Remaining Balance</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">$<span x-text="(getMaxBalance() - parseFloat(amount)).toFixed(2)"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security notice -->
+                    <div class="flex items-start p-4 bg-amber-50/80 dark:bg-amber-900/20 border-l-4 border-amber-400 dark:border-amber-500 rounded-r-xl backdrop-blur-sm">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-amber-600 dark:text-amber-400"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <h5 class="font-semibold text-amber-800 dark:text-amber-200 mb-1">Important Notice</h5>
+                            <p class="text-amber-700 dark:text-amber-300 text-sm">
+                                Please verify all transfer details carefully before proceeding. Once confirmed, transfers cannot be reversed.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex flex-col-reverse sm:flex-row sm:space-x-4">
+                        <button
+                            type="button"
+                            class="w-full mt-3 sm:mt-0 inline-flex justify-center items-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm text-base font-semibold text-gray-700 dark:text-gray-300 bg-white/70 dark:bg-gray-700/70 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-600/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200"
+                            @click="showPreview = false"
+                        >
+                            <i class="fas fa-times mr-2 text-gray-400 dark:text-gray-500"></i>
+                            Cancel
+                        </button>
+
+                       <form class="w-full" id="confirmTransferForm">
+                            <input type="hidden" name="amount" :value="amount">
+                            <input type="hidden" name="accountname" :value="accountname">
+                            <input type="hidden" name="accountnumber" :value="accountnumber">
+                            <input type="hidden" name="bankname" :value="bankname">
+                            <input type="hidden" name="Accounttype" :value="Accounttype">
+                            <input type="hidden" name="routing_number" :value="routing_number">
+                            <input type="hidden" name="swift_code" :value="swift_code">
+                            <input type="hidden" name="Description" :value="Description">
+                            <input type="hidden" name="pin" :value="pin">
+                            <input type="hidden" name="otp_code" :value="otp_code">
+                            <input type="hidden" name="balance_type" value="fiat">
+
+                            <button
+                                type="button"
+                                id="confirmTransferBtn"
+                                class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-xl shadow-lg text-base font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+                            >
+                                <i class="fas fa-check-circle mr-2"></i>
+                                Confirm Transfer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+            <!-- Mobile Floating Navigation -->
+            <div x-show="!isDesktop" x-cloak class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40">
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                        <div class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300">
+                            <a href="index.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-house text-base"></i>
+                                <span>Home</span>
+                            </a>
+                            <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400 text-primary-700 dark:text-primary-300">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                                <span>Transfer</span>
+                            </a>
+                            <a href="cards.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-credit-card text-base"></i>
+                                <span>Cards</span>
+                            </a>
+                            <button @click="showMobileMenu = true" type="button" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-bars text-base"></i>
+                                <span>Menu</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Modal - Sleek Bottom Sheet Design -->
+            <div x-show="showMobileMenu" 
+                 x-transition:enter="transition ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="transition ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-50 lg:hidden" 
+                 style="display: none;">
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="showMobileMenu = false"></div>
+                <div class="fixed inset-x-0 bottom-0 z-50">
+                    <div x-show="showMobileMenu"
+                         x-transition:enter="transition ease-out duration-300 transform"
+                         x-transition:enter-start="translate-y-full"
+                         x-transition:enter-end="translate-y-0"
+                         x-transition:leave="transition ease-in duration-200 transform"
+                         x-transition:leave-start="translate-y-0"
+                         x-transition:leave-end="translate-y-full"
+                         class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden">
+                        <div class="flex justify-center pt-3 pb-2">
+                            <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                        </div>
+                        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center">
+                                        <i class="fa-solid fa-user text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-900 dark:text-white" id="mobile-menu-username">...</h3>
+                                         <p class="text-sm text-gray-500 dark:text-gray-400" id="mobile-menu-email">...</p>
+
+                                    </div>
+                                </div>
+                                <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    <i class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main</h4>
+                                <div class="space-y-1">
+                                    <a href="index.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-house text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Dashboard</span>
+                                    </a>
+                                    <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Transactions</span>
+                                    </a>
+                                    <a href="cards.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Cards</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Transfers</h4>
+                                <div class="space-y-1">
+                                    <a href="localtransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 group">
+                                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center">
+                                            <i class="fa-solid fa-paper-plane text-primary-700 dark:text-white text-sm"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-primary-700 dark:text-primary-200">Local Transfer</span>
+                                    </a>
+                                    <a href="internationaltransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-globe text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">International</span>
+                                    </a>
+                                    <a href="deposits.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-plus text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Deposit</span>
+                                    </a>
+                                    <a href="swap.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-arrows-rotate text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Currency Swap</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
+                                <div class="space-y-1">
+                                   
+                                    
+                                    <a href="account-settings.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-800/50 transition-colors">
+                                            <i class="fa-solid fa-gear text-teal-600 dark:text-teal-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-semibold text-gray-900 dark:text-white">Settings</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"></i>
+                                    </a>
+                                    
+<button onclick="handleLogout()" class="w-full text-left flex items-center space-x-4 p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 group transition-colors">
+    <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-content group-hover:bg-red-200 dark:group-hover:bg-red-800/50 transition-colors">
+        <i class="fa-solid fa-right-from-bracket text-red-600 dark:text-red-400"></i>
+    </div>
+    <div class="flex-1">
+        <p class="font-semibold text-red-900 dark:text-red-400">Sign Out</p>
+        <p class="text-xs text-red-600 dark:text-red-500">Logout from account</p>
+    </div>
+    <i class="fa-solid fa-chevron-right text-red-400 dark:text-red-500 text-xs"></i>
+</button>
+<script src="/auth-script/logout.js"></script>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                     
+                    </div>
+                </div>
+            </div>
+
+<!-- Processing Modal (Hidden by default) -->
+<div id="processingModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-900/75 backdrop-blur-sm"></div>
+
+        <!-- Modal panel -->
+        <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 sm:align-middle sm:max-w-lg">
+            <!-- Processing animation and content -->
+            <div class="text-center py-6">
+                <!-- Animated bank card with pulse effect -->
+                <div class="relative mx-auto w-64 h-40 mb-8 perspective-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-700 rounded-xl shadow-lg transform rotate-y-10 rotate-x-5 animate-card-float">
+                        <!-- Card chip -->
+                        <div class="absolute top-6 left-6 w-10 h-8 bg-yellow-300 bg-opacity-80 rounded-md grid grid-cols-3 grid-rows-3 gap-px p-1">
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                            <div class="bg-yellow-600 rounded-sm"></div>
+                        </div>
+
+                        <!-- Animated pulse circles -->
+                        <div class="absolute bottom-6 right-8 w-8 h-8 rounded-full bg-blue-400 bg-opacity-70 flex items-center justify-center">
+                            <div class="absolute w-full h-full rounded-full bg-blue-400 animate-ping opacity-75"></div>
+                            <div class="absolute w-8 h-8 rounded-full border-2 border-white border-opacity-50"></div>
+                            <div class="absolute w-6 h-6 rounded-full border-2 border-white border-opacity-50"></div>
+                        </div>
+
+                        <!-- Card number dots -->
+                        <div class="absolute bottom-14 left-6 right-6 flex justify-between">
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                            <div class="w-10 h-2 bg-white bg-opacity-50 rounded-full"></div>
+                        </div>
+
+                        <!-- Card holder info -->
+                        <div class="absolute bottom-6 left-6 text-white text-opacity-80 text-xs font-medium tracking-wider">
+                            <span id="cardHolderName"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="processingMessage">Initiating transfer...</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Please do not close this window</p>
+
+                <!-- Progress bar with percentage -->
+                <div class="mb-6">
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-primary-500 to-primary-600 h-3 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                    </div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-2"><span id="progressPercentage">0</span>% Complete</p>
+                </div>
+
+                <!-- Transaction details -->
+                <div class="bg-gray-50/80 dark:bg-gray-700/50 backdrop-blur-sm rounded-xl p-4 text-left border border-gray-200/50 dark:border-gray-600/50 mb-4">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Amount</p>
+                            <p class="font-medium text-gray-900 dark:text-white">$<span id="modalAmount"></span></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">To</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalRecipient"></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Bank</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalBank"></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Account</p>
+                            <p class="font-medium text-gray-900 dark:text-white" id="modalAccount"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security message -->
+                <div class="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-shield-alt mr-2 text-primary-500 dark:text-primary-400"></i>
+                    <span>Secured by bank-level encryption</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Status Modal (Hidden by default) -->
+<div id="accountStatusModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-900/75 backdrop-blur-sm"></div>
+
+        <!-- Modal panel -->
+        <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 sm:align-middle sm:max-w-lg">
+            <div class="text-center py-6">
+                <div class="mx-auto w-16 h-16 mb-6 flex items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-900/50">
+                    <i class="fas fa-exclamation-circle text-2xl text-amber-600 dark:text-amber-400"></i>
+                </div>
+
+                <h3 id="accountStatusTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Account Status</h3>
+                <p id="accountStatusMessage" class="text-gray-500 dark:text-gray-400 mb-6">Your account status requires attention.</p>
+
+                <div class="mt-6">
+                    <button type="button" onclick="window.location.href='index.html'" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-semibold rounded-xl shadow-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                        <i class="fas fa-home mr-2"></i>
+                        Return to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+
+    .perspective-500 {
+        perspective: 500px;
+    }
+
+    .rotate-y-10 {
+        transform: rotateY(10deg);
+    }
+
+    .rotate-x-5 {
+        transform: rotateX(5deg);
+    }
+
+    @keyframes  card-float {
+        0%, 100% { transform: translateY(0) rotateY(10deg) rotateX(5deg); }
+        50% { transform: translateY(-10px) rotateY(15deg) rotateX(5deg); }
+    }
+
+    .animate-card-float {
+        animation: card-float 3s ease-in-out infinite;
+    }
+</style>
+
+                                </div>
+                </main>
+                            </div>
+                                </div>
+            
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };     
+   
+   </script>
+
+     <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+
+      <script src="/auth-script/local-transfer.js"></script>
+
+    
+<script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script>
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+        
+</body>
+</html>

@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Verify Your Email - NFV Wealth</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+        <link rel="icon" href="/assets/images/logo.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #0ea5e9;
+        --primary-dark: #0369a1;
+        --bg: #f9fafb;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+      }
+
+      body {
+        font-family: "Lato", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      button * {
+        pointer-events: none;
+      }
+
+      /* Toast */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 14px 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        min-width: 280px;
+        max-width: 380px;
+        border-left: 4px solid;
+        animation: slideIn 0.3s ease;
+      }
+      .toast.success {
+        border-left-color: #10b981;
+      }
+      .toast.error {
+        border-left-color: #ef4444;
+      }
+      .toast-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .toast.success .toast-icon {
+        background: #d1fae5;
+        color: #059669;
+      }
+      .toast.error .toast-icon {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .toast-body {
+        flex: 1;
+      }
+      .toast-title {
+        font-weight: 700;
+        font-size: 13px;
+        color: #111827;
+      }
+      .toast-msg {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 2px;
+        line-height: 1.4;
+      }
+      .toast-close {
+        cursor: pointer;
+        color: #9ca3af;
+        flex-shrink: 0;
+      }
+      .toast-close:hover {
+        color: #374151;
+      }
+      .toast-close * {
+        pointer-events: none;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+      .toast.removing {
+        animation: slideOut 0.3s ease forwards;
+      }
+
+      /* Card */
+      .card {
+        background: var(--card);
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .card-header {
+        padding: 2.5rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .card-header.mode-register {
+        background: linear-gradient(135deg, #0ea5e9, #0369a1);
+      }
+      .card-header.mode-login {
+        background: linear-gradient(135deg, #0369a1, #1e3a5f);
+      }
+      .card-header.mode-forgot {
+        background: linear-gradient(135deg, #0369a1, #1e3a5f);
+      }
+      .card-header::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 160px;
+        height: 160px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+      }
+      .card-header::after {
+        content: "";
+        position: absolute;
+        bottom: -60px;
+        left: -30px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
+      .icon-wrap {
+        width: 72px;
+        height: 72px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      .card-header h1 {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: white;
+        position: relative;
+        z-index: 1;
+      }
+      .card-header p {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 0.4rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.5;
+      }
+      .mode-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        font-weight: 700;
+        font-size: 0.7rem;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .email-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: white;
+        font-weight: 700;
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-top: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-body {
+        padding: 2rem;
+      }
+
+      /* OTP inputs */
+      .otp-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .otp-inputs {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+      .otp-input {
+        width: 52px;
+        height: 60px;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        color: var(--text);
+        outline: none;
+        background: white;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.1s;
+        -webkit-appearance: none;
+      }
+      .otp-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        transform: translateY(-2px);
+      }
+      .otp-input.filled {
+        border-color: var(--primary);
+        background: #f0f9ff;
+      }
+      .otp-input.error-state {
+        border-color: #ef4444;
+        background: #fef2f2;
+        animation: shake 0.4s ease;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-6px);
+        }
+        40% {
+          transform: translateX(6px);
+        }
+        60% {
+          transform: translateX(-4px);
+        }
+        80% {
+          transform: translateX(4px);
+        }
+      }
+
+      /* Timers */
+      .timers-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        gap: 8px;
+      }
+      .timer-wrap {
+        text-align: left;
+      }
+      .timer-text {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .timer-count {
+        font-weight: 700;
+        color: var(--primary);
+      }
+      .timer-count.expired {
+        color: #ef4444;
+      }
+      .resend-wrap {
+        text-align: right;
+      }
+      .resend-btn {
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.875rem;
+        padding: 4px 8px;
+        text-decoration: underline;
+        transition:
+          color 0.2s,
+          opacity 0.2s;
+        cursor: pointer;
+      }
+      .resend-btn:hover {
+        color: var(--primary-dark);
+      }
+      .resend-btn.is-disabled {
+        color: var(--muted);
+        cursor: not-allowed;
+        text-decoration: none;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .resend-countdown {
+        font-size: 0.75rem;
+        color: var(--muted);
+        display: block;
+        margin-top: 2px;
+      }
+      .resend-countdown.hidden {
+        display: none;
+      }
+
+      /* Verify btn */
+      .btn-verify {
+        width: 100%;
+        padding: 0.9rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          opacity 0.2s,
+          transform 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .btn-verify:hover:not(.is-disabled) {
+        opacity: 0.92;
+        transform: translateY(-1px);
+      }
+      .btn-verify.is-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .back-link a {
+        color: var(--primary);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .back-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* Success */
+      .success-state {
+        display: none;
+        text-align: center;
+        padding: 1rem 0;
+      }
+      .success-state .check-circle {
+        width: 80px;
+        height: 80px;
+        background: #d1fae5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .success-state h3 {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #065f46;
+      }
+      .success-state p {
+        font-size: 0.875rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+      }
+      .redirect-bar {
+        height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin-top: 1.25rem;
+        overflow: hidden;
+      }
+      .redirect-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981, #059669);
+        border-radius: 2px;
+        width: 0%;
+        transition: width 0.05s linear;
+      }
+      .redirect-msg {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="card">
+      <div class="card-header" id="cardHeader">
+        <div class="icon-wrap" id="headerIcon"></div>
+        <div class="mode-badge" id="modeBadge"></div>
+        <h1 id="headerTitle">Check Your Email</h1>
+        <p id="headerSubtitle">We sent a 6-digit code to</p>
+        <div class="email-badge" id="emailBadge">your email address</div>
+      </div>
+
+      <div class="card-body">
+        <div id="otpForm">
+          <div class="otp-label">Enter verification code</div>
+          <div class="otp-inputs">
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+            />
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-input"
+              type="text"
+              maxlength="1"
+              inputmode="numeric"
+            />
+          </div>
+
+          <div class="timers-row">
+            <div class="timer-wrap">
+              <span class="timer-text">Code expires in </span>
+              <span class="timer-count" id="timerCount">10:00</span>
+            </div>
+            <div class="resend-wrap">
+              <button class="resend-btn is-disabled" id="resendBtn">
+                Resend Code
+              </button>
+              <span class="resend-countdown" id="resendCountdown"
+                >Resend in 1:00</span
+              >
+            </div>
+          </div>
+
+          <button class="btn-verify is-disabled" id="verifyBtn">
+            <svg
+              id="verifyIcon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <span id="verifyBtnText">Verify &amp; Continue</span>
+          </button>
+
+          <div class="back-link" id="backLink"></div>
+        </div>
+
+        <div class="success-state" id="successState">
+          <div class="check-circle">
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#059669"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </div>
+          <h3 id="successTitle">Verified!</h3>
+          <p id="successMsg">Redirecting you now...</p>
+          <div class="redirect-bar">
+            <div class="redirect-bar-fill" id="redirectBarFill"></div>
+          </div>
+          <div class="redirect-msg">
+            Redirecting in <span id="redirectCountdown">3</span>s
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── Params ───────────────────────────────────────────────────
+      const params = new URLSearchParams(window.location.search);
+      const email =
+        params.get("email") ||
+        sessionStorage.getItem("pendingVerifyEmail") ||
+        "";
+      const mode = params.get("mode") || "register"; // 'register' | 'login' | 'forgot'
+
+      // ── Mode configs ─────────────────────────────────────────────
+      const MODES = {
+        register: {
+          VERIFY_URL: "/api/verify-email",
+          RESEND_URL: "/api/resend-verification",
+          headerClass: "mode-register",
+          badge: "✉️ Email Verification",
+          icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="m16 19 2 2 4-4"/></svg>`,
+          title: "Check Your Email",
+          subtitle: "We sent your verification code to",
+          verifyBtnTxt: "Verify Email",
+          successTitle: "Email Verified!",
+          successMsg: "Your account is now active. Redirecting to login...",
+          backLink: `Wrong email? <a href="/register.html">Back to registration</a>`,
+          onSuccess: (_data) => {
+            startRedirect(() => {
+              window.location.href = "/login.html";
+            });
+          },
+        },
+        login: {
+          VERIFY_URL: "/api/verify-login-otp",
+          RESEND_URL: "/api/resend-login-otp",
+          headerClass: "mode-login",
+          badge: "🔐 Login Verification",
+          icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+          title: "Confirm It's You",
+          subtitle: "We sent a login code to",
+          verifyBtnTxt: "Verify & Sign In",
+          successTitle: "Login Successful!",
+          successMsg: "Identity confirmed. Taking you to your dashboard...",
+          backLink: `Wrong account? <a href="/login.html">Back to login</a>`,
+          onSuccess: (_data) => {
+            startRedirect(() => {
+              window.location.href = "/dashboard/index.html";
+            });
+          },
+        },
+        forgot: {
+          VERIFY_URL: "/api/verify-forgot-otp",
+          RESEND_URL: "/api/resend-forgot-otp",
+          headerClass: "mode-forgot",
+          badge: "🔑 Password Reset",
+          icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><path d="m9 16 2 2 4-4"/></svg>`,
+          title: "Reset Password",
+          subtitle: "We sent your reset code to",
+          verifyBtnTxt: "Verify & Reset",
+          successTitle: "Code Verified!",
+          successMsg: "Redirecting you to set a new password...",
+          backLink: `Remembered it? <a href="/login.html">Back to login</a>`,
+          onSuccess: (data) => {
+            // backend returns { token, email }
+            sessionStorage.setItem("resetToken", data.token);
+            sessionStorage.setItem("resetEmail", data.email || email);
+            startRedirect(() => {
+              window.location.href = `reset-password.html?email=${encodeURIComponent(data.email || email)}&token=${encodeURIComponent(data.token)}`;
+            });
+          },
+        },
+      };
+
+      // Fallback to register if unknown mode passed
+      const cfg = MODES[mode] || MODES.register;
+
+      // ── Apply mode config to DOM ──────────────────────────────────
+      document.getElementById("cardHeader").classList.add(cfg.headerClass);
+      document.getElementById("headerIcon").innerHTML = cfg.icon;
+      document.getElementById("modeBadge").textContent = cfg.badge;
+      document.getElementById("headerTitle").textContent = cfg.title;
+      document.getElementById("headerSubtitle").textContent = cfg.subtitle;
+      document.getElementById("verifyBtnText").textContent = cfg.verifyBtnTxt;
+      document.getElementById("successTitle").textContent = cfg.successTitle;
+      document.getElementById("successMsg").textContent = cfg.successMsg;
+      document.getElementById("backLink").innerHTML = cfg.backLink;
+      if (email) document.getElementById("emailBadge").textContent = email;
+
+      // ── Toast ────────────────────────────────────────────────────
+      function showToast(msg, type = "error") {
+        const id = "toast-" + Date.now();
+        const icons = {
+          success: `<svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`,
+          error: `<svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>`,
+        };
+        const div = document.createElement("div");
+        div.className = `toast ${type}`;
+        div.id = id;
+        div.innerHTML = `
+          <div class="toast-icon">${icons[type]}</div>
+          <div class="toast-body">
+            <div class="toast-title">${type === "success" ? "Success" : "Error"}</div>
+            <div class="toast-msg">${msg}</div>
+          </div>
+          <div class="toast-close" onclick="removeToast('${id}')">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>`;
+        document.getElementById("toastContainer").appendChild(div);
+        setTimeout(() => removeToast(id), 6000);
+      }
+      function removeToast(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add("removing");
+        setTimeout(() => el.remove(), 300);
+      }
+
+      // ── OTP inputs ───────────────────────────────────────────────
+      const inputs = Array.from(document.querySelectorAll(".otp-input"));
+      const verifyBtn = document.getElementById("verifyBtn");
+      const verifyIcon = document.getElementById("verifyIcon");
+      const verifyTxt = document.getElementById("verifyBtnText");
+
+      inputs.forEach((input, i) => {
+        input.addEventListener("input", () => {
+          input.value = input.value.replace(/\D/g, "").slice(0, 1);
+          input.classList.toggle("filled", !!input.value);
+          if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+          syncVerifyBtn();
+        });
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !input.value && i > 0) {
+            inputs[i - 1].value = "";
+            inputs[i - 1].classList.remove("filled");
+            inputs[i - 1].focus();
+            syncVerifyBtn();
+          }
+        });
+        input.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const pasted = e.clipboardData
+            .getData("text")
+            .replace(/\D/g, "")
+            .slice(0, 6);
+          pasted.split("").forEach((char, j) => {
+            if (inputs[j]) {
+              inputs[j].value = char;
+              inputs[j].classList.add("filled");
+            }
+          });
+          const next = inputs.findIndex((inp) => !inp.value);
+          (next !== -1 ? inputs[next] : inputs[5]).focus();
+          syncVerifyBtn();
+        });
+      });
+
+      function syncVerifyBtn() {
+        verifyBtn.classList.toggle(
+          "is-disabled",
+          !inputs.every((inp) => inp.value.length === 1),
+        );
+      }
+      function getOTP() {
+        return inputs.map((i) => i.value).join("");
+      }
+      function shakeInputs() {
+        inputs.forEach((inp) => {
+          inp.classList.remove("error-state");
+          void inp.offsetWidth;
+          inp.classList.add("error-state");
+        });
+        setTimeout(
+          () => inputs.forEach((inp) => inp.classList.remove("error-state")),
+          600,
+        );
+      }
+      function setVerifyLoading(on) {
+        if (on) {
+          verifyBtn.classList.add("is-disabled");
+          verifyIcon.style.animation = "spin 0.8s linear infinite";
+          verifyTxt.textContent = "Verifying...";
+        } else {
+          verifyIcon.style.animation = "";
+          verifyTxt.textContent = cfg.verifyBtnTxt;
+          syncVerifyBtn();
+        }
+      }
+
+      // ── Timers ───────────────────────────────────────────────────
+      const timerEl = document.getElementById("timerCount");
+      const resendBtn = document.getElementById("resendBtn");
+      const resendCountdown = document.getElementById("resendCountdown");
+
+      let codeTimeLeft = 600,
+        codeInterval;
+      let resendTimeLeft = 60,
+        resendInterval;
+
+      function startCodeTimer() {
+        clearInterval(codeInterval);
+        codeTimeLeft = 600;
+        timerEl.classList.remove("expired");
+        codeInterval = setInterval(() => {
+          codeTimeLeft--;
+          const m = Math.floor(codeTimeLeft / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = (codeTimeLeft % 60).toString().padStart(2, "0");
+          timerEl.textContent = `${m}:${s}`;
+          if (codeTimeLeft <= 0) {
+            clearInterval(codeInterval);
+            timerEl.textContent = "Expired";
+            timerEl.classList.add("expired");
+          }
+        }, 1000);
+      }
+
+      function startResendCooldown() {
+        clearInterval(resendInterval);
+        resendTimeLeft = 60;
+        resendBtn.classList.add("is-disabled");
+        resendBtn.textContent = "Resend Code";
+        resendCountdown.classList.remove("hidden");
+
+        resendInterval = setInterval(() => {
+          resendTimeLeft--;
+          const m = Math.floor(resendTimeLeft / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = (resendTimeLeft % 60).toString().padStart(2, "0");
+          resendCountdown.textContent = `Resend in ${m}:${s}`;
+          if (resendTimeLeft <= 0) {
+            clearInterval(resendInterval);
+            resendBtn.classList.remove("is-disabled");
+            resendCountdown.classList.add("hidden");
+          }
+        }, 1000);
+      }
+
+      startCodeTimer();
+      startResendCooldown();
+
+      // ── Resend ───────────────────────────────────────────────────
+      resendBtn.addEventListener("click", async () => {
+        if (resendBtn.classList.contains("is-disabled")) return;
+        resendBtn.classList.add("is-disabled");
+        resendBtn.textContent = "Sending...";
+
+        try {
+          const res = await fetch(cfg.RESEND_URL, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || "Failed to resend");
+
+          showToast("A new code has been sent to your email.", "success");
+          inputs.forEach((inp) => {
+            inp.value = "";
+            inp.classList.remove("filled");
+          });
+          syncVerifyBtn();
+          inputs[0].focus();
+          startCodeTimer();
+          startResendCooldown();
+        } catch (err) {
+          showToast(err.message || "Could not resend. Try again.", "error");
+          resendBtn.classList.remove("is-disabled");
+          resendBtn.textContent = "Resend Code";
+        }
+      });
+
+      // ── Verify ───────────────────────────────────────────────────
+      verifyBtn.addEventListener("click", async () => {
+        if (verifyBtn.classList.contains("is-disabled")) return;
+        const otp = getOTP();
+        if (otp.length !== 6) return;
+
+        setVerifyLoading(true);
+        try {
+          const res = await fetch(cfg.VERIFY_URL, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, otp }),
+          });
+          const data = await res.json();
+
+          if (!res.ok) {
+            shakeInputs();
+            showToast(
+              data.message || "Invalid code. Please try again.",
+              "error",
+            );
+            setVerifyLoading(false);
+            return;
+          }
+
+          // ── Success ──────────────────────────────────────────────
+          clearInterval(codeInterval);
+          clearInterval(resendInterval);
+          sessionStorage.removeItem("pendingVerifyEmail");
+          document.getElementById("otpForm").style.display = "none";
+          document.getElementById("successState").style.display = "block";
+
+          // Delegate redirect to mode config
+          cfg.onSuccess(data);
+        } catch (err) {
+          shakeInputs();
+          showToast("Something went wrong. Please try again.", "error");
+          setVerifyLoading(false);
+        }
+      });
+
+      // ── Redirect helper (shared by all modes) ────────────────────
+      function startRedirect(redirectFn) {
+        let pct = 0,
+          countdown = 3;
+        const fill = document.getElementById("redirectBarFill");
+        const cdEl = document.getElementById("redirectCountdown");
+        const bar = setInterval(() => {
+          fill.style.width = Math.min((pct += 100 / (3000 / 50)), 100) + "%";
+        }, 50);
+        const cd = setInterval(() => {
+          cdEl.textContent = --countdown;
+          if (countdown <= 0) {
+            clearInterval(cd);
+            clearInterval(bar);
+            redirectFn();
+          }
+        }, 1000);
+      }
+
+      inputs[0].focus();
+    </script>
+  </body>
+</html>

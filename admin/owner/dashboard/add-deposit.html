@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Deposit</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    <style>
+      .page-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 50px;
+      }
+      .page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 90%;
+        max-width: 700px;
+        margin: 40px 0 1.5rem;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 700px;
+        overflow: hidden;
+      }
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f9fafb;
+      }
+      .card-body {
+        padding: 1.75rem 1.5rem;
+      }
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 600px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.5rem;
+      }
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        padding: 0.65rem 0.9rem;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #fafafa;
+        box-sizing: border-box;
+      }
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: #2563eb;
+        background: #fff;
+      }
+      .textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .help {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-top: 0.3rem;
+      }
+      .divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 1.25rem 0;
+      }
+      .btn {
+        padding: 0.65rem 1.5rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-primary {
+        background: #2563eb;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: #6b7280;
+        border: 1px solid #e5e7eb;
+      }
+      .btn-ghost:hover {
+        background: #f9fafb;
+      }
+      .muted {
+        color: #6b7280;
+        font-size: 0.875rem;
+      }
+      .user-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #eff6ff;
+        color: #1d4ed8;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+      }
+      .wallet-address-box {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 0.65rem 0.9rem;
+        font-family: monospace;
+        font-size: 0.82rem;
+        color: #374151;
+        word-break: break-all;
+        min-height: 42px;
+      }
+      .toast-container {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        min-width: 280px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        animation: slideIn 0.3s ease;
+      }
+      .toast.success {
+        background: #d1fae5;
+        color: #065f46;
+        border-left: 4px solid #10b981;
+      }
+      .toast.error {
+        background: #fee2e2;
+        color: #991b1b;
+        border-left: 4px solid #ef4444;
+      }
+      .toast.warning {
+        background: #fef3c7;
+        color: #92400e;
+        border-left: 4px solid #f59e0b;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast-container" id="toast-container"></div>
+    <header id="topnav-mount"></header>
+
+    <div class="page-wrap">
+      <div class="page-head">
+        <div>
+          <h1 style="margin: 0">Add Deposit</h1>
+          <p class="muted" style="margin: 6px 0 0">
+            Manually add a deposit record for this user.
+          </p>
+        </div>
+        <a href="javascript:history.back()" class="btn btn-ghost">← Back</a>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="muted" id="userMeta">Loading user...</div>
+          <button id="submitBtn" class="btn btn-primary">Add Deposit</button>
+        </div>
+        <div class="card-body">
+          <div class="user-pill" id="userPill">Loading...</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount ($) <span style="color: #ef4444">*</span></label>
+              <input
+                type="number"
+                id="amount"
+                class="input"
+                placeholder="0.00"
+                min="1"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label
+                >Coin / Payment Method
+                <span style="color: #ef4444">*</span></label
+              >
+              <select id="paymentMethod" class="select">
+                <option value="">Loading coins...</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Wallet address auto-filled based on coin selection -->
+          <div class="form-group">
+            <label
+              >Wallet Address
+              <span class="muted" style="text-transform: none; font-weight: 400"
+                >(auto-filled from selected coin)</span
+              ></label
+            >
+            <div class="wallet-address-box" id="walletAddressDisplay">—</div>
+            <input type="hidden" id="walletAddress" />
+          </div>
+
+          <div class="form-group">
+            <label>Transaction ID <span style="color: #ef4444">*</span></label>
+            <input
+              type="text"
+              id="transactionId"
+              class="input"
+              placeholder="e.g. 0xabc123... or TXN-00123"
+            />
+            <div class="help">The on-chain or reference transaction ID.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Status <span style="color: #ef4444">*</span></label>
+            <select id="status" class="select">
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <div class="help">
+              Setting to "approved" will credit the user's balance.
+            </div>
+          </div>
+
+          <div class="form-group" id="rejectionWrap" style="display: none">
+            <label
+              >Rejection Reason <span style="color: #ef4444">*</span></label
+            >
+            <input
+              type="text"
+              id="rejectionReason"
+              class="input"
+              placeholder="Reason for rejection..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label
+              >Date & Time
+              <span class="muted" style="text-transform: none; font-weight: 400"
+                >(optional — defaults to now)</span
+              ></label
+            >
+            <input type="datetime-local" id="createdAt" class="input" />
+            <div class="help">Leave blank to use current time.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="form-group">
+            <label
+              >Note
+              <span class="muted" style="text-transform: none; font-weight: 400"
+                >(optional)</span
+              ></label
+            >
+            <textarea
+              id="note"
+              class="textarea"
+              placeholder="Internal note..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+    <script>
+      const userId = new URLSearchParams(window.location.search).get("userId");
+
+      function showToast(type, message) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        const icons = { success: "✅", error: "❌", warning: "⚠️" };
+        toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>
+          <button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;cursor:pointer;opacity:0.6;">✕</button>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+      }
+
+      // Show/hide rejection reason
+      document.getElementById("status").addEventListener("change", function () {
+        document.getElementById("rejectionWrap").style.display =
+          this.value === "rejected" ? "block" : "none";
+      });
+
+      // Load active wallets into dropdown
+      async function loadWallets() {
+        try {
+          const res = await fetch("/api/admin/wallets/active", {
+            credentials: "include",
+          });
+          const data = await res.json();
+          const wallets = data.wallets || [];
+          const select = document.getElementById("paymentMethod");
+
+          if (!wallets.length) {
+            select.innerHTML = `<option value="">No active wallets found</option>`;
+            return;
+          }
+
+          select.innerHTML = wallets
+            .map((w) => {
+              const label = `${w.coin.charAt(0).toUpperCase() + w.coin.slice(1)} (${w.symbol})${w.network ? " · " + w.network : ""}`;
+              return `<option value="${label}" data-address="${w.address}">${label}</option>`;
+            })
+            .join("");
+
+          // Set first wallet address on load
+          updateWalletAddress();
+
+          select.addEventListener("change", updateWalletAddress);
+        } catch {
+          document.getElementById("paymentMethod").innerHTML =
+            `<option value="">Failed to load wallets</option>`;
+        }
+      }
+
+      function updateWalletAddress() {
+        const select = document.getElementById("paymentMethod");
+        const opt = select.options[select.selectedIndex];
+        const address = opt?.dataset?.address || "";
+        document.getElementById("walletAddressDisplay").textContent =
+          address || "—";
+        document.getElementById("walletAddress").value = address;
+      }
+
+      async function loadUser() {
+        if (!userId) return;
+        try {
+          const res = await fetch(`/api/admin/users/${userId}`, {
+            credentials: "include",
+          });
+          const { success, user } = await res.json();
+          if (!success) throw new Error();
+          document.getElementById("userPill").textContent =
+            `👤 ${user.name} (${user.email})`;
+          document.getElementById("userMeta").textContent =
+            `Balance: $${user.account_balance ?? 0}`;
+        } catch {
+          document.getElementById("userPill").textContent = "Unknown user";
+        }
+      }
+
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", async () => {
+          const amount = parseFloat(document.getElementById("amount").value);
+          const transactionId = document
+            .getElementById("transactionId")
+            .value.trim();
+          const walletAddress = document
+            .getElementById("walletAddress")
+            .value.trim();
+          const paymentMethod = document.getElementById("paymentMethod").value;
+          const status = document.getElementById("status").value;
+          const rejectionReason = document
+            .getElementById("rejectionReason")
+            .value.trim();
+          const note = document.getElementById("note").value.trim();
+          const createdAt = document.getElementById("createdAt").value;
+
+          if (!amount || amount < 1) {
+            showToast("warning", "Enter a valid amount (minimum $1).");
+            return;
+          }
+          if (!paymentMethod) {
+            showToast("warning", "Select a payment method.");
+            return;
+          }
+          if (!transactionId) {
+            showToast("warning", "Transaction ID is required.");
+            return;
+          }
+          if (status === "rejected" && !rejectionReason) {
+            showToast("warning", "Provide a rejection reason.");
+            return;
+          }
+
+          const btn = document.getElementById("submitBtn");
+          btn.disabled = true;
+          btn.textContent = "Adding...";
+
+          try {
+            const res = await fetch(
+              `/api/admin/deposits/users/${userId}/deposit`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                  amount,
+                  transactionId,
+                  walletAddress: walletAddress || null,
+                  paymentMethod,
+                  status,
+                  rejectionReason: rejectionReason || null,
+                  note: note || null,
+                  createdAt: createdAt || null,
+                }),
+              },
+            );
+            const { success, message } = await res.json();
+            if (!success) throw new Error(message);
+            showToast("success", "Deposit added successfully!");
+            setTimeout(() => history.back(), 1500);
+          } catch (err) {
+            showToast("error", err.message || "Failed to add deposit.");
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Add Deposit";
+          }
+        });
+
+      loadUser();
+      loadWallets();
+    </script>
+  </body>
+</html>

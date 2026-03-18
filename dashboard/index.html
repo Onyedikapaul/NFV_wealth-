@@ -1,0 +1,3032 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFV Wealth | Customer Dashboard</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+    
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+        
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        [x-cloak] { display: none !important; }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'dashboard',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+                <!-- Desktop Layout -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+           <div id="sidebar-slot"></div>
+
+                    
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col w-full">
+                <!-- Desktop Header -->
+               <div id="header-slot"></div>
+
+                <!-- Main Content -->
+                <main class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-0">
+                    <div class="h-full overflow-y-auto">
+                     <div x-data="{
+  showBankAccount: false,
+  showSendMoney: false,
+  showReceiveModal: false,
+  showAddMoney: false,
+  showComingSoon: false,
+  comingSoonFeature: '',
+  showMobileMenu: false,
+  showMobileNotifications: false,
+
+  greeting: '',
+  currentDate: '',
+
+  balanceVisible: true,
+
+  loadBalancePreference() {
+    const saved = localStorage.getItem('balanceVisible');
+    this.balanceVisible = saved === null ? true : (saved === 'true');
+  },
+
+  toggleBalance() {
+    this.balanceVisible = !this.balanceVisible;
+    localStorage.setItem('balanceVisible', String(this.balanceVisible));
+  },
+
+  updateTime() {
+    const now = new Date();
+
+    if (now.getHours() < 12) this.greeting = 'Good Morning';
+    else if (now.getHours() < 18) this.greeting = 'Good Afternoon';
+    else this.greeting = 'Good Evening';
+
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    this.currentDate = now.toLocaleDateString(undefined, options);
+  }
+}"
+x-init="
+  loadBalancePreference();
+  updateTime();
+  setInterval(() => updateTime(), 60000);
+">
+        <!-- Mobile Header -->        
+    
+    <div class="lg:hidden mb-4">
+    <!-- Mobile Header with Extended Gradient Background -->
+    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white px-4 pt-6 pb-8 rounded-b-3xl">
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-2">
+               <div class="relative user-avatar">
+  <!-- Image avatar -->
+  <img
+    class="user-avatar-img h-10 w-10 rounded-full object-cover border-2 border-primary-100 hidden"
+    alt="User Avatar"
+  />
+
+  <!-- Letter avatar fallback -->
+  <div
+    class="user-avatar-fallback h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-sky-500 border-2 border-primary-100 hidden">
+    <span class="user-avatar-initials"></span>
+  </div>
+
+  <!-- Online status -->
+  <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-600"></div>
+</div>
+                <div>
+                    <p class="text-white/80 text-xs">Hello👋</p>
+                    <p class="user-fullname text-white font-semibold text-base">
+                                        </p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Dark Mode Toggle -->
+                <button @click="toggleDarkMode()" 
+                        class="w-10 h-10 bg-white/10 dark:bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-white/20 dark:hover:bg-white/30">
+                    <i x-show="!darkMode" class="fa-solid fa-moon text-white text-base"></i>
+                    <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-base"></i>
+                </button>
+
+                <!-- Notifications -->
+                <div class="relative">
+                    <!-- <button @click="showMobileNotifications = !showMobileNotifications" class="w-10 h-10 bg-white/10 dark:bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-white/20 dark:hover:bg-white/30">
+                        <i class="fa-solid fa-bell text-white text-base"></i>
+                    </button> -->
+                                                        </div>
+            </div>
+        </div>
+
+        <!-- Swipeable Mobile Wallet Cards -->
+        <div class="mb-6" x-data="{
+  currentCard: 0,
+  totalCards: 2,
+  startX: 0,
+  currentX: 0,
+  isDragging: false,
+
+  handleTouchStart(e) {
+    this.startX = e.touches[0].clientX;
+    this.currentX = this.startX;   // IMPORTANT: prevents false swipe
+    this.isDragging = true;
+  },
+
+  handleTouchMove(e) {
+    if (!this.isDragging) return;
+    this.currentX = e.touches[0].clientX;
+  },
+
+  handleTouchEnd() {
+    if (!this.isDragging) return;
+
+    const diffX = this.startX - this.currentX;
+    const threshold = 50;
+
+    if (Math.abs(diffX) > threshold) {
+      if (diffX > 0 && this.currentCard < this.totalCards - 1) {
+        this.currentCard++;
+      } else if (diffX < 0 && this.currentCard > 0) {
+        this.currentCard--;
+      }
+    }
+
+    this.isDragging = false;
+    this.startX = 0;
+    this.currentX = 0;
+  }
+}">
+          <!-- CARD CONTAINER (your slider markup stays the same, only dynamic parts changed to classes) -->
+<div class="relative overflow-hidden">
+  <div class="flex transition-transform duration-300 ease-in-out"
+       :style="`transform: translateX(-${currentCard * 100}%)`"
+       @touchstart="handleTouchStart($event)"
+       @touchmove="handleTouchMove($event)"
+       @touchend="handleTouchEnd()"
+       @mousedown="handleTouchStart({touches: [{clientX: $event.clientX}]})"
+       @mousemove="isDragging && handleTouchMove({touches: [{clientX: $event.clientX}]})"
+       @mouseup="handleTouchEnd()"
+       @mouseleave="handleTouchEnd()"
+       class="cursor-grab active:cursor-grabbing">
+
+    <!-- Fiat Balance Card -->
+    <div class="w-full flex-shrink-0">
+      <div class="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 dark:from-primary-700 dark:via-primary-600 dark:to-primary-800 rounded-2xl p-4 text-white shadow-xl dark:shadow-2xl dark:shadow-primary-900/50 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute top-3 right-3 w-24 h-24 bg-white rounded-full -translate-y-6 translate-x-6"></div>
+          <div class="absolute bottom-3 left-3 w-20 h-20 bg-white rounded-full translate-y-4 -translate-x-4"></div>
+        </div>
+
+        <div class="relative z-10">
+          <!-- Account Info -->
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <p class="text-white/60 text-xs uppercase tracking-wide">NFV Wealth</p>
+              <p class="fiat-owner text-white/80 text-xs">Loading...</p>
+            </div>
+            <div class="text-right">
+              <p class="text-white/60 text-xs">Checking Account</p>
+              <p class="user-account-number text-white/80 text-xs font-mono"></p>
+            </div>
+          </div>
+
+          <!-- Balance Section -->
+          <div class="text-center mb-3">
+            <p class="text-white/80 text-xs mb-1">Available Balance</p>
+            <div class="flex items-center justify-center space-x-2">
+              <p class="user-balance text-3xl font-bold" x-show="balanceVisible" x-transition>$0.00</p>
+              <p class="text-3xl font-bold" x-show="!balanceVisible" x-transition>$ ******</p>
+
+              <button @click="toggleBalance()"
+                      @touchstart.stop
+                      @mousedown.stop
+                      class="text-white/60 hover:text-white">
+                <i x-show="balanceVisible" class="fa-solid fa-eye-slash text-base"></i>
+                <i x-show="!balanceVisible" class="fa-solid fa-eye text-base"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Account Status -->
+          <div class="flex justify-between items-center text-xs">
+            <div class="flex items-center space-x-2">
+              <div class="w-1.5 h-1.5 bg-green-400"></div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span class="h-1.5 w-1.5 rounded-full bg-green-600 mr-1"></span>
+                Active
+              </span>
+            </div>
+            <div class="fiat-last-updated text-white/70">
+              Last updated: --
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crypto Balance Card -->
+    <div class="w-full flex-shrink-0">
+      <div class="bg-gradient-to-br from-secondary-700 via-secondary-600 to-secondary-800 dark:from-secondary-800 dark:via-secondary-700 dark:to-secondary-900 rounded-2xl p-4 text-white shadow-xl dark:shadow-2xl dark:shadow-secondary-900/50 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute top-3 right-3 w-24 h-24 bg-white rounded-full -translate-y-6 translate-x-6"></div>
+          <div class="absolute bottom-3 left-3 w-20 h-20 bg-white rounded-full translate-y-4 -translate-x-4"></div>
+        </div>
+
+        <div class="relative z-10">
+          <!-- Account Info -->
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <p class="text-white/60 text-xs uppercase tracking-wide">Bitcoin Wallet</p>
+              <p class="crypto-owner text-white/80 text-xs">Loading...</p>
+              <!-- Optional: show one internal crypto address -->
+              <p class="crypto-address text-white/60 text-[10px] font-mono mt-1 break-all"></p>
+            </div>
+            <div class="text-right">
+              <p class="text-white/60 text-xs">Crypto Account</p>
+              <div class="flex items-center justify-end space-x-1">
+                <i class="fab fa-bitcoin text-white/80 text-xs"></i>
+                <span class="text-white/80 text-xs">BTC</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Balance Section -->
+          <div class="text-center mb-3">
+            <p class="text-white/80 text-xs mb-1">Bitcoin Balance</p>
+            <div class="flex items-center justify-center space-x-2">
+              <p class="user-crypto-balance text-3xl font-bold" x-show="balanceVisible" x-transition>0.000000 BTC</p>
+              <p class="text-3xl font-bold" x-show="!balanceVisible" x-transition>••••••• BTC</p>
+
+              <button @click="toggleBalance()"
+                      @touchstart.stop
+                      @mousedown.stop
+                      class="text-white/60 hover:text-white">
+                <i x-show="balanceVisible" class="fa-solid fa-eye-slash text-base"></i>
+                <i x-show="!balanceVisible" class="fa-solid fa-eye text-base"></i>
+              </button>
+            </div>
+
+            <p class="text-white/60 text-xs mt-1" x-show="balanceVisible" x-transition>
+              ≈ <span class="user-btc-usd">0.00</span>
+            </p>
+          </div>
+
+          <!-- BTC Rate -->
+          <div class="flex justify-between items-center text-xs">
+            <div class="flex items-center space-x-2">
+              <div class="w-1.5 h-1.5 bg-secondary-400 rounded-full"></div>
+              <span class="text-white/70">1 BTC = <span class="user-btc-price">$0</span></span>
+            </div>
+            <div class="text-white/70">Live Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ONE SCRIPT: all helpers + fetch + render -->
+<script>
+  function setTextByClass(className, value) {
+    document.querySelectorAll(`.${className}`).forEach(el => {
+      el.textContent = value;
+    });
+  }
+
+  function formatUSD(amount) {
+    const n = Number(amount || 0);
+    return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+  }
+
+  function maskAccountNumber(acct) {
+    const s = String(acct || "");
+    const last4 = s.slice(-4);
+    return last4 ? `•••• ${last4}` : "•••• ----";
+  }
+
+  function formatLastUpdated(date = new Date()) {
+    const d = new Date(date);
+    if (Number.isNaN(d.getTime())) return "Last updated: --";
+    const month = d.toLocaleString("en-US", { month: "short" });
+    const day = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mm = String(d.getMinutes()).padStart(2, "0");
+    return `Last updated: ${month} ${day}, ${hh}:${mm}`;
+  }
+
+  async function loadUserDashboard() {
+    try {
+      const res = await fetch("/api/dashboard", { credentials: "include" });
+      if (!res.ok) throw new Error(`Dashboard fetch failed: ${res.status}`);
+
+      const data = await res.json();
+      console.log("DASHBOARD:", data); // keep for debugging; remove later
+
+      // USER
+      const fullName = `${data?.user?.name || ""} ${data?.user?.middlename || ""} ${data?.user?.lastname || ""}`
+        .replace(/\s+/g, " ")
+        .trim();
+
+      setTextByClass("fiat-owner", fullName || "User");
+      setTextByClass("crypto-owner", fullName || "User");
+
+      // ASSETS
+      const assets = data?.assets || {};
+
+      // FIAT
+      setTextByClass("fiat-account-mask", maskAccountNumber(assets?.fiat?.accountNumber));
+      setTextByClass("fiat-balance", formatUSD(assets?.fiat?.balance));
+      setTextByClass("fiat-last-updated", formatLastUpdated(new Date()));
+
+      // CRYPTO (one address + balances)
+      if (assets?.crypto?.address) {
+        setTextByClass("crypto-address", assets.crypto.address);
+      } else {
+        setTextByClass("crypto-address", "");
+      }
+
+      const btcBal = Number(assets?.crypto?.balances?.BTC || 0);
+      setTextByClass("btc-balance", `${btcBal.toFixed(6)} BTC`);
+
+      // RATE (dummy for now)
+      const btcRate = 87221;
+      setTextByClass("btc-rate", `$${btcRate.toLocaleString("en-US")}`);
+
+      const btcUsd = btcBal * btcRate;
+      setTextByClass(
+        "btc-usd-value",
+        btcUsd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      );
+
+    } catch (err) {
+      console.error("Error loading dashboard:", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadUserDashboard);
+</script>
+
+
+            <!-- Card Indicators -->
+            <div class="flex justify-center space-x-2 mt-3">
+                <button @click="currentCard = 0" 
+                        :class="currentCard === 0 ? 'bg-white' : 'bg-white/30'" 
+                        class="w-2 h-2 rounded-full transition-colors duration-200"></button>
+                <button @click="currentCard = 1" 
+                        :class="currentCard === 1 ? 'bg-white' : 'bg-white/30'" 
+                        class="w-2 h-2 rounded-full transition-colors duration-200"></button>
+            </div>
+
+            <!-- Swipe Instructions -->
+            <div class="text-center mt-2">
+                <p class="text-white/50 text-xs">
+                    <i class="fa-solid fa-hand-pointer mr-1"></i>
+                    Swipe to switch between accounts
+                </p>
+            </div>
+        </div>
+
+        <!-- Mobile Quick Actions - Circular Design (Inside Gradient) -->
+        <div class="grid grid-cols-4 gap-3">
+            <!-- Top Up - Circular -->
+            <button @click="showAddMoney = true" class="flex flex-col items-center justify-center">
+                <div class="w-14 h-14 bg-yellow-400 dark:bg-yellow-500 rounded-full flex items-center justify-center shadow-lg dark:shadow-yellow-500/25 mb-1">
+                    <i class="fa-solid fa-plus text-black dark:text-gray-900 text-lg"></i>
+                </div>
+                <span class="text-white text-xs font-medium">Top Up</span>
+            </button>
+
+            <!-- Send - Circular -->
+            <a href="/dashboard/localtransfer.html" class="flex flex-col items-center justify-center">
+                <div class="w-14 h-14 bg-white/20 dark:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg dark:shadow-white/10 mb-1 border border-white/10 dark:border-white/20">
+                    <i class="fa-solid fa-paper-plane text-white text-lg"></i>
+                </div>
+                <span class="text-white text-xs font-medium">Send</span>
+            </a>
+
+            <!-- Receive -->
+            <!-- <button @click="showReceiveModal = true" class="flex flex-col items-center justify-center">
+                <div class="w-14 h-14 bg-white/20 dark:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg dark:shadow-white/10 mb-1 border border-white/10 dark:border-white/20">
+                    <i class="fa-solid fa-arrow-down text-white text-lg"></i>
+                </div>
+                <span class="text-white text-xs font-medium">Receive</span>
+            </button> -->
+
+            <!-- More -->
+            <button @click="showMobileMenu = true" class="flex flex-col items-center justify-center">
+                <div class="w-14 h-14 bg-white/20 dark:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg dark:shadow-white/10 mb-1 border border-white/10 dark:border-white/20">
+                    <i class="fa-solid fa-grid-2 text-white text-lg"></i>
+                </div>
+                <span class="text-white text-xs font-medium">More</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Notifications Panel -->
+    <div x-show="showMobileNotifications" 
+         x-transition:enter="transition ease-out duration-300" 
+         x-transition:enter-start="opacity-0 -translate-y-4" 
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         class="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm" 
+         @click="showMobileNotifications = false">
+        
+        <div @click.stop class="absolute top-0 left-0 right-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white rounded-b-3xl shadow-2xl dark:shadow-slate-900/50 max-h-[80vh] overflow-hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-white/10 dark:border-white/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/10 dark:bg-white/20 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-bell text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Notifications</h3>
+                                                                            <p class="text-xs text-white/60">All caught up!</p>
+                                            </div>
+                </div>
+                <button @click="showMobileNotifications = false" class="w-8 h-8 bg-white/10 dark:bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/20 dark:hover:bg-white/30 transition-colors">
+                    <i class="fa-solid fa-times text-white text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Notifications List -->
+            <!-- <div class="overflow-y-auto max-h-96 custom-scrollbar">
+                                
+                                <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                    <div class="flex items-start space-x-3">
+                                                <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-white">Deposit Submitted</p>
+                                    <p class="text-xs text-white/70 mt-1 line-clamp-2">Your deposit of $1000 via Bank Transfer has been received and is pending approval.</p>
+                                </div>
+                                                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <p class="text-xs text-white/50 flex items-center">
+                                    <i class="fa-solid fa-clock mr-1"></i>
+                                    4 months ago
+                                </p>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                    <div class="flex items-start space-x-3">
+                                                <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-white">Loan Application Submitted</p>
+                                    <p class="text-xs text-white/70 mt-1 line-clamp-2">Your loan application for 102500 has been submitted successfully and is pending approval. You will be notified once it is processed.</p>
+                                </div>
+                                                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <p class="text-xs text-white/50 flex items-center">
+                                    <i class="fa-solid fa-clock mr-1"></i>
+                                    4 months ago
+                                </p>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                    <div class="flex items-start space-x-3">
+                                                <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-white">Grant Application Submitted</p>
+                                    <p class="text-xs text-white/70 mt-1 line-clamp-2">Your grant application has been submitted successfully and is now being processed.</p>
+                                </div>
+                                                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <p class="text-xs text-white/50 flex items-center">
+                                    <i class="fa-solid fa-clock mr-1"></i>
+                                    4 months ago
+                                </p>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                    <div class="flex items-start space-x-3">
+                                                <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-white">Card Application Submitted</p>
+                                    <p class="text-xs text-white/70 mt-1 line-clamp-2">Your card application has been submitted and is awaiting approval. You will be notified when the status changes.</p>
+                                </div>
+                                                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <p class="text-xs text-white/50 flex items-center">
+                                    <i class="fa-solid fa-clock mr-1"></i>
+                                    5 months ago
+                                </p>
+                                                            </div>
+                        </div>
+                    </div>
+                </div>
+                            </div> -->
+            
+            <!-- Footer Actions -->
+                        <!-- <div class="p-4 border-t border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/10">
+                <div class="flex items-center justify-between">
+                    <button class="text-sm font-semibold text-white/70 dark:text-white/80 hover:text-white transition-colors">
+                        Mark all as read
+                    </button>
+                    <a href="/dashboard/notifications.html" class="text-sm font-semibold text-primary-400 dark:text-primary-300 hover:text-primary-300 dark:hover:text-primary-200 transition-colors flex items-center">
+                        View All
+                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div> -->
+                    </div>
+    </div>
+
+    <!-- Quick Transfer Section -->
+    <div class="px-4 mb-4 mt-4" x-data="dashboardQuickTransfer()" x-init="loadBeneficiaries()">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="text-base font-semibold text-gray-900 dark:text-white">Quick Transfer</h3>
+            <!-- <a href="/dashboard/beneficiaries.html" class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+                View All
+                <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+            </a> -->
+        </div>
+        
+        <div class="flex space-x-3 overflow-x-auto pb-2" x-show="!loading">
+            <!-- Add New Beneficiary -->
+            <a href="/dashboard/localtransfer.html" class="flex-shrink-0 flex flex-col items-center justify-center group">
+                <div class="w-14 h-14 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 flex items-center justify-center mb-1 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:border-primary-400 dark:group-hover:border-primary-500 transition-all duration-200">
+                    <i class="fa-solid fa-plus text-gray-400 dark:text-gray-500 text-base group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors"></i>
+                </div>
+                <span class="text-xs text-gray-500 dark:text-gray-400 text-center group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Add New</span>
+            </a>
+
+            <!-- Beneficiaries List -->
+            <template x-for="beneficiary in beneficiaries.slice(0, 6)" :key="beneficiary.id">
+                <div class="flex-shrink-0 flex flex-col items-center justify-center group relative">
+                    <button 
+                        @click="selectBeneficiary(beneficiary)"
+                        class="relative w-14 h-14 rounded-full flex items-center justify-center mb-1 border-2 border-white dark:border-gray-800 shadow-sm dark:shadow-gray-900/25 hover:scale-105 transition-all duration-200"
+                        :class="beneficiary.color"
+                    >
+                        <span class="text-white font-semibold text-sm" x-text="beneficiary.initials"></span>
+                        
+                        <!-- Favorite Star -->
+                        <div 
+                            x-show="beneficiary.is_favorite" 
+                            class="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center"
+                        >
+                            <i class="fa-solid fa-star text-white text-xs"></i>
+                        </div>
+                    </button>
+                    
+                    <span class="text-xs text-gray-700 dark:text-gray-300 text-center max-w-16 truncate" x-text="beneficiary.name"></span>
+                </div>
+            </template>
+
+            <!-- Loading State -->
+            <template x-if="loading">
+                <div class="flex space-x-3">
+                    <template x-for="i in 4">
+                        <div class="flex-shrink-0 flex flex-col items-center justify-center">
+                            <div class="w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse mb-1"></div>
+                            <div class="w-12 h-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty State -->
+            <template x-if="!loading && beneficiaries.length === 0">
+                <div class="flex-shrink-0 flex flex-col items-center justify-center py-4 px-8">
+                    <div class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">
+                        <i class="fa-solid fa-users text-gray-400 dark:text-gray-500 text-base"></i>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center">No saved beneficiaries</p>
+                </div>
+            </template>
+        </div>
+    </div>
+    
+    <!-- Mobile Cards Section -->
+    <div class="px-4 mb-4">
+        <section class="lg:hidden">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="font-semibold text-base text-gray-900 dark:text-white">Your Cards</h3>
+        <a href="/dashboard/cards.html" class="text-xs text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+            View All
+            <i class="fa-solid fa-chevron-right ml-1"></i>
+        </a>
+    </div>
+            <!----------------------- Cards List ---------------------------------------------------->
+            <!----------------------- Cards List ---------------------------------------------------->
+            <!----------------------- Cards List ---------------------------------------------------->
+            <!----------------------- Cards List ---------------------------------------------------->
+            <!----------------------- Cards List ---------------------------------------------------->
+      <div class="p-3">
+                    <!-- Cards List -->
+          <div class="userCardsMount"></div>
+<script src="/auth-script/user-cards.js"></script>
+            </div>
+        </section>    </div>
+
+    <!-- Mobile Financial Services Overview -->
+    <div class="px-4 mb-4">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="text-base font-semibold text-gray-900 dark:text-white">Financial Services</h3>
+        <button class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+            View All
+            <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+        </button>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <!-- Service Header -->
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-landmark text-blue-600 dark:text-blue-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Loans</h4>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-yellow-600 bg-gray-100 dark:bg-gray-700">
+                                <div class="w-1.5 h-1.5 rounded-full bg-yellow-600 mr-1"></div>
+                                Pending
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service Description -->
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Amount: $102,500.00</p>
+                
+                <!-- Action Button -->
+                <button @click="showComingSoon = true; comingSoonFeature = 'Loans'" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105">
+                    <i class="fa-solid fa-landmark text-xs mr-2"></i>
+                    View Details
+                </button>
+            </div>
+        </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <!-- Service Header -->
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-hand-holding-dollar text-green-600 dark:text-green-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Grants</h4>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-red-600 bg-gray-100 dark:bg-gray-700">
+                                <div class="w-1.5 h-1.5 rounded-full bg-red-600 mr-1"></div>
+                                Rejected
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service Description -->
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Amount: $5,000.00</p>
+                
+                <!-- Action Button -->
+                <button @click="showComingSoon = true; comingSoonFeature = 'Grants'" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105">
+                    <i class="fa-solid fa-hand-holding-dollar text-xs mr-2"></i>
+                    View Status
+                </button>
+            </div>
+        </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <!-- Service Header -->
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-receipt text-purple-600 dark:text-purple-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Tax Refunds</h4>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-700">
+                                <div class="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1"></div>
+                                Available
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service Description -->
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Fast processing</p>
+                
+                <!-- Action Button -->
+                <button @click="showComingSoon = true; comingSoonFeature = 'Tax Refunds'" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105">
+                    <i class="fa-solid fa-receipt text-xs mr-2"></i>
+                    Apply Now
+                </button>
+            </div>
+        </div>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <!-- Service Header -->
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-credit-card text-orange-600 dark:text-orange-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Virtual Cards</h4>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-700">
+                                <div class="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1"></div>
+                                Available
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service Description -->
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Instant virtual cards</p>
+                
+                <!-- Action Button -->
+                <a href="/dashboard/cards.html" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105">
+                    <i class="fa-solid fa-credit-card text-xs mr-2"></i>
+                    Apply Now
+                </a>
+            </div>
+        </div>
+            </div>
+</div> 
+    <!-- Mobile Financial Insights -->
+    <div class="px-4 mb-4">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="text-base font-semibold text-gray-900 dark:text-white">Financial Insights</h3>
+        <button class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+            View Report
+            <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+        </button>
+    </div>
+    
+    <div class="space-y-3">
+        <!-- Account Health Card -->
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <i class="fa-solid fa-heart text-green-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Account Health</h4>
+                            <p class="text-xs text-green-600 font-medium capitalize">excellent</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Balance Ratio</p>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">100.0%</p>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
+                    <div class="h-2 rounded-full transition-all duration-300 bg-green-600" style="width: 100%"></div>
+                </div>
+                <!-- <p class="text-xs text-gray-500 dark:text-gray-400">$20,369,651.00 of $500,000.00 limit</p> -->
+            </div>
+        </div>
+        
+        <!-- Monthly Summary -->
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="p-4">
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">This Month</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Income -->
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fa-solid fa-arrow-down text-green-600 dark:text-green-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Income</p>
+                        <p class="user-monthly-deposits text-sm font-semibold text-green-600 dark:text-green-400"></p>
+                    </div>
+                    
+                    <!-- Expenses -->
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <i class="fa-solid fa-arrow-up text-red-600 dark:text-red-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Expenses</p>
+                        <p class="user-monthly-expenses text-sm font-semibold text-red-600 dark:text-red-400"></p>
+                    </div>
+                </div>
+                
+                                
+                <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-trending-down text-red-600 dark:text-red-400 text-xs"></i>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Net:</span>
+                        <span class="user-monthly-total text-sm font-semibold text-red-600 dark:text-red-400"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Financial Tip -->
+        <div class="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl border border-primary-100 dark:border-gray-600 overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-start space-x-3">
+                    <div class="w-10 h-10 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center shadow-sm">
+                        <i class="fa-solid fa-chart-line text-green-600 text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Track Spending</h4>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">
+                                <i class="fa-solid fa-lightbulb text-xs mr-1"></i>
+                                Tip
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-300">Monitor your expenses to identify saving opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>     
+    <!-- Mobile Support Widget -->
+    <div class="px-4 mb-4">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="text-base font-semibold text-gray-900 dark:text-white">Need Help?</h3>
+        <!-- <a href="/dashboard/support.html" class="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+            Support Center
+            <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+        </a> -->
+    </div>
+    
+    <!-- Support Options -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+                                <!-- <a href="/dashboard/support.html" class="block"> -->
+                <!-- <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 p-3 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                    <div class="text-center">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="fa-solid fa-message text-blue-600 dark:text-blue-400 text-sm"></i>
+                        </div>
+                        <h4 class="text-xs font-semibold text-gray-900 dark:text-white mb-1">Live Chat</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 leading-tight">Get instant help from our team</p>
+                    </div>
+                </div> -->
+            <!-- </a> -->
+                                            <!-- <a href="mailto:support@regalheritageob.com" class="block"> -->
+                <!-- <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 p-3 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                    <div class="text-center">
+                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="fa-solid fa-envelope text-green-600 dark:text-green-400 text-sm"></i>
+                        </div>
+                        <h4 class="text-xs font-semibold text-gray-900 dark:text-white mb-1">Email Support</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 leading-tight">Send us a detailed message</p>
+                    </div>
+                </div> -->
+            <!-- </a> -->
+                                            </div>
+    
+    <!-- Contact Information Card -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-white/20 dark:border-gray-700/50 overflow-hidden">
+        <!-- Header -->
+        <div class="px-4 py-3 bg-gradient-to-r from-primary-50/80 to-blue-50/50 dark:from-gray-900/80 dark:to-gray-800/50 border-b border-primary-100/50 dark:border-gray-700/50">
+            <div class="flex items-center">
+                <div class="w-6 h-6 bg-primary-500 rounded-lg flex items-center justify-center mr-2">
+                    <i class="fa-solid fa-headset text-white text-xs"></i>
+                </div>
+                <h4 class="text-sm font-bold text-primary-900 dark:text-primary-100">24/7 Support</h4>
+            </div>
+        </div>
+        
+        <!-- Contact Footer -->
+        <div class="px-4 py-4 bg-gray-50 dark:bg-gray-800/50 mb-20">
+            <div class="text-center">
+                <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">We're here to help you anytime</p>
+                <div class="flex items-center justify-center space-x-4">
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                            <i class="fa-solid fa-clock text-primary-600 dark:text-primary-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">24/7</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                            <i class="fa-solid fa-headset text-green-600 dark:text-green-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">Support</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+                            <i class="fa-solid fa-bolt text-blue-600 dark:text-blue-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 font-medium">Fast</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+    <div x-data="app()" x-init="init()">
+
+<div data-mobile-nav></div>
+</div>
+
+</div>
+
+    
+    <div class="hidden lg:block py-6 mb-6">
+            <!-------------------- Desktop Stats Cards ---------------------------------------->
+    <!-------------------- Desktop Stats Cards ---------------------------------------->
+    <!-------------------- Desktop Stats Cards ---------------------------------------->
+    <!-------------------- Desktop Stats Cards ---------------------------------------->
+    <!-------------------- Desktop Stats Cards ---------------------------------------->
+    <div class="px-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Transaction Limit -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-credit-card text-white text-sm"></i>
+          </div>
+          <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Available</span>
+        </div>
+        <h3 class="desktop-tx-limit text-lg font-bold text-gray-900 dark:text-white mb-1">$500,000.00</h3>
+        <p class="text-gray-600 dark:text-gray-300 text-xs">Transaction Limit</p>
+      </div>
+
+      <!-- Monthly Deposits -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-arrow-down text-white text-sm"></i>
+          </div>
+          <span class="text-xs font-medium text-gray-500 dark:text-gray-400">This Month</span>
+        </div>
+        <h3 class="user-monthly-deposits text-lg font-bold text-gray-900 dark:text-white mb-1">$0.00</h3>
+        <p class="text-gray-600 dark:text-gray-300 text-xs">Monthly Deposits</p>
+      </div>
+
+      <!-- Monthly Expenses -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-arrow-up text-white text-sm"></i>
+          </div>
+          <span class="text-xs font-medium text-gray-500 dark:text-gray-400">This Month</span>
+        </div>
+        <h3 class="user-monthly-expenses text-lg font-bold text-gray-900 dark:text-white mb-1">$0.00</h3>
+        <p class="text-gray-600 dark:text-gray-300 text-xs">Monthly Expenses</p>
+      </div>
+
+      <!-- Total Volume -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 bg-accent-500 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-xs font-medium text-gray-500 dark:text-gray-400">All Time</span>
+        </div>
+        <h3 class="user-total-portfolio text-lg font-bold text-gray-900 dark:text-white mb-1">$0.00</h3>
+        <p class="text-gray-600 dark:text-gray-300 text-xs">Total Volume</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- Desktop Main Content -->
+    <div class="px-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Enhanced Desktop Balance Card -->
+            <div class="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 dark:from-primary-700 dark:via-primary-600 dark:to-primary-800 rounded-2xl p-6 text-white shadow-xl dark:shadow-2xl dark:shadow-primary-900/50 relative overflow-hidden z-10">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-6 right-6 w-32 h-32 bg-white rounded-full -translate-y-8 translate-x-8"></div>
+                    <div class="absolute bottom-6 left-6 w-24 h-24 bg-white rounded-full translate-y-6 -translate-x-6"></div>
+                    <div class="absolute top-1/2 left-1/2 w-20 h-20 bg-white rounded-full -translate-x-10 -translate-y-10"></div>
+                </div>
+                
+                <div class="relative z-10">
+                    <!-- Top Row: Bank Info and Account Number -->
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-1">
+                                <div class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-university text-white text-xs"></i>
+                                </div>
+                                <p class="text-white/90 text-base font-semibold">NFV Wealth</p>
+                            </div>
+                            <p class="text-white/70 text-xs">Checking Account Account</p>
+                        </div>
+                        <div class="text-right bg-white/10 dark:bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
+                            <p class="text-white/70 dark:text-white/80 text-xs uppercase tracking-wide mb-1">Account Number</p>
+                                  <p class="user-account-number text-white/80 text-xs font-mono"></p>
+                        </div>
+                    </div>
+
+                    <!-- Middle Row: Account Holder and Balances -->
+                    <div class="grid grid-cols-3 gap-6 mb-6">
+                        <!-- Account Holder Info -->
+                        <div>
+                            <p class="text-white/70 text-xs mb-1">Account Holder</p>
+                            <p class="user-fullname text-white text-base font-semibold mb-3"></p>
+                            
+                            <!-- Account Status -->
+                            <div class="space-y-1">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-white/80 text-xs">Account Active</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                                                            <i class="fa-solid fa-shield-check text-green-400 text-xs"></i>
+                                        <span class="text-white/80 text-xs">Verified & Secured</span>
+                                                                    </div>
+                            </div>
+                        </div>
+
+                        <!-- Fiat Balance Display -->
+                        <div class="text-center">
+                            <p class="text-white/70 text-xs mb-1">Fiat Balance</p>
+                            <div class="flex items-center justify-center space-x-2 mb-1">
+                                <div class="text-center">
+                                                <p class="user-balance text-2xl font-bold leading-none" x-show="balanceVisible" x-transition>$0.00</p>
+
+                                    <p class="text-2xl font-bold leading-none" x-show="!balanceVisible" x-transition>
+                                        $ ••••••
+                                    </p>
+                                </div>
+                                <button @click="toggleBalance()" class="text-white/60 hover:text-white transition-colors p-1">
+                                    <i x-show="balanceVisible" class="fa-solid fa-eye-slash text-sm"></i>
+                                    <i x-show="!balanceVisible" class="fa-solid fa-eye text-sm"></i>
+                                </button>
+                            </div>
+                            <p class="text-white/60 text-xs">USD Balance</p>
+                        </div>
+
+                        <!-- Crypto Balance Display -->
+                        <div class="text-center">
+                            <p class="text-white/70 text-xs mb-1">Bitcoin Balance</p>
+                            <div class="mb-1">
+                                              <p class="user-crypto-balance text-lg font-bold leading-none" x-show="balanceVisible" x-transition>0.000000 BTC</p>
+
+                                <p class="text-lg font-bold leading-none" x-show="!balanceVisible" x-transition>
+                                    ••••••• BTC
+                                </p>
+                                 <p class="text-white/60 text-xs mt-1" x-show="balanceVisible" x-transition>
+                  ≈ $<span class="user-btc-usd">0.00</span>
+                </p>
+                            </div>
+                            <div class="flex items-center justify-center space-x-1">
+                <div class="w-1.5 h-1.5 bg-orange-400 rounded-full"></div>
+                <span class="text-white/60 text-xs">1 BTC = <span class="user-btc-price">$0</span></span>
+              </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row: Action Buttons -->
+                    <div class="flex justify-between items-center">
+                        <!-- Left: Total Portfolio Value -->
+                       <div class="bg-white/10 dark:bg-white/20 backdrop-blur-sm rounded-lg p-3">
+              <p class="text-white/60 dark:text-white/70 text-xs mb-1">Total Portfolio</p>
+              <p class="text-white text-lg font-bold" x-show="balanceVisible" x-transition>
+                <span class="user-total-portfolio">$0.00</span>
+              </p>
+              <p class="text-white text-lg font-bold" x-show="!balanceVisible" x-transition>$ ••••••</p>
+            </div>
+
+                        <!-- Right: Action Buttons -->
+                        <div class="flex space-x-3">
+                            <button @click="showSendMoney = true" class="bg-white/20 dark:bg-white/30 backdrop-blur-sm px-6 py-3 rounded-lg text-white font-semibold hover:bg-white/30 dark:hover:bg-white/40 transition-all duration-200 flex items-center space-x-2">
+                                <i class="fa-solid fa-paper-plane text-sm"></i>
+                                <span class="text-sm">Send Money</span>
+                            </button>
+                            <!-- <button @click="showAddMoney = true" class="bg-white dark:bg-gray-100 text-primary-600 dark:text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-200 transition-all duration-200 flex items-center space-x-2 shadow-lg dark:shadow-gray-900/25">
+                                <i class="fa-solid fa-plus text-sm"></i>
+                                <span class="text-sm">Add Money</span>
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                                                                        <a href="/dashboard/localtransfer.html" class="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mb-2">
+                                <i class="fa-solid fa-exchange-alt text-white text-sm"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Transfer</span>
+                        </a>
+                                                                                            <a href="/dashboard/internationaltransfer.html" class="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mb-2">
+                                <i class="fa-solid fa-file-invoice text-white text-sm"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Pay Bills</span>
+                        </a>
+                                                                        
+                                                                                            <button @click="showBankAccount = true" class="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center mb-2">
+                                <i class="fa-solid fa-building-columns text-white text-sm"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Bank Details</span>
+                        </button>
+                                                            </div>
+            </div>
+
+            <!-- Quick Transfer Section -->
+
+            <!------------------- Desktop Cards Section --------------------->
+            <!------------------- Desktop Cards Section --------------------->
+            <!------------------- Desktop Cards Section --------------------->
+            <!------------------- Desktop Cards Section --------------------->
+            <!------------------- Desktop Cards Section --------------------->
+
+            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden border border-white/20 dark:border-gray-700/50">
+    <!-- Header -->
+    <div class="px-4 py-2 bg-gradient-to-r from-primary-50/80 to-primary-100/50 dark:from-gray-900/80 dark:to-gray-800/50 border-b border-primary-100/50 dark:border-gray-700/50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-6 h-6 bg-primary-500 rounded-lg flex items-center justify-center mr-2">
+                    <i class="fa-solid fa-credit-card text-white text-xs"></i>
+                </div>
+                <h3 class="text-sm font-bold text-primary-900 dark:text-primary-100">Your Cards</h3>
+            </div>
+            <a href="/dashboard/cards.html" class="text-xs text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+                View All
+            </a>
+        </div>
+    </div>
+    
+    <!-- Content -->
+    <div class="p-3">
+                    <!-- Cards List -->
+          <div class="userCardsMount"></div>
+<script src="/auth-script/user-cards.js"></script>
+            </div>
+</div>        </div>
+
+        <!-- Right Column is in separate partial -->
+
+    
+    <!-- Right Column -->
+        <div class="space-y-4">
+            <!-- Recent Transactions -->
+
+<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm dark:shadow-gray-900/25 border border-gray-100 dark:border-gray-700">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
+    <a href="/dashboard/accounthistory.html"
+       class="text-xs text-primary-600 dark:text-primary-400 font-medium hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+      View All
+    </a>
+  </div>
+  <!-- Add this div -->
+  <div id="recentTransactionsList"></div>
+</div>
+
+<!-- Add script at bottom -->
+<script src="/auth-script/recent-transactions.js"></script>
+
+
+            <!-- Account Stats -->
+            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden border border-white/20 dark:border-gray-700/50">
+    <!-- Header -->
+    <div class="px-4 py-2 bg-gradient-to-r from-slate-50/80 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/50 border-b border-slate-100/50 dark:border-slate-600/70">
+        <div class="flex items-center">
+            <div class="w-6 h-6 bg-slate-500 dark:bg-slate-600 rounded-lg flex items-center justify-center mr-2">
+                <i class="fa-solid fa-chart-line text-white text-xs"></i>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-50">Account Statistics</h3>
+        </div>
+    </div>
+    
+    <!-- Stats Content -->
+    <div class="p-3 space-y-2">
+                
+                <div class="group p-2 bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-primary-50/50 hover:to-primary-100/30 dark:hover:from-primary-900/30 dark:hover:to-primary-800/30 rounded-xl border border-gray-100/50 dark:border-gray-600/50 hover:border-primary-200/50 dark:hover:border-primary-700/50 transition-all duration-300 hover:shadow-md hover:shadow-primary-500/10 dark:hover:shadow-primary-900/20">
+            <div class="flex items-center">
+                <!-- Icon -->
+                <div class="relative">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md shadow-primary-500/25 dark:shadow-primary-900/50 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-gauge-high text-white text-xs"></i>
+                    </div>
+                    <div class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-white dark:bg-gray-800 rounded-full border border-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0 ml-3">
+                    <div class="flex items-center justify-between mb-0.5">
+                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Transaction Limit</p>
+                        <div class="w-1.5 h-1.5 bg-primary-500 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="user-transaction-limit text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300"></p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">Daily limit available</p>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">$500,000</span>
+                </div>
+            </div>
+            
+            <!-- Progress indicator -->
+            <div class="mt-2 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            </div>
+        </div>
+                <div class="group p-2 bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-yellow-50/50 hover:to-yellow-100/30 dark:hover:from-yellow-900/30 dark:hover:to-yellow-800/30 rounded-xl border border-gray-100/50 dark:border-gray-600/50 hover:border-yellow-200/50 dark:hover:border-yellow-700/50 transition-all duration-300 hover:shadow-md hover:shadow-yellow-500/10 dark:hover:shadow-yellow-900/20">
+            <div class="flex items-center">
+                <!-- Icon -->
+                <div class="relative">
+                    <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-lg flex items-center justify-center shadow-md shadow-yellow-500/25 dark:shadow-yellow-900/50 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-hourglass-half text-white text-xs"></i>
+                    </div>
+                    <div class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-white dark:bg-gray-800 rounded-full border border-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0 ml-3">
+                    <div class="flex items-center justify-between mb-0.5">
+                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Transactions</p>
+                        <div class="w-1.5 h-1.5 bg-yellow-500 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="user-pending-total text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-yellow-700 dark:group-hover:text-yellow-300 transition-colors duration-300"></p>
+                    <p class="user-pending-count text-xs text-gray-500 dark:text-gray-400 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors duration-300"></p>
+                </div>
+            </div>
+            
+            <!-- Progress indicator -->
+            <div class="mt-2 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            </div>
+        </div>
+                <div class="group p-2 bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-700/50 dark:to-gray-800/50 hover:from-green-50/50 hover:to-green-100/30 dark:hover:from-green-900/30 dark:hover:to-green-800/30 rounded-xl border border-gray-100/50 dark:border-gray-600/50 hover:border-green-200/50 dark:hover:border-green-700/50 transition-all duration-300 hover:shadow-md hover:shadow-green-500/10 dark:hover:shadow-green-900/20">
+            <div class="flex items-center">
+                <!-- Icon -->
+                <div class="relative">
+                    <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center shadow-md shadow-green-500/25 dark:shadow-green-900/50 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-chart-pie text-white text-xs"></i>
+                    </div>
+                    <div class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-white dark:bg-gray-800 rounded-full border border-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0 ml-3">
+                    <div class="flex items-center justify-between mb-0.5">
+                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Volume</p>
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="user-total-portfolio text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-300"></p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300">All-time transactions</p>
+                </div>
+            </div>
+            
+            <!-- Progress indicator -->
+            <div class="mt-2 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            </div>
+        </div>
+            </div>
+    
+    <!-- Footer -->
+    <div class="px-3 py-2 bg-gradient-to-r from-gray-50/50 to-white/50 dark:from-gray-700/50 dark:to-gray-800/50 border-t border-gray-100/50 dark:border-gray-600/50">
+        <div class="flex items-center justify-center text-xs text-gray-500 dark:text-gray-400">
+            <i class="fa-solid fa-clock mr-1 text-primary-500 text-xs"></i>
+            <span>Updated in real-time</span>
+        </div>
+    </div>
+</div>
+ 
+            <!-- Help & Support -->
+            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden border border-white/20 dark:border-gray-700/50 relative">
+    <!-- Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-50/80 via-primary-100/50 to-primary-200/30 dark:from-gray-900/80 dark:via-gray-800/50 dark:to-gray-700/30"></div>
+    
+    <!-- Content -->
+    <div class="relative p-4">
+        <!-- Icon Section -->
+        <div class="flex items-center justify-center mb-3">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/25 dark:shadow-primary-900/50">
+                    <i class="fa-solid fa-headset text-sm text-white"></i>
+                </div>
+                <!-- Floating indicator -->
+                <div class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border border-white dark:border-gray-800 flex items-center justify-center">
+                    <div class="w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Text Content -->
+        <div class="text-center mb-3">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Need Assistance?</h3>
+            <p class="text-xs text-gray-700 dark:text-gray-300 font-medium mb-1">Our expert support team is available</p>
+            <div class="flex items-center justify-center text-xs text-primary-700 dark:text-primary-300 font-semibold">
+                <div class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+                <span>24/7 Live Support</span>
+            </div>
+        </div>
+        
+        <!-- Features -->
+        <div class="grid grid-cols-2 gap-2 mb-3">
+            <div class="flex items-center p-2 bg-white/60 dark:bg-gray-700/60 rounded-xl border border-slate-100/50 dark:border-gray-600/70">
+                <div class="w-6 h-6 bg-slate-100 dark:bg-gray-600/50 rounded-lg flex items-center justify-center mr-2">
+                    <i class="fa-solid fa-clock text-slate-600 dark:text-slate-300 text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-900 dark:text-slate-50">Quick Response</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400"> 5 minutes</p>
+                </div>
+            </div>
+            <div class="flex items-center p-2 bg-white/60 dark:bg-gray-700/60 rounded-xl border border-slate-100/50 dark:border-gray-600/70">
+                <div class="w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center mr-2">
+                    <i class="fa-solid fa-shield-check text-green-600 dark:text-green-400 text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-900 dark:text-slate-50">Secure Chat</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Encrypted</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Button -->
+        <!-- <div class="flex justify-center">
+            <a href="/dashboard/support.html" 
+               class="group inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold rounded-xl shadow-lg shadow-primary-500/25 dark:shadow-primary-900/50 hover:shadow-primary-500/40 dark:hover:shadow-primary-800/50 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm">
+                <i class="fa-solid fa-comments text-xs mr-2 group-hover:animate-bounce"></i>
+                <span>Start Live Chat</span>
+                <div class="ml-2 w-1.5 h-1.5 bg-white/80 rounded-full group-hover:bg-white transition-colors duration-300"></div>
+            </a>
+        </div> -->
+        
+        <!-- Additional Info -->
+        <!-- <div class="mt-2 text-center">
+            <p class="text-xs text-gray-600 dark:text-gray-400">
+                <i class="fa-solid fa-phone mr-1 text-primary-500 text-xs"></i>
+                Or call us directly for urgent matters
+            </p>
+        </div> -->
+    </div>
+    
+    <!-- Decorative Elements -->
+    <div class="absolute top-2 right-2 w-8 h-8 bg-primary-200/30 dark:bg-gray-700/30 rounded-full blur-xl"></div>
+    <div class="absolute bottom-2 left-2 w-6 h-6 bg-primary-300/20 dark:bg-gray-600/20 rounded-full blur-lg"></div>
+</div>        </div>
+    </div>
+</div>
+
+
+<script>
+  function setTextByClass(className, value) {
+    document.querySelectorAll(`.${className}`).forEach(el => {
+      el.textContent = value;
+    });
+  }
+
+  function formatUSD(amount) {
+    const n = Number(amount || 0);
+    return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+  }
+
+  function maskAccountNumber(acct) {
+    const s = String(acct || "");
+    const last4 = s.slice(-4);
+    return last4 ? `•••• ${last4}` : "•••• ----";
+  }
+
+  async function loadUserDashboard() {
+    try {
+      const res = await fetch("/api/dashboard", { credentials: "include" });
+      if (!res.ok) throw new Error(`Dashboard fetch failed: ${res.status}`);
+
+      const data = await res.json();
+      const assets = data.assets || {};
+
+      const fullName = `${data?.user?.name || ""} ${data?.user?.middlename || ""} ${data?.user?.lastname || ""}`
+        .replace(/\s+/g, " ")
+        .trim() || "User";
+
+      const fiatBalance = Number(assets?.fiat?.balance || 0);
+      const acctMask = maskAccountNumber(assets?.fiat?.accountNumber);
+
+      const btcBal = Number(assets?.crypto?.balances?.BTC || 0);
+      const btcRate = 87221; // dummy
+      const btcUsd = btcBal * btcRate;
+
+      const totalPortfolio = fiatBalance + btcUsd;
+
+      // ---- MOBILE (if those classes exist, they will update) ----
+      setTextByClass("fiat-owner", fullName);
+      setTextByClass("crypto-owner", fullName);
+      setTextByClass("fiat-account-mask", acctMask);
+      setTextByClass("fiat-balance", formatUSD(fiatBalance));
+      setTextByClass("btc-balance", `${btcBal.toFixed(6)} BTC`);
+      setTextByClass("btc-rate", `$${btcRate.toLocaleString("en-US")}`);
+      setTextByClass("btc-usd-value", btcUsd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      setTextByClass("crypto-address", assets?.crypto?.address || "");
+
+      // ---- DESKTOP ----
+      setTextByClass("desktop-fiat-owner", fullName);
+      setTextByClass("desktop-fiat-account-mask", acctMask);
+      setTextByClass("desktop-fiat-balance", formatUSD(fiatBalance));
+      setTextByClass("desktop-btc-balance", `${btcBal.toFixed(6)} BTC`);
+      setTextByClass("desktop-btc-rate", `$${btcRate.toLocaleString("en-US")}`);
+      setTextByClass("desktop-btc-usd-value", btcUsd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      setTextByClass("desktop-total-portfolio", formatUSD(totalPortfolio));
+
+      // Desktop stats (dummy values for now)
+      setTextByClass("desktop-tx-limit", formatUSD(500000));
+      setTextByClass("desktop-monthly-deposits", formatUSD(0));
+      setTextByClass("desktop-monthly-expenses", formatUSD(0));
+      setTextByClass("desktop-total-volume", formatUSD(1120000));
+
+    } catch (err) {
+      console.error("Error loading dashboard:", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadUserDashboard);
+</script>
+
+    
+
+    <div 
+    x-show="showBankAccount" 
+    x-transition:enter="transition ease-out duration-300" enter-start="opacity-0" enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200" leave-start="opacity-100" leave-end="opacity-0"
+    class="fixed inset-0 z-50 overflow-y-auto" 
+    aria-labelledby="bank-account-title" role="dialog" aria-modal="true" style="display: none;">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Backdrop with enhanced blur -->
+        <div x-show="showBankAccount" 
+            x-transition:enter="transition ease-out duration-300" enter-start="opacity-0" enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" leave-start="opacity-100" leave-end="opacity-0"
+            class="fixed inset-0 bg-slate-900/20 dark:bg-black/40 backdrop-blur-md transition-opacity" 
+            @click="showBankAccount = false" aria-hidden="true">
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <!-- Modal Content -->
+        <div x-show="showBankAccount" 
+            x-transition:enter="transition ease-out duration-300" enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200" leave-start="opacity-100 translate-y-0 sm:scale-100" leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block align-bottom bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl px-4 pt-4 pb-4 text-left overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/50 transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+            
+            <!-- Close Button -->
+            <div class="absolute top-3 right-3">
+                <button @click="showBankAccount = false" type="button" 
+                        class="w-8 h-8 bg-gray-100/80 dark:bg-gray-700/80 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-all duration-200 flex items-center justify-center">
+                    <i class="fa-solid fa-times text-xs"></i>
+                </button>
+            </div>
+            
+            <!-- Header Section -->
+            <div class="text-center mb-4">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 mb-3 shadow-lg shadow-primary-500/25 dark:shadow-primary-900/50">
+                    <i class="fa-solid fa-building-columns text-white text-sm"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1" id="bank-account-title">Bank Account Details</h3>
+                <p class="text-xs text-gray-600 dark:text-gray-400 font-medium">NFV Wealth System</p>
+            </div>
+            
+            <!-- Account Details Card -->
+            <div class="bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-700/80 dark:to-gray-800/80 backdrop-blur-sm p-3 rounded-xl mb-4 border border-gray-100/50 dark:border-gray-600/50">
+                <div class="flex items-center mb-3">
+                    <div class="w-6 h-6 bg-primary-100 dark:bg-primary-900/50 rounded-lg flex items-center justify-center mr-2">
+                        <i class="fa-solid fa-circle-info text-primary-600 dark:text-primary-400 text-xs"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Account Information</h4>
+                </div>
+                
+                <div class="space-y-2" x-data>
+    <!-- Account Name -->
+    <div class="group p-2 hover:bg-white/60 dark:hover:bg-gray-600/60 rounded-lg transition-all duration-200 border border-transparent hover:border-primary-100 dark:hover:border-primary-800">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="h-2 w-2 bg-primary-500 rounded-full mr-3"></div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Account Name</p>
+                    <p x-ref="accountName" class="user-fullname text-xs font-bold text-gray-900 dark:text-white mt-0.5"></p>
+                </div>
+            </div>
+
+            <button type="button"
+                class="w-7 h-7 bg-primary-50 dark:bg-primary-900/50 hover:bg-primary-100 dark:hover:bg-primary-800/50 rounded-lg text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 focus:outline-none transition-all duration-200 flex items-center justify-center group-hover:scale-105"
+                @click="
+                    const text = ($refs.accountName?.textContent || '').trim();
+                    if (!text) return;
+                    (async () => {
+                        try { await navigator.clipboard.writeText(text); }
+                        catch {
+                            const ta=document.createElement('textarea'); ta.value=text;
+                            ta.style.position='fixed'; ta.style.top='-9999px';
+                            document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+                            document.body.removeChild(ta);
+                        }
+                        const icon = $el.querySelector('i');
+                        icon.classList.add('text-green-500');
+                        setTimeout(() => icon.classList.remove('text-green-500'), 1500);
+                    })();
+                ">
+                <i class="fa-solid fa-copy text-xs transition-colors duration-300"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Account Number -->
+    <div class="group p-2 hover:bg-white/60 dark:hover:bg-gray-600/60 rounded-lg transition-all duration-200 border border-transparent hover:border-primary-100 dark:hover:border-primary-800">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="h-2 w-2 bg-primary-500 rounded-full mr-3"></div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Account Number</p>
+                    <p x-ref="accountNumber" class="user-account-number text-xs font-bold text-gray-900 dark:text-white mt-0.5 font-mono"></p>
+                </div>
+            </div>
+
+            <button type="button"
+                class="w-7 h-7 bg-primary-50 dark:bg-primary-900/50 hover:bg-primary-100 dark:hover:bg-primary-800/50 rounded-lg text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 focus:outline-none transition-all duration-200 flex items-center justify-center group-hover:scale-105"
+                @click="
+                    const text = ($refs.accountNumber?.textContent || '').trim();
+                    if (!text) return;
+                    (async () => {
+                        try { await navigator.clipboard.writeText(text); }
+                        catch {
+                            const ta=document.createElement('textarea'); ta.value=text;
+                            ta.style.position='fixed'; ta.style.top='-9999px';
+                            document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+                            document.body.removeChild(ta);
+                        }
+                        const icon = $el.querySelector('i');
+                        icon.classList.add('text-green-500');
+                        setTimeout(() => icon.classList.remove('text-green-500'), 1500);
+                    })();
+                ">
+                <i class="fa-solid fa-copy text-xs transition-colors duration-300"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bitcoin Address -->
+    <!-- Bitcoin Address -->
+<div class="group p-2 hover:bg-white/60 dark:hover:bg-gray-600/60 rounded-lg transition-all duration-200 border border-transparent hover:border-yellow-100 dark:hover:border-yellow-800">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center">
+      <div class="h-2 w-2 bg-yellow-400 rounded-full mr-3"></div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Bitcoin Wallet</p>
+
+        <!-- IMPORTANT: keep the wallet text inside THIS element -->
+        <p class="user-wallet-address text-xs font-bold text-gray-900 dark:text-white mt-0.5 font-mono truncate"></p>
+      </div>
+    </div>
+
+    <button type="button"
+      class="w-7 h-7 bg-yellow-50 dark:bg-yellow-900/50 hover:bg-yellow-100 dark:hover:bg-yellow-800/50 rounded-lg text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 focus:outline-none transition-all duration-200 flex items-center justify-center group-hover:scale-105 ml-2"
+      @click="
+        const wrap = $el.closest('.group');
+        const target = wrap ? wrap.querySelector('.user-wallet-address') : null;
+
+        // Prefer title (if you set it), else visible text
+        const text = ((target?.getAttribute('title') || target?.textContent || '')).trim();
+
+        if (!text) {
+          alert('Wallet address is empty');
+          return;
+        }
+
+        (async () => {
+          try { await navigator.clipboard.writeText(text); }
+          catch {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+
+          const icon = $el.querySelector('i');
+          icon.classList.add('text-green-500');
+          setTimeout(() => icon.classList.remove('text-green-500'), 1500);
+        })();
+      ">
+      <i class="fa-solid fa-copy text-xs transition-colors duration-300"></i>
+    </button>
+  </div>
+</div>
+<script src="/auth-script/wallet-address.js"></script>
+</div>
+
+            </div>
+            
+            <!-- Warning Notice -->
+            <div class="flex items-start p-3 bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-700/50 rounded-xl border border-slate-200/50 dark:border-slate-600/70 mb-4">
+                <div class="w-6 h-6 bg-slate-500 dark:bg-slate-600 rounded-lg flex items-center justify-center mr-2 flex-shrink-0">
+                    <i class="fa-solid fa-shield-halved text-white text-xs"></i>
+                </div>
+                <div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-50 mb-0.5 text-xs">Security Notice</h5>
+                    <p class="text-xs text-slate-800 dark:text-slate-100">Always contact NFV Wealth Support before making payments to verify account details.</p>
+                </div>
+            </div>
+            
+            <!-- Action Button -->
+            <div class="flex justify-end">
+                <button @click="showBankAccount = false" 
+                        class="px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none shadow-sm text-sm">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Send Money Modal -->
+  <div 
+    x-show="showSendMoney" 
+    x-transition:enter="transition ease-out duration-300" enter-start="opacity-0" enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200" leave-start="opacity-100" leave-end="opacity-0"
+    class="fixed inset-0 z-50 overflow-y-auto" 
+    aria-labelledby="send-money-title" role="dialog" aria-modal="true" style="display: none;">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div x-show="showSendMoney" 
+            x-transition:enter="transition ease-out duration-300" enter-start="opacity-0" enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" leave-start="opacity-100" leave-end="opacity-0"
+            class="fixed inset-0 bg-slate-900/20 dark:bg-black/40 backdrop-blur-md transition-opacity" 
+            @click="showSendMoney = false" aria-hidden="true">
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div x-show="showSendMoney" 
+            x-transition:enter="transition ease-out duration-300" enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200" leave-start="opacity-100 translate-y-0 sm:scale-100" leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block align-bottom bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl px-4 pt-4 pb-4 text-left overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/50 transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+            <div class="absolute top-3 right-3">
+                <button @click="showSendMoney = false" type="button" 
+                        class="w-8 h-8 bg-gray-100/80 dark:bg-gray-700/80 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-all duration-200 flex items-center justify-center">
+                    <i class="fa-solid fa-times text-xs"></i>
+                </button>
+            </div>
+            <div class="text-center mb-4">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 mb-3 shadow-lg shadow-primary-500/25 dark:shadow-primary-900/50 relative">
+                    <i class="fa-solid fa-paper-plane text-white text-sm"></i>
+                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <div class="absolute -bottom-0.5 -left-0.5 w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1" id="send-money-title">Send Money</h3>
+                <p class="text-xs text-gray-600 dark:text-gray-400 font-medium">Swift & Secure Money Transfer</p>
+            </div>
+            <div class="space-y-3 mb-4">
+                <a href="/dashboard/localtransfer.html" class="block group">
+                    <div class="relative p-3 bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-700/80 dark:to-gray-800/80 hover:from-primary-50/80 hover:to-primary-100/50 dark:hover:from-primary-900/30 dark:hover:to-primary-800/30 rounded-xl border border-gray-100/50 dark:border-gray-600/50 hover:border-primary-200/50 dark:hover:border-primary-700/50 transition-all duration-300 hover:shadow-md hover:shadow-primary-500/10 dark:hover:shadow-primary-900/20 transform hover:scale-[1.02]">
+                        <div class="absolute top-2 right-2 w-6 h-6 bg-primary-200/20 dark:bg-primary-800/30 rounded-full blur-lg group-hover:bg-primary-300/30 dark:group-hover:bg-primary-700/40 transition-colors duration-300"></div>
+                        <div class="flex items-center justify-between relative">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-8 w-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md shadow-primary-500/25 dark:shadow-primary-900/50">
+                                        <i class="fa-solid fa-users text-white text-xs"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-white mb-0.5 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300 text-sm">Local Transfer</h4>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Send money to local accounts instantly</p>
+                                    <div class="flex items-center">
+                                        <div class="px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-md text-xs font-semibold mr-1">
+                                            <i class="fa-solid fa-bolt mr-1"></i>Instant
+                                        </div>
+                                        <div class="px-1.5 py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-md text-xs font-semibold">
+                                            <i class="fa-solid fa-gift mr-1"></i>0% Fee
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-7 h-7 bg-white/80 dark:bg-gray-700/80 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm">
+                                <i class="fa-solid fa-arrow-right text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="/dashboard/internationaltransfer.html" class="block group">
+                    <div class="relative p-3 bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-gray-700/80 dark:to-gray-800/80 hover:from-blue-50/80 hover:to-blue-100/50 dark:hover:from-blue-900/30 dark:hover:to-blue-800/30 rounded-xl border border-gray-100/50 dark:border-gray-600/50 hover:border-blue-200/50 dark:hover:border-blue-700/50 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 dark:hover:shadow-blue-900/20 transform hover:scale-[1.02]">
+                        <div class="absolute top-2 right-2 w-6 h-6 bg-blue-200/20 dark:bg-blue-800/30 rounded-full blur-lg group-hover:bg-blue-300/30 dark:group-hover:bg-blue-700/40 transition-colors duration-300"></div>
+                        <div class="flex items-center justify-between relative">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-8 w-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md shadow-blue-500/25 dark:shadow-blue-900/50">
+                                        <i class="fa-solid fa-globe-americas text-white text-xs"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-white mb-0.5 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300 text-sm">International Wire</h4>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Global transfers within 72 hours</p>
+                                    <div class="flex items-center">
+                                        <div class="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md text-xs font-semibold mr-1">
+                                            <i class="fa-solid fa-shield-check mr-1"></i>Secure
+                                        </div>
+                                        <div class="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-md text-xs font-semibold">
+                                            <i class="fa-solid fa-clock mr-1"></i>72hrs
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-7 h-7 bg-white/80 dark:bg-gray-700/80 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm">
+                                <i class="fa-solid fa-arrow-right text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="flex items-start p-3 bg-gradient-to-r from-gray-50/80 to-white/80 dark:from-gray-700/80 dark:to-gray-800/80 rounded-xl border border-gray-100/50 dark:border-gray-600/50 mb-4">
+                <div class="w-6 h-6 bg-gray-500 dark:bg-gray-600 rounded-lg flex items-center justify-center mr-2 flex-shrink-0">
+                    <i class="fa-solid fa-info text-white text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-700 dark:text-gray-300 font-medium">All transfers are protected by bank-grade encryption and require verification for your security.</p>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button @click="showSendMoney = false" 
+                        class="px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 focus:outline-none shadow-sm text-sm">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Add Money Modal -->
+    <div 
+    x-show="showAddMoney" 
+    x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0" 
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200" 
+    x-transition:leave-start="opacity-100" 
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 overflow-y-auto" 
+    aria-labelledby="add-money-title" 
+    role="dialog" 
+    aria-modal="true" 
+    style="display: none;">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Backdrop -->
+        <div x-show="showAddMoney" 
+            x-transition:enter="transition ease-out duration-300" 
+            x-transition:enter-start="opacity-0" 
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" 
+            x-transition:leave-start="opacity-100" 
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-slate-900/20 dark:bg-black/40 backdrop-blur-md transition-opacity" 
+            @click="showAddMoney = false" 
+            aria-hidden="true">
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <!-- Modal Content -->
+        <div x-show="showAddMoney" 
+            x-transition:enter="transition ease-out duration-300" 
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200" 
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block align-bottom bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl px-6 pt-5 pb-5 text-left overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/50 transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            
+            <!-- Close Button -->
+            <div class="absolute top-4 right-4">
+                <button @click="showAddMoney = false" type="button" 
+                        class="w-10 h-10 bg-gray-100/80 dark:bg-gray-700/80 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-all duration-200 flex items-center justify-center">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 mb-4 shadow-lg shadow-orange-500/25 dark:shadow-orange-900/50">
+                    <i class="fa-brands fa-bitcoin text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="add-money-title">Add Money</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Deposit Bitcoin to your account</p>
+            </div>
+
+            <!-- Bitcoin Address Section -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Deposit Address</label>
+                <div class="relative">
+                    <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700"
+     x-data>
+    
+    <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            BTC Address
+        </span>
+        <div class="flex items-center space-x-1">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-xs text-green-600 dark:text-green-400 font-medium">Active</span>
+        </div>
+    </div>
+
+    <!-- REAL ADDRESS DISPLAY -->
+    <div
+        x-ref="walletAddress"
+        class="user-wallet-address break-all font-mono text-sm text-gray-900 dark:text-white bg-white dark:bg-gray-900/50 p-3 rounded-lg border border-gray-200 dark:border-gray-700 mb-3">
+    </div>
+
+    <!-- COPY BUTTON -->
+    <button
+        type="button"
+        class="w-full py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center space-x-2 shadow-md"
+        @click="
+            const address = ($refs.walletAddress?.textContent || '').trim();
+            if (!address) { alert('Wallet address is empty'); return; }
+
+            const showCopied = () => {
+                $el.innerHTML = '<i class=\'fa-solid fa-check\'></i><span>Copied</span>';
+                setTimeout(() => {
+                    $el.innerHTML = '<i class=\'fa-solid fa-copy\'></i><span>Copy Address</span>';
+                }, 2000);
+            };
+
+            const fallbackCopy = (text) => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            };
+
+            (async () => {
+                try {
+                    await navigator.clipboard.writeText(address);
+                    showCopied();
+                } catch {
+                    fallbackCopy(address);
+                    showCopied();
+                }
+            })();
+        ">
+        <i class="fa-solid fa-copy"></i>
+        <span>Copy Address</span>
+    </button>
+</div>
+
+                </div>
+            </div>
+
+            <!-- QR Code Section -->
+            <!-- <div class="mb-6">
+                <div class="p-4 bg-white dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-center">
+                    <div class="w-48 h-48 mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-3">
+                        <div class="text-center">
+                            <i class="fa-solid fa-qrcode text-5xl text-gray-400 dark:text-gray-600 mb-2"></i>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">QR Code</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">Scan to deposit Bitcoin</p>
+                </div>
+            </div> -->
+
+            <!-- Important Notice -->
+            <div class="mb-6">
+                <div class="flex items-start p-4 bg-gradient-to-r from-amber-50/80 to-yellow-50/80 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-200/50 dark:border-amber-800/50">
+                    <div class="w-8 h-8 bg-amber-500 dark:bg-amber-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <i class="fa-solid fa-exclamation-triangle text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-amber-900 dark:text-amber-300 mb-1">Important</h4>
+                        <ul class="text-xs text-amber-800 dark:text-amber-400 space-y-1">
+                            <li>• Only send Bitcoin (BTC) to this address</li>
+                            <li>• Minimum deposit: 0.001 BTC</li>
+                            <li>• Requires 3 confirmations</li>
+                            <li>• Funds appear after network confirmation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="flex items-center justify-between space-x-3">
+                <button @click="showAddMoney = false" 
+                        class="flex-1 px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200">
+                    Close
+                </button>
+                <a href="/dashboard/deposits.html" 
+                   class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-xl transition-all duration-200 text-center">
+                    View History
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Coming Soon Modal -->
+    <div 
+    x-show="showComingSoon" 
+    x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0" 
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200" 
+    x-transition:leave-start="opacity-100" 
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 overflow-y-auto" 
+    aria-labelledby="coming-soon-title" 
+    role="dialog" 
+    aria-modal="true" 
+    style="display: none;">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Backdrop -->
+        <div x-show="showComingSoon" 
+            x-transition:enter="transition ease-out duration-300" 
+            x-transition:enter-start="opacity-0" 
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" 
+            x-transition:leave-start="opacity-100" 
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-slate-900/20 dark:bg-black/40 backdrop-blur-md transition-opacity" 
+            @click="showComingSoon = false" 
+            aria-hidden="true">
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <!-- Modal Content -->
+        <div x-show="showComingSoon" 
+            x-transition:enter="transition ease-out duration-300" 
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200" 
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block align-bottom bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl px-6 pt-5 pb-5 text-left overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/50 transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+            
+            <!-- Close Button -->
+            <div class="absolute top-4 right-4">
+                <button @click="showComingSoon = false" type="button" 
+                        class="w-10 h-10 bg-gray-100/80 dark:bg-gray-700/80 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-all duration-200 flex items-center justify-center">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Icon & Header -->
+            <div class="text-center mb-6">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 mb-4 shadow-lg shadow-primary-500/25 dark:shadow-primary-900/50 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-white/10 animate-pulse"></div>
+                    <i class="fa-solid fa-clock text-white text-2xl relative z-10"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="coming-soon-title" x-text="comingSoonFeature"></h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Coming Soon</p>
+            </div>
+
+            <!-- Message Section -->
+            <div class="mb-6">
+                <div class="p-4 bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-xl border border-primary-100 dark:border-primary-800/50">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-primary-500 dark:bg-primary-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fa-solid fa-info text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-primary-900 dark:text-primary-100 mb-1">Feature Under Development</h4>
+                            <p class="text-xs text-primary-800 dark:text-primary-200 leading-relaxed">
+                                We're working hard to bring you this feature. It will be available soon with enhanced functionality and a seamless user experience.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Section -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-bell text-gray-400 dark:text-gray-500"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Get notified when ready</span>
+                    </div>
+                    <button class="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium rounded-lg transition-colors">
+                        Notify Me
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button @click="showComingSoon = false" 
+                        class="px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Receive Bitcoin Modal -->
+    <div 
+    x-show="showReceiveModal" 
+    x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0" 
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200" 
+    x-transition:leave-start="opacity-100" 
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 overflow-y-auto" 
+    aria-labelledby="receive-modal-title" 
+    role="dialog" 
+    aria-modal="true" 
+    style="display: none;">
+    
+    <!-- Backdrop with Enhanced Blur -->
+    <div class="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-md transition-opacity" 
+         @click="showReceiveModal = false" 
+         aria-hidden="true"></div>
+    
+    <!-- Modal Container -->
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-gray-900/50 transform transition-all max-w-sm w-full overflow-hidden"
+             x-transition:enter="transition ease-out duration-300" 
+             x-transition:enter-start="opacity-0 scale-95 translate-y-4" 
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200" 
+             x-transition:leave-start="opacity-100 scale-100 translate-y-0" 
+             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <!-- Compact Header -->
+            <div class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-4 relative overflow-hidden">
+                <div class="relative flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                            <i class="fa-brands fa-bitcoin text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold" id="receive-modal-title">Receive Bitcoin</h3>
+                        </div>
+                    </div>
+                    <button @click="showReceiveModal = false" 
+                            class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                        <i class="fa-solid fa-times text-white text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Compact Content -->
+            <div class="p-4">
+                                    <!-- Compact QR Code Section -->
+                    <div class="text-center mb-4">
+                        <div class="w-32 h-32 mx-auto mb-3 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-2 rounded-2xl shadow border border-gray-200 dark:border-gray-600 relative">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=Yuuu&bgcolor=ffffff&color=1f2937" 
+                                 alt="BTC Address QR Code" 
+                                 class="w-full h-full rounded-xl">
+                            
+                            <!-- Small Bitcoin Logo -->
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="w-6 h-6 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow border border-primary-500">
+                                    <i class="fa-brands fa-bitcoin text-primary-500 text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Scan with your Bitcoin wallet</p>
+                    </div>
+                    
+                    <!-- Compact Address Section -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Bitcoin Address</label>
+                        <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-3 group hover:border-primary-300 dark:hover:border-primary-600 transition-colors">
+ <div class="flex items-center space-x-2" x-data>
+  <div class="flex-1 min-w-0">
+    <p
+      x-ref="walletAddress"
+      class="user-wallet-address text-xs font-mono text-gray-800 dark:text-gray-200 break-all"
+    ></p>
+  </div>
+
+  <button
+    type="button"
+    class="flex-shrink-0 w-8 h-8 bg-primary-500 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors"
+    @click="
+      const address = ($refs.walletAddress?.textContent || '').trim();
+      if (!address) { alert('Wallet address is empty (nothing to copy).'); return; }
+
+      const showOk = () => {
+        $el.innerHTML = '<i class=\'fa-solid fa-check text-white text-xs\'></i>';
+        setTimeout(() => $el.innerHTML = '<i class=\'fa-solid fa-copy text-white text-xs\'></i>', 2000);
+      };
+
+      const fallbackCopy = (text) => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      };
+
+      (async () => {
+        try { await navigator.clipboard.writeText(address); showOk(); }
+        catch (e) { fallbackCopy(address); showOk(); }
+      })();
+    "
+  >
+    <i class="fa-solid fa-copy text-white text-xs"></i>
+  </button>
+</div>
+
+
+
+                        </div>
+                    </div>
+                    
+                    <!-- Compact Warning -->
+                    <div class="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-action rounded-r-xl p-3 mb-4">
+                        <div class="flex items-start space-x-2">
+                            <i class="fa-solid fa-exclamation-triangle text-yellow-600 dark:text-yellow-400 text-sm mt-0.5"></i>
+                            <p class="text-xs text-yellow-700 dark:text-yellow-300">
+                                Only send <strong>Bitcoin (BTC)</strong> to this address.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Compact Action Buttons -->
+                    <div class="flex space-x-2">
+                        <button @click="showReceiveModal = false" 
+                                class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            Close
+                        </button>
+                        <button @click="navigator.clipboard.writeText('Yuuu'); 
+                                       $el.innerHTML = '<i class=\'fa-solid fa-check text-xs mr-1\'></i>Copied'; 
+                                       setTimeout(() => $el.innerHTML = '<i class=\'fa-solid fa-share text-xs mr-1\'></i>Share', 2000)"
+                                class="flex-1 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all">
+                            <i class="fa-solid fa-share text-xs mr-1"></i>Share
+                        </button>
+                    </div>
+                            </div>
+        </div>
+    </div>
+</div></div>
+
+<!-- <script>
+function dashboardQuickTransfer() {
+    return {
+        beneficiaries: [],
+        loading: false,
+
+        async loadBeneficiaries() {
+            this.loading = true;
+            try {
+                const response = await fetch('beneficiaries.php', {
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Add color and initials to each beneficiary
+                    this.beneficiaries = data.beneficiaries.map(ben => {
+                        const colors = [
+                            'bg-gradient-to-br from-blue-500 to-blue-600',
+                            'bg-gradient-to-br from-purple-500 to-purple-600',
+                            'bg-gradient-to-br from-pink-500 to-pink-600',
+                            'bg-gradient-to-br from-green-500 to-green-600',
+                            'bg-gradient-to-br from-yellow-500 to-yellow-600',
+                            'bg-gradient-to-br from-red-500 to-red-600',
+                            'bg-gradient-to-br from-indigo-500 to-indigo-600',
+                            'bg-gradient-to-br from-teal-500 to-teal-600'
+                        ];
+                        
+                        const getInitials = (name) => {
+                            return name.split(' ')
+                                .map(word => word[0])
+                                .join('')
+                                .toUpperCase()
+                                .substring(0, 2);
+                        };
+                        
+                        return {
+                            ...ben,
+                            initials: getInitials(ben.name),
+                            color: colors[ben.id % colors.length]
+                        };
+                    });
+                    console.log('✅ Loaded', this.beneficiaries.length, 'beneficiaries');
+                }
+            } catch (error) {
+                console.error('Error loading beneficiaries:', error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        // selectBeneficiary(beneficiary) {
+        //     console.log('Selected beneficiary:', beneficiary);
+            
+        //     // Store beneficiary data in sessionStorage
+        //     sessionStorage.setItem('selectedBeneficiary', JSON.stringify(beneficiary));
+            
+        //     // Redirect to appropriate transfer page based on type and method
+        //     if (beneficiary.type === 'local') {
+        //         window.location.href = 'localtransfer.php';
+        //     } else if (beneficiary.type === 'international' || beneficiary.method_type) {
+        //         // Redirect to international transfer with method parameter
+        //         const method = beneficiary.method_type ? '?method=' + encodeURIComponent(beneficiary.method_type) : '';
+        //         window.location.href = 'internationaltransfer.php' + method;
+        //     } else {
+        //         // Default to international transfer
+        //         window.location.href = 'internationaltransfer.php';
+        //     }
+        // }
+
+    }
+}
+</script> -->
+                                </div>
+                </main>
+                            </div>
+                                </div>
+            
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    </script>
+    
+    <!-- Live BTC Rate Updater -->
+    <script>
+        let btcRate = 87221;
+        let updateCount = 0;
+        
+        // Function to fetch live BTC rate from CoinGecko
+        async function updateBTCRate() {
+            try {
+                console.log('Fetching BTC rate from CoinGecko...');
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                
+                if (!response.ok) {
+                    console.error('API request failed:', response.status, response.statusText);
+                    return;
+                }
+                
+                const data = await response.json();
+                console.log('CoinGecko API Response:', data);
+                
+                if (data && data.bitcoin && data.bitcoin.usd) {
+                    btcRate = parseFloat(data.bitcoin.usd);
+                    updateCount++;
+                    console.log('BTC Rate Updated (#' + updateCount + '):', btcRate);
+                    updateBTCDisplay();
+                } else {
+                    console.error('Invalid API response structure:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch BTC rate:', error);
+            }
+        }
+        
+        // Function to update all BTC displays on the page
+        function updateBTCDisplay() {
+            console.log('Updating displays with rate:', btcRate);
+            
+            // Update BTC rate display
+            const rateElements = document.querySelectorAll('[data-btc-rate]');
+            console.log('Found ' + rateElements.length + ' BTC rate elements');
+            rateElements.forEach(el => {
+                el.textContent = '$' + btcRate.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            });
+            
+            // Update BTC USD value displays
+            const btcBalance = 12.5760278;
+            const btcUsdValue = btcBalance * btcRate;
+            
+            const usdElements = document.querySelectorAll('[data-btc-usd-value]');
+            console.log('Found ' + usdElements.length + ' BTC USD value elements');
+            usdElements.forEach(el => {
+                el.textContent = '$' + btcUsdValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            });
+            
+            // Update total portfolio
+            const fiatBalance = 20369651;
+            const totalPortfolio = fiatBalance + btcUsdValue;
+            
+            const portfolioElements = document.querySelectorAll('[data-total-portfolio]');
+            console.log('Found ' + portfolioElements.length + ' total portfolio elements');
+            portfolioElements.forEach(el => {
+                el.textContent = '$' + totalPortfolio.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            });
+            
+            console.log('Display update complete');
+        }
+        
+        // Initial update
+        console.log('Starting BTC rate auto-updater...');
+        updateBTCRate();
+        
+        // Update every 5 minutes
+        setInterval(updateBTCRate, 300000);
+        console.log('Auto-updater will fetch new rate every 5 minutes');
+    </script>
+
+ <script>
+    
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+
+ 
+<script>
+  async function logout() {
+    try {
+      const res = await fetch("/api/logout", {
+        method: "POST", // make sure your backend expects POST
+        credentials: "include", // sends cookies
+      });
+
+      if (res.ok) {
+        // Logout successful → redirect to login
+        window.location.href = "/login.html";
+      } else {
+        console.error("Logout failed:", res.statusText);
+        // Still redirect to login just in case
+        window.location.href = "/login.html";
+      }
+    } catch (err) {
+      console.error("Logout error:", err);
+      window.location.href = "/login.html";
+    }
+  }
+</script>
+
+
+        <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script>
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+<!-- <script src="/js-scripts/app.js"></script> -->
+
+<!-- Mobile Navigation Script -->
+<script src="/js-scripts/mobile-nav.js"></script>
+
+<!-- New -->
+ <script src="/auth-script/user-ui.js"></script>
+
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+
+</body>
+</html>

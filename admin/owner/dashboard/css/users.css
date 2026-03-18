@@ -1,0 +1,355 @@
+.admin-card {
+  background: #f9f9fb;
+  border: 1px solid #e9e9ef;
+  border-radius: 16px;
+  padding: 14px;
+}
+.admin-card-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.admin-input {
+  padding: 10px 12px;
+  border: 1px solid #e9e9ef;
+  border-radius: 12px;
+  min-width: 240px;
+  outline: none;
+}
+.table-wrap {
+  overflow: auto;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #f0f0f5;
+  text-align: left;
+}
+.muted {
+  color: #667085;
+  font-size: 14px;
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  display: inline-block;
+}
+.badge-success {
+  background: #e7f7ee;
+}
+.badge-danger {
+  background: #fdecec;
+}
+
+.toggle {
+  position: relative;
+  width: 42px;
+  height: 22px;
+  display: inline-block;
+}
+
+.toggle input {
+  display: none;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  background: #e5e7eb;
+  border-radius: 999px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.2s;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  top: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.toggle input:checked + .toggle-slider {
+  background: #16a34a;
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #0b2f55;
+  font-size: 20px;
+}
+
+.modal-content p {
+  color: #495057;
+  margin-bottom: 20px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #0b2f55;
+  box-shadow: 0 0 0 3px rgba(11, 47, 85, 0.1);
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.modal-btn-primary {
+  background-color: #0b2f55;
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background-color: #08213d;
+}
+
+.modal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* ===== Modal Wrapper ===== */
+.am-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Backdrop ===== */
+.am-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+/* ===== Dialog ===== */
+.am-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: amFadeIn 0.2s ease;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* ===== Animation ===== */
+@keyframes amFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Header ===== */
+.am-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 22px;
+  border-bottom: 1px solid #eee;
+}
+
+.am-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.am-sub {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.am-x {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #888;
+}
+
+.am-x:hover {
+  color: #000;
+}
+
+/* ===== Body ===== */
+.am-body {
+  padding: 22px;
+}
+
+/* User Info */
+.am-userline {
+  margin-bottom: 30px;
+  padding-bottom: 5px;
+  display: flex;
+  gap: 5px;
+  border-bottom: #888 2px solid;
+}
+
+.am-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.am-email {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ===== Buttons Grid ===== */
+.am-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Buttons */
+.am-btn {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Variants */
+.am-primary {
+  background: #1f2937;
+  color: #fff;
+}
+
+.am-primary:hover {
+  background: #111827;
+}
+
+.am-light {
+  background: #f3f4f6;
+  color: #111;
+}
+
+.am-light:hover {
+  background: #e5e7eb;
+}
+
+.am-danger {
+  background: #dc2626;
+  color: #fff;
+  grid-column: span 2; /* full width */
+}
+
+.am-danger:hover {
+  background: #b91c1c;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 500px) {
+  .am-dialog {
+    margin: 20px;
+  }
+
+  .am-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .am-danger {
+    grid-column: span 1;
+  }
+}
+
+/* ✅ Force hide when d-none is present */
+.d-none {
+  display: none !important;
+}
+
+/* ✅ Modal should not block clicks when hidden */
+.am-modal.d-none {
+  display: none !important;
+  pointer-events: none !important;
+}

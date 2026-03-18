@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    <style>
+      .page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 90%;
+        max-width: 900px;
+        margin-bottom: 1.5rem;
+      }
+      .row-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 900px;
+        overflow: hidden;
+      }
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f9fafb;
+      }
+      .card-body {
+        padding: 1.75rem 1.5rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem;
+      }
+      .col-4 {
+        grid-column: span 4;
+      }
+      .col-6 {
+        grid-column: span 6;
+      }
+      .col-8 {
+        grid-column: span 8;
+      }
+      .col-12 {
+        grid-column: span 12;
+      }
+      @media (max-width: 700px) {
+        .col-4,
+        .col-6,
+        .col-8 {
+          grid-column: span 12;
+        }
+      }
+      .section-title {
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #374151;
+        margin-bottom: 0.25rem;
+      }
+      label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #6b7280;
+        margin-bottom: 0.4rem;
+      }
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        padding: 0.6rem 0.85rem;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #fafafa;
+      }
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: #2563eb;
+        background: #fff;
+      }
+      .textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      .help {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-top: 0.3rem;
+      }
+      .divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 0.5rem 0;
+      }
+      .badge {
+        padding: 0.3rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      .badge-active {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-on-hold {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-suspended {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-closed {
+        background: #f3f4f6;
+        color: #374151;
+      }
+      .btn {
+        padding: 0.55rem 1.2rem;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .btn-primary {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+      }
+      .btn-primary:hover {
+        background: #1d4ed8;
+      }
+      .btn-danger {
+        background: #ef4444;
+        color: #fff;
+        border-color: #ef4444;
+      }
+      .btn-danger:hover {
+        background: #dc2626;
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .muted {
+        color: #6b7280;
+        font-size: 0.875rem;
+      }
+      .alert {
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+        display: none;
+      }
+      .alert-error {
+        background: #fee2e2;
+        color: #991b1b;
+        display: block;
+      }
+      .toast-container {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        min-width: 280px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        animation: slideIn 0.3s ease;
+      }
+      .toast.success {
+        background: #d1fae5;
+        color: #065f46;
+        border-left: 4px solid #10b981;
+      }
+      .toast.error {
+        background: #fee2e2;
+        color: #991b1b;
+        border-left: 4px solid #ef4444;
+      }
+      .toast.warning {
+        background: #fef3c7;
+        color: #92400e;
+        border-left: 4px solid #f59e0b;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .confirm-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 9998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .confirm-box {
+        background: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 380px;
+        width: 90%;
+      }
+      .confirm-box h3 {
+        margin-bottom: 0.5rem;
+      }
+      .confirm-box p {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+      }
+      .confirm-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+      }
+      .confirm-cancel {
+        padding: 0.5rem 1.2rem;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+      }
+      .confirm-delete {
+        padding: 0.5rem 1.2rem;
+        border: none;
+        border-radius: 4px;
+        background: #ef4444;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toast-container" id="toast-container"></div>
+    <header id="topnav-mount"></header>
+
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 50px;
+      "
+    >
+      <div class="page-head" style="margin-top: 40px">
+        <div>
+          <h1 style="margin: 0">Edit User</h1>
+          <p class="muted" style="margin: 6px 0 0">
+            Update user profile and account settings.
+          </p>
+        </div>
+        <div class="row-actions">
+          <span id="statusBadge" class="badge">—</span>
+          <button class="btn" onclick="loadUser()">Refresh</button>
+          <button id="deleteBtn" class="btn btn-danger">Delete User</button>
+        </div>
+      </div>
+
+      <div id="alertBox" class="alert"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="muted" id="metaText">Loading...</div>
+          <button id="saveBtn" class="btn btn-primary">Save Changes</button>
+        </div>
+
+        <div class="card-body">
+          <form id="userForm">
+            <div class="grid">
+              <!-- BASIC INFO -->
+              <div class="col-12">
+                <div class="section-title">Basic Info</div>
+              </div>
+
+              <div class="col-6">
+                <label>Full Name</label>
+                <input id="name" class="input" type="text" />
+              </div>
+              <div class="col-6">
+                <label>Username</label>
+                <input id="username" class="input" type="text" />
+              </div>
+              <div class="col-6">
+                <label>Email</label>
+                <input id="email" class="input" type="email" />
+              </div>
+
+              <!-- PERSONAL DETAILS -->
+              <div class="col-12"><div class="divider"></div></div>
+              <div class="col-12">
+                <div class="section-title">Personal Details</div>
+              </div>
+
+              <div class="col-4">
+                <label>Middle Name</label>
+                <input id="middlename" class="input" type="text" />
+              </div>
+              <div class="col-4">
+                <label>Last Name</label>
+                <input id="lastname" class="input" type="text" />
+              </div>
+              <div class="col-4">
+                <label>Phone</label>
+                <input id="phone" class="input" type="text" />
+              </div>
+              <div class="col-4">
+                <label>Country</label>
+                <input id="country" class="input" type="text" />
+              </div>
+              <div class="col-4">
+                <label>Account Type</label>
+                <input id="accounttype" class="input" type="text" />
+              </div>
+              <div class="col-4">
+                <label>Account Number</label>
+                <input id="accountNumber" class="input" type="text" />
+                <div class="help">
+                  ⚠️ Only change if you know what you're doing.
+                </div>
+              </div>
+
+              <!-- ACCOUNT -->
+              <div class="col-12"><div class="divider"></div></div>
+              <div class="col-12"><div class="section-title">Account</div></div>
+
+              <div class="col-6">
+                <label>Account Balance ($)</label>
+                <input
+                  id="account_balance"
+                  class="input"
+                  type="number"
+                  step="0.01"
+                />
+                <div class="help">⚠️ Be careful editing balance directly.</div>
+              </div>
+              <div class="col-6">
+                <label>Email Verified</label>
+                <select id="emailVerified" class="select">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- FINANCIAL DETAILS -->
+              <div class="col-12"><div class="divider"></div></div>
+              <div class="col-12">
+                <div class="section-title">Financial Details</div>
+              </div>
+
+              <div class="col-6">
+                <label>Crypto Balance ($)</label>
+                <input
+                  id="crypto_balance"
+                  class="input"
+                  type="number"
+                  step="0.01"
+                />
+              </div>
+              <div class="col-6">
+                <label>Transaction Limit ($)</label>
+                <input
+                  id="transactionLimit"
+                  class="input"
+                  type="number"
+                  step="0.01"
+                />
+              </div>
+              <div class="col-6">
+                <label>Transaction Minimum ($)</label>
+                <input
+                  id="transactionMinimum"
+                  class="input"
+                  type="number"
+                  step="0.01"
+                />
+              </div>
+              <div class="col-6">
+                <label>Allow Transactions</label>
+                <select id="isAllowedToTransact" class="select">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- SECURITY -->
+              <div class="col-12"><div class="divider"></div></div>
+              <div class="col-12">
+                <div class="section-title">Security</div>
+              </div>
+
+              <div class="col-6">
+                <label>PIN</label>
+                <input
+                  id="pin"
+                  class="input"
+                  type="text"
+                  placeholder="Leave blank to keep current"
+                />
+                <div class="help">Only fill this to change the PIN.</div>
+              </div>
+              <div class="col-6">
+                <label>Password</label>
+                <input
+                  id="password"
+                  class="input"
+                  type="password"
+                  placeholder="Leave blank to keep current"
+                />
+                <div class="help">Only fill this to change the password.</div>
+              </div>
+
+              <!-- STATUS -->
+              <div class="col-12"><div class="divider"></div></div>
+              <div class="col-12">
+                <div class="section-title">Account Status</div>
+              </div>
+
+              <div class="col-4">
+                <label>Status</label>
+                <select id="status" class="select">
+                  <option value="active">Active</option>
+                  <option value="on-hold">On Hold</option>
+                  <option value="suspended">Suspended</option>
+                  <option value="closed">Closed</option>
+                </select>
+                <div class="help">
+                  Suspending, holding, or closing requires a reason.
+                </div>
+              </div>
+              <div class="col-8" id="suspensionWrap" style="display: none">
+                <label>Reason <span style="color: #ef4444">*</span></label>
+                <textarea
+                  id="suspensionReason"
+                  class="textarea"
+                  placeholder="Tell the user why their account is being suspended, held, or closed..."
+                ></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+    <script src="/admin-script/edith-user.js"></script>
+  </body>
+</html>

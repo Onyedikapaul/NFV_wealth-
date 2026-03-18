@@ -1,0 +1,1799 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <title>NFV Wealth | Cards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/assets/images/logo.png" />
+
+    <!-- Tailwind CSS with custom color variables -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Dynamic primary colors from appearance settings
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            DEFAULT: '#0ea5e9',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            foreground: '#ffffff',
+                        },
+                        secondary: { // Dynamic secondary colors from appearance settings
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            DEFAULT: '#64748b',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            foreground: '#0f172a',
+                        },
+                        accent: { // Dynamic accent colors from appearance settings
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            DEFAULT: '#ec4899',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            foreground: '#ffffff',
+                        },
+                        background: '#f8fafc',
+                        foreground: '#1e293b',
+                        card: {
+                            DEFAULT: '#ffffff',
+                            foreground: '#1e293b',
+                        },
+                        muted: {
+                            DEFAULT: '#f1f5f9',
+                            foreground: '#64748b',
+                        },
+                        border: '#e2e8f0',
+                        input: '#e2e8f0',
+                        ring: '#0ea5e9',
+                        
+                        // Specific colors from original design for gradients/highlights
+                        'gradient-pink-from': '#ec4899',
+                        'gradient-purple-via': '#a855f7',
+                        'gradient-indigo-to': '#4f46e5',
+                        
+                        'mobile-header-bg': '#1e293b', // Dark slate for mobile top section
+                        'mobile-header-text': '#f1f5f9', // Light text for mobile top section
+                        
+                        'yellow-action': '#facc15',
+                        'green-positive': '#22c55e',
+                        'red-negative': '#ef4444',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'top': '0 -4px 12px -1px rgba(0,0,0,0.05), 0 -2px 8px -1px rgba(0,0,0,0.03)',
+                    },
+                    borderRadius: {
+                        lg: '0.75rem',
+                        xl: '0.75rem', 
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' }, // primary color
+                          '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' },
+                        },
+                        shine: { 
+                          '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                          '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'shine-once': 'shine 1.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+        
+        
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome 6 Pro -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    
+    <!-- External Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        [x-cloak] { display: none !important; }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.foreground');
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; } /* slate-200 */
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+        .dark ::-webkit-scrollbar-track { background: #374151; } /* gray-700 */
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; } /* slate-300 */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; } /* slate-400 */
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #6b7280; } /* gray-500 */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; } /* gray-400 */
+
+        .shine-effect-container { position: relative; overflow: hidden; }
+        .shine-effect {
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .shine-effect-container:hover .shine-effect { opacity: 1; animation: shine-once 1.5s ease-in-out; }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+    
+    <!-- Ultra Modern Loading Animation -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 1) 100%);
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+            z-index: 9999;
+        }
+        
+        .dark .page-loading {
+            background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.12) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Floating particles background */
+        .loading-particles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 80%; left: 80%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { top: 60%; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { top: 70%; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 2.5s; }
+        
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.2));
+        }
+        
+        /* Outer orbital rings */
+        .loading-animation .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            animation: rotateOrbit 8s linear infinite;
+        }
+        
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2s;
+        }
+        
+        .orbit-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-bottom: 2px solid #0ea5e9;
+            border-left: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 2.5s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top: 2px solid #0ea5e9;
+            border-right: 2px solid rgba(14, 165, 233, 0.3);
+            animation-duration: 3s;
+        }
+        
+        /* Inner spinning circles */
+        .loading-animation .inner-circle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+            animation: spinInner 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .inner-circle:nth-child(4) {
+            border-top: 3px solid #0ea5e9;
+            border-right: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0s;
+        }
+        
+        .inner-circle:nth-child(5) {
+            border-bottom: 3px solid #0ea5e9;
+            border-left: 3px solid rgba(14, 165, 233, 0.4);
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+        
+        /* Glowing core with morphing effect */
+        .loading-animation .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0ea5e9, #4f46e5);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 0 20px rgba(14, 165, 233, 0.6),
+                0 0 40px rgba(14, 165, 233, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: coreGlow 2s ease-in-out infinite, morphCore 4s ease-in-out infinite;
+        }
+        
+        /* Enhanced text with multiple effects */
+        .page-loading .text {
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            background: linear-gradient(90deg, #0ea5e9, #0ea5e9, #4f46e5, #0ea5e9, #0ea5e9);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+        }
+        
+        .page-loading .text::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            border-radius: 4px;
+            z-index: -1;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        /* Subtitle with fade effect */
+        .page-loading .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+            animation: subtitleFade 2s ease-in-out infinite;
+        }
+        
+        /* Progress indicator */
+        .loading-progress {
+            width: 200px;
+            height: 2px;
+            background: #f1f5f9;
+            border-radius: 1px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+            animation: progressSlide 2s ease-in-out infinite;
+        }
+        
+        /* Keyframe animations */
+        @keyframes  floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        @keyframes  rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  spinInner {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes  coreGlow {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                box-shadow: 
+                    0 0 20px rgba(14, 165, 233, 0.6),
+                    0 0 40px rgba(14, 165, 233, 0.3),
+                    inset 0 0 10px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.2); 
+                box-shadow: 
+                    0 0 30px rgba(14, 165, 233, 0.8),
+                    0 0 60px rgba(14, 165, 233, 0.4),
+                    inset 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+        }
+        
+        @keyframes  morphCore {
+            0%, 100% { border-radius: 50%; background-position: 0% 50%; }
+            25% { border-radius: 40%; background-position: 100% 50%; }
+            50% { border-radius: 30%; background-position: 0% 50%; }
+            75% { border-radius: 40%; background-position: 100% 50%; }
+        }
+        
+        @keyframes  textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes  textGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes  subtitleFade {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+        
+        @keyframes  progressSlide {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+        <!-- Web Application Manifest -->
+<link rel="manifest" href="https://regalheritageob.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#000000">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Aurevia Trust">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Aurevia Trust">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="bg-background text-foreground">
+    <!-- Ultra Modern Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loading-container">
+                <!-- Floating particles background -->
+                <div class="loading-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Main loading animation -->
+                <div class="loading-animation">
+                    <!-- Outer orbital rings -->
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    
+                    <!-- Inner spinning circles -->
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                    
+                    <!-- Morphing glowing core -->
+                    <div class="core"></div>
+                </div>
+                
+                <!-- Enhanced text with effects -->
+                <div class="text">NFV Wealth</div>
+                <div class="subtitle">Secure System Platform</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div x-data="{ 
+        sidebarOpen: false,
+        mobileMenuOpen: false,
+        showMobileMenu: false,
+        notificationOpen: false,
+        userDropdownOpen: false,
+        currentRoute: 'cards',
+        darkMode: localStorage.getItem('darkMode') === 'true' || false,
+        isDesktop: window.matchMedia('(min-width: 1024px)').matches,
+        cards: [],
+        loading: true,
+        showCardApplicationModal: false,
+        showCardDetailsModal: false,
+        selectedCard: null,
+        applicationForm: {
+            card_type: 'virtual',
+            card_tier: 'platinum',
+            card_brand: 'visa',
+            color_scheme: 'blue',
+            daily_limit: 1000,
+            currency: 'USD'
+        },
+        submittingApplication: false,
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
+        closeSidebar() { this.sidebarOpen = false; },
+        isActiveRoute(route) { return this.currentRoute === route; },
+        toggleNotifications() { this.notificationOpen = !this.notificationOpen; this.userDropdownOpen = false; },
+        toggleUserDropdown() { this.userDropdownOpen = !this.userDropdownOpen; this.notificationOpen = false; },
+        closeDropdowns() { this.notificationOpen = false; this.userDropdownOpen = false; },
+        toggleDarkMode() { 
+            this.darkMode = !this.darkMode; 
+            localStorage.setItem('darkMode', this.darkMode);
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+       async loadCards() {
+    this.loading = true;
+    try {
+        const response = await fetch('/api/cards', { credentials: 'include' });
+        const data = await response.json();
+        if (data.success) {
+            this.cards = data.cards;
+        } else if (data.message === 'Not authenticated') {
+            window.location.href = '../login.html';
+        }
+    } catch (error) {
+        console.error('Error loading cards:', error);
+    } finally {
+        this.loading = false;
+    }
+},
+        viewCardDetails(card) {
+            this.selectedCard = card;
+            this.showCardDetailsModal = true;
+        },
+        getStatusBadgeClass(status) {
+            const classes = {
+                'active': 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300',
+                'pending': 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300',
+                'blocked': 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300',
+                'inactive': 'bg-gray-100 dark:bg-gray-900/50 text-gray-800 dark:text-gray-300'
+            };
+            return classes[status?.toLowerCase()] || classes['pending'];
+        },
+        getStatusIcon(status) {
+            const icons = {
+                'active': 'fa-check-circle',
+                'pending': 'fa-clock',
+                'blocked': 'fa-ban',
+                'inactive': 'fa-pause-circle'
+            };
+            return icons[status?.toLowerCase()] || icons['pending'];
+        },
+        getCardGradient(colorScheme) {
+            const gradients = {
+                'blue': 'from-blue-800 via-blue-600 to-blue-500',
+                'purple': 'from-purple-800 via-purple-600 to-purple-500',
+                'pink': 'from-pink-800 via-pink-600 to-pink-500',
+                'green': 'from-green-800 via-green-600 to-green-500',
+                'orange': 'from-orange-800 via-orange-600 to-orange-500',
+                'red': 'from-red-800 via-red-600 to-red-500',
+                'indigo': 'from-indigo-800 via-indigo-600 to-indigo-500',
+                'black': 'from-gray-900 via-gray-800 to-gray-700'
+            };
+            return gradients[colorScheme] || gradients['blue'];
+        },
+        async submitCardApplication() {
+    this.submittingApplication = true;
+    try {
+        const response = await fetch('/api/cards', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(this.applicationForm)
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            this.showCardApplicationModal = false;
+            this.loadCards();
+            this.applicationForm = {
+                card_type: 'virtual',
+                card_tier: 'platinum',
+                card_brand: 'visa',
+                color_scheme: 'blue',
+                daily_limit: 1000,
+                currency: 'USD'
+            };
+            // nice toast instead of alert - uses your existing showNotification if available
+            if (typeof showNotification === 'function') {
+                showNotification('Card application submitted! Your card is being processed.', 'success');
+            }
+        } else {
+            console.error(data.message);
+        }
+    } catch (error) {
+        console.error('Error submitting application:', error);
+    } finally {
+        this.submittingApplication = false;
+    }
+},
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+        initResponsiveLayout() {
+            const mq = window.matchMedia('(min-width: 1024px)');
+            this.isDesktop = mq.matches;
+            const handler = (event) => { this.isDesktop = event.matches; };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', handler);
+            } else if (mq.addListener) {
+                mq.addListener(handler);
+            }
+        }
+    }" 
+    x-init="initDarkMode(); initResponsiveLayout(); loadCards()"
+    @click.away="closeDropdowns()"
+    class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+                <!-- Responsive Layout Shell -->
+        <div id="layout-shell" class="flex w-full" :class="isDesktop ? 'h-screen lg:flex-row' : 'min-h-screen flex-col'" x-cloak>
+            <!-- Desktop Sidebar -->
+                                   <div id="sidebar-slot"></div>
+
+
+            <!-- Desktop Main Content -->
+            <div class="flex-1 flex flex-col w-full">
+
+                <!-- Header -->
+                             <div id="header-slot"></div>
+
+
+                <!-- Mobile Main Content / Shared Content -->
+                <main class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-0">
+                    <div class="h-full overflow-y-auto">
+                <div class="min-h-screen lg:min-h-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4 lg:p-6 pb-24 lg:pb-10">
+    <div class="max-w-8xl mx-auto">
+        <!-- Mobile Header -->
+        <div class="lg:hidden mb-2">
+            <div class="lg:hidden" x-data="{ showMobileNotifications: false }">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-2">
+                            <!-- Back Button -->
+                <a href="index.html" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 mr-2">
+                    <i class="fa-solid fa-arrow-left text-gray-700 dark:text-gray-300 text-base"></i>
+                </a>
+                        
+            <div>
+                                    <!-- Custom Title -->
+                    <p class="text-gray-900 dark:text-white font-semibold text-base">Virtual Cards</p>
+                            </div>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+                            <!-- Dark Mode Toggle -->
+                <button @click="toggleDarkMode()" 
+                        class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i x-show="!darkMode" class="fa-solid fa-moon text-gray-700 text-base"></i>
+                    <i x-show="darkMode" class="fa-solid fa-sun text-yellow-400 text-base"></i>
+                </button>
+                        
+                            <!-- Notifications -->
+                <div class="relative">
+                    <!-- <button @click="showMobileNotifications = !showMobileNotifications" class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fa-solid fa-bell text-gray-700 dark:text-gray-300 text-base"></i>
+                    </button> -->
+                                                        </div>
+                    </div>
+    </div>
+
+            <!-- Mobile Notifications Panel -->
+        <div x-show="showMobileNotifications" 
+             x-transition:enter="transition ease-out duration-300" 
+             x-transition:enter-start="opacity-0 -translate-y-4" 
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200" 
+             x-transition:leave-start="opacity-100 translate-y-0" 
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm" 
+             @click="showMobileNotifications = false">
+            
+            <div @click.stop class="absolute top-0 left-0 right-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white rounded-b-3xl shadow-2xl dark:shadow-slate-900/50 max-h-[80vh] overflow-hidden">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-4 border-b border-white/10 dark:border-white/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/10 dark:bg-white/20 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-bell text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Notifications</h3>
+                                                                                        <p class="text-xs text-white/60">All caught up!</p>
+                                                    </div>
+                    </div>
+                    <button @click="showMobileNotifications = false" class="w-8 h-8 bg-white/10 dark:bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/20 dark:hover:bg-white/30 transition-colors">
+                        <i class="fa-solid fa-times text-white text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Notifications List -->
+                <div class="overflow-y-auto max-h-96 custom-scrollbar">
+                                        
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Deposit Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your deposit of $1000 via Bank Transfer has been received and is pending approval.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Loan Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your loan application for 102500 has been submitted successfully and is pending approval. You will be notified once it is processed.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Grant Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your grant application has been submitted successfully and is now being processed.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        4 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="p-4 border-b border-white/5 dark:border-white/10 hover:bg-white/5 dark:hover:bg-white/10 transition-colors ">
+                        <div class="flex items-start space-x-3">
+                                                        <div class="w-10 h-10 bg-blue-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-info-circle text-blue-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-white">Card Application Submitted</p>
+                                        <p class="text-xs text-white/70 mt-1 line-clamp-2">Your card application has been submitted and is awaiting approval. You will be notified when the status changes.</p>
+                                    </div>
+                                                                    </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-white/50 flex items-center">
+                                        <i class="fa-solid fa-clock mr-1"></i>
+                                        5 months ago
+                                    </p>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+                
+                <!-- Footer Actions -->
+                                <div class="p-4 border-t border-white/10 dark:border-white/20 bg-white/5 dark:bg-white/10">
+                    <div class="flex items-center justify-between">
+                        <button class="text-sm font-semibold text-white/70 dark:text-white/80 hover:text-white transition-colors">
+                            Mark all as read
+                        </button>
+                        <a href="notifications.html" class="text-sm font-semibold text-primary-400 dark:text-primary-300 hover:text-primary-300 dark:hover:text-primary-200 transition-colors flex items-center">
+                            View All
+                            <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                            </div>
+        </div>
+    </div>         </div>
+
+        <!-- Desktop Header -->
+        <div class="hidden lg:block mb-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
+                        <i class="fas fa-credit-card text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Virtual Cards</h1>
+                        <p class="text-gray-600 dark:text-gray-400">Secure virtual cards for online payments and subscriptions</p>
+                    </div>
+                </div>
+                <button @click="showCardApplicationModal = true" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl shadow-lg font-semibold transition-all duration-300 transform hover:scale-[1.02]">
+                    <i class="fas fa-plus mr-2"></i> Apply for Card
+                </button>
+            </div>
+        </div>
+             <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden">
+                <div class="p-4">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-3">
+                            <i class="fas fa-credit-card text-white text-lg"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Active Cards</p>
+                            <h3 class="user-active-cards text-xl font-bold text-gray-900 dark:text-white"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden">
+                <div class="p-4">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-3">
+                            <i class="fas fa-hourglass-half text-white text-lg"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Applications</p>
+                            <h3 class="user-pending-cards text-xl font-bold text-gray-900 dark:text-white"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden">
+                <div class="p-4">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-3">
+                            <i class="fas fa-wallet text-white text-lg"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Balance</p>
+                            <h3 class="user-balance text-xl font-bold text-gray-900 dark:text-white"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 dark:from-primary-600 dark:via-primary-700 dark:to-primary-800 rounded-2xl overflow-hidden shadow-xl border border-white/20 dark:border-gray-700/50 mb-4">
+            <div class="relative p-6">
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div class="flex-1">
+                            <h2 class="text-xl lg:text-2xl font-bold text-white mb-2">Virtual Cards Made Easy</h2>
+                            <p class="text-white/90 text-sm mb-4">Create virtual cards for secure online payments, subscription management, and more. Enhanced security and spending control.</p>
+                            
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                        <i class="fas fa-shield-alt text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white text-xs font-semibold">Secure</h3>
+                                        <p class="text-white/80 text-xs">Protected payments</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                        <i class="fas fa-globe text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white text-xs font-semibold">Global</h3>
+                                        <p class="text-white/80 text-xs">Worldwide acceptance</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                        <i class="fas fa-sliders-h text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white text-xs font-semibold">Control</h3>
+                                        <p class="text-white/80 text-xs">Spending limits</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                        <i class="fas fa-bolt text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white text-xs font-semibold">Instant</h3>
+                                        <p class="text-white/80 text-xs">Quick issuance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="lg:hidden">
+                                <a href="apply.html" class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all duration-300 border border-white/30">
+                                    <i class="fas fa-plus mr-2"></i> Apply Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Visual -->
+                        <div class="hidden lg:flex lg:items-center lg:justify-center lg:w-1/3 lg:pl-6">
+                            <div class="relative w-48 h-32">
+                                <div class="absolute w-full h-full transform rotate-6 rounded-xl bg-gradient-to-br from-gray-900/50 to-gray-800/50 shadow-lg backdrop-blur-sm"></div>
+                                <div class="absolute w-full h-full rounded-xl bg-gradient-to-r from-primary-800/90 to-primary-600/90 shadow-lg backdrop-blur-sm border border-white/20">
+                                    <div class="p-4 h-full flex flex-col justify-between">
+                                        <div class="flex justify-between items-start">
+                                            <div class="text-xs font-mono text-white/75">Virtual Card</div>
+                                            <i class="fas fa-wifi text-white/75 text-sm transform rotate-90"></i>
+                                        </div>
+                                        <div class="text-xs font-mono text-white mt-4">•••• •••• •••• 1234</div>
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-xs font-mono text-white/75">VALID THRU</div>
+                                                <div class="text-xs font-mono text-white">12/25</div>
+                                            </div>
+                                            <div class="h-6 w-6">
+                                                <i class="fas fa-credit-card text-white/75 text-lg"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-white transform translate-x-16 -translate-y-16"></div>
+                    <div class="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white transform -translate-x-12 translate-y-12"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Listings -->
+        <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 overflow-hidden">
+            <div class="border-b border-gray-200/50 dark:border-gray-700/50 px-6 py-4 flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Your Cards</h2>
+                <button @click="showCardApplicationModal = true" class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 flex items-center font-medium transition-colors">
+                    <i class="fas fa-plus-circle mr-1"></i> New Card
+                </button>
+            </div>
+            
+            <!-- Loading State -->
+            <div x-show="loading" class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <template x-for="i in 3" :key="i">
+                        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 p-6 animate-pulse">
+                            <div class="h-40 bg-gray-200 dark:bg-gray-700 rounded-xl mb-4"></div>
+                            <div class="space-y-3">
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div x-show="!loading && cards.length === 0" class="p-12 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
+                    <i class="fas fa-credit-card text-gray-400 dark:text-gray-500 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No Cards Yet</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Apply for a new card to get started</p>
+                <button @click="showCardApplicationModal = true" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                    <i class="fas fa-plus-circle mr-2"></i> Apply for Card
+                </button>
+            </div>
+            
+            <!-- Cards Grid -->
+            <div x-show="!loading && cards.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                <template x-for="card in cards" :key="card.id">
+                    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-lg transition-all duration-300 group overflow-hidden">
+                            <!-- Card Header with Status -->
+                            <div class="px-4 pt-4 pb-2 flex justify-between items-center">
+                                <div>
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                                          :class="getStatusBadgeClass(card.status)">
+                                        <i class="fas mr-1" :class="getStatusIcon(card.status)"></i> 
+                                        <span x-text="card.status.charAt(0).toUpperCase() + card.status.slice(1)"></span>
+                                    </span>
+                                </div>
+                                
+                                <div class="text-xs text-gray-500 dark:text-gray-400 font-medium" x-text="card.card_tier"></div>
+                            </div>
+                            
+                            <!-- Card Representation -->
+                            <div class="px-4 py-3">
+                                <div class="w-full h-40 relative overflow-hidden rounded-xl">
+                                    <!-- Card Background -->
+                                    <div class="absolute inset-0 bg-gradient-to-br" :class="getCardGradient(card.color_scheme)"></div>
+                                    
+                                    <!-- Card decorative elements -->
+                                    <div class="absolute inset-0 overflow-hidden">
+                                        <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
+                                        <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-16 -translate-x-16"></div>
+                                    </div>
+                                    
+                                    <!-- Card Content -->
+                                    <div class="relative p-4 h-full flex flex-col justify-between text-white">
+                                        <!-- Top Row -->
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="text-xs font-semibold opacity-90">NFV Wealth</div>
+                                                <div class="text-xs opacity-70" x-text="card.card_type + ' Card'"></div>
+                                            </div>
+                                            
+                                            <!-- Card Type Logo -->
+                                            <div class="text-right">
+                                                <div class="text-xs font-bold" x-text="card.card_brand"></div>
+                                                                                            </div>
+                                        </div>
+                                        
+                                        <!-- Chip -->
+                                        <div class="w-8 h-6 rounded bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center">
+                                            <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-px p-1">
+                                                <div class="bg-yellow-600/60 rounded-sm"></div>
+                                                <div class="bg-yellow-600/60 rounded-sm"></div>
+                                                <div class="bg-yellow-600/60 rounded-sm"></div>
+                                                <div class="bg-yellow-600/60 rounded-sm"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Card Number -->
+                                        <div class="font-mono text-sm tracking-wider" x-text="'•••• •••• •••• ' + card.last_four">
+                                        </div>
+                                        
+                                        <!-- Bottom Row -->
+                                        <div class="flex justify-between items-end">
+                                            <div>
+                                                <div class="text-xs opacity-70 uppercase">Card Holder</div>
+                                                <div class="text-xs font-medium truncate max-w-[120px]" x-text="card.card_holder_name || card.card_holder"></div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-xs opacity-70 uppercase">Valid Thru</div>
+                                                <div class="text-xs font-medium" x-text="card.expiry_formatted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card Info -->
+                            <div class="px-4 pb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Balance</span>
+                                    <span class="text-sm font-bold text-gray-900 dark:text-white" x-text="card.formatted_balance"></span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Daily Limit</span>
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300" x-text="card.formatted_limit"></span>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="flex space-x-2">
+                                    <button @click="viewCardDetails(card)" class="flex-1 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-300 text-center">
+                                        View Details
+                                    </button>
+                                    <!-- <a :href="'cards/' + card.id + '/transactions'" class="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-300 text-center">
+                                        Transactions
+                                    </a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+    </div>
+
+    <!-- Card Details Modal -->
+    <div x-show="showCardDetailsModal" 
+         x-cloak 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+         @click.self="showCardDetailsModal = false">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-2xl shadow-2xl border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             @click.stop>
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between sticky top-0 bg-white dark:bg-gray-800 z-10">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Card Details</h3>
+                <button @click="showCardDetailsModal = false" 
+                        class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6" x-show="selectedCard">
+                <!-- Card Visual -->
+                <div class="mb-6">
+                    <div class="w-full max-w-md mx-auto h-52 relative overflow-hidden rounded-2xl shadow-2xl">
+                        <!-- Card Background -->
+                        <div class="absolute inset-0 bg-gradient-to-br" :class="getCardGradient(selectedCard?.color_scheme)"></div>
+                        
+                        <!-- Card decorative elements -->
+                        <div class="absolute inset-0 overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full translate-y-20 -translate-x-20"></div>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="relative p-6 h-full flex flex-col justify-between text-white">
+                            <!-- Top Row -->
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="text-sm font-semibold opacity-90">NFV Wealth</div>
+                                    <div class="text-xs opacity-70" x-text="selectedCard?.card_type + ' Card'"></div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold" x-text="selectedCard?.card_brand"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Chip -->
+                            <div class="w-10 h-8 rounded bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center">
+                                <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-px p-1">
+                                    <div class="bg-yellow-600/60 rounded-sm"></div>
+                                    <div class="bg-yellow-600/60 rounded-sm"></div>
+                                    <div class="bg-yellow-600/60 rounded-sm"></div>
+                                    <div class="bg-yellow-600/60 rounded-sm"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card Number -->
+                            <div class="font-mono text-lg tracking-widest" x-text="selectedCard?.card_number || '•••• •••• •••• ' + selectedCard?.last_four">
+                            </div>
+                            
+                            <!-- Bottom Row -->
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <div class="text-xs opacity-70 uppercase mb-1">Card Holder</div>
+                                    <div class="text-sm font-medium" x-text="selectedCard?.card_holder_name || selectedCard?.card_holder"></div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs opacity-70 uppercase mb-1">Valid Thru</div>
+                                    <div class="text-sm font-medium" x-text="selectedCard?.expiry_formatted"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Information Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Card Type</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.card_type"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Card Brand</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.card_brand"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Card Tier</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.card_tier"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Status</div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                              :class="getStatusBadgeClass(selectedCard?.status)">
+                            <i class="fas mr-1" :class="getStatusIcon(selectedCard?.status)"></i> 
+                            <span x-text="selectedCard?.status?.charAt(0).toUpperCase() + selectedCard?.status?.slice(1)"></span>
+                        </span>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Balance</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.formatted_balance"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Daily Limit</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.formatted_limit"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">CVV</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white font-mono" x-text="selectedCard?.cvv || '•••'"></div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">Currency</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white" x-text="selectedCard?.currency"></div>
+                    </div>
+                </div>
+
+                <!-- Created Date -->
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-4">
+                    <div class="flex items-center text-sm text-blue-800 dark:text-blue-300">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        <span>Created on: </span>
+                        <span class="font-semibold ml-1" x-text="selectedCard?.created_at"></span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                    <button @click="showCardDetailsModal = false" 
+                            class="flex-1 px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-colors">
+                        Close
+                    </button>
+                    <!-- <a :href="'cards/' + selectedCard?.id + '/transactions'" 
+                       class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-xl text-center transition-all">
+                        View Transactions
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+            </main>
+
+            <!-- Mobile Floating Navigation -->
+            <div x-show="!isDesktop" x-cloak class="fixed bottom-4 inset-x-0 px-4 lg:hidden z-40">
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-800 rounded-3xl shadow-2xl shadow-gray-900/20 dark:shadow-black/40 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                        <div class="grid grid-cols-4 gap-1 text-xs font-semibold text-gray-500 dark:text-gray-300">
+                            <a href="index.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-house text-base"></i>
+                                <span>Home</span>
+                            </a>
+                            <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                                <span>Transfer</span>
+                            </a>
+                            <a href="cards.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-credit-card text-base"></i>
+                                <span>Cards</span>
+                            </a>
+                            <button @click="showMobileMenu = true" type="button" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400">
+                                <i class="fa-solid fa-bars text-base"></i>
+                                <span>Menu</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Modal - Sleek Bottom Sheet Design -->
+            <div x-show="showMobileMenu" 
+                 x-transition:enter="transition ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="transition ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-50 lg:hidden" 
+                 style="display: none;">
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="showMobileMenu = false"></div>
+                <div class="fixed inset-x-0 bottom-0 z-50">
+                    <div x-show="showMobileMenu"
+                         x-transition:enter="transition ease-out duration-300 transform"
+                         x-transition:enter-start="translate-y-full"
+                         x-transition:enter-end="translate-y-0"
+                         x-transition:leave="transition ease-in duration-200 transform"
+                         x-transition:leave-start="translate-y-0"
+                         x-transition:leave-end="translate-y-full"
+                         class="bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl dark:shadow-gray-900/50 max-h-[85vh] overflow-hidden">
+                        <div class="flex justify-center pt-3 pb-2">
+                            <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                        </div>
+                        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center">
+                                        <i class="fa-solid fa-user text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="user-fullname font-bold text-gray-900 dark:text-white"></h3>
+                                        <p class="user-email text-sm text-gray-500 dark:text-gray-400"></p>
+                                    </div>
+                                </div>
+                                <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    <i class="fa-solid fa-times text-gray-600 dark:text-gray-300 text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main</h4>
+                                <div class="space-y-1">
+                                    <a href="index.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-white/60 dark:bg-slate-700/80 border border-primary-100 dark:border-slate-600 group">
+                                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-500 transition-colors">
+                                            <i class="fa-solid fa-house text-primary-700 dark:text-white text-sm"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-white">Dashboard</span>
+                                    </a>
+                                    <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Transactions</span>
+                                    </a>
+                                    <a href="cards.html" class="flex items-center space-x-4 p-3 rounded-2xl bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 group">
+                                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-600 rounded-xl flex items-center justify-center">
+                                            <i class="fa-solid fa-credit-card text-primary-700 dark:text-white text-sm"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-primary-700 dark:text-primary-200">Cards</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Transfers</h4>
+                                <div class="space-y-1">
+                                    <a href="localtransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Local Transfer</span>
+                                    </a>
+                                    <a href="internationaltransfer.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-globe text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">International</span>
+                                    </a>
+                                    <a href="deposits.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-plus text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Deposit</span>
+                                    </a>
+                                    <a href="swap.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
+                                            <i class="fa-solid fa-arrows-rotate text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Currency Swap</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
+                                <div class="space-y-1">
+                                   
+                                    
+                                    <a href="account-settings.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                        <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-800/50 transition-colors">
+                                            <i class="fa-solid fa-gear text-teal-600 dark:text-teal-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-semibold text-gray-900 dark:text-white">Settings</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right text-gray-400 dark:text-gray-500 text-xs"></i>
+                                    </a>
+                                    
+ <button onclick="handleLogout()" class="w-full text-left flex items-center space-x-4 p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 group transition-colors">
+    <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-content group-hover:bg-red-200 dark:group-hover:bg-red-800/50 transition-colors">
+        <i class="fa-solid fa-right-from-bracket text-red-600 dark:text-red-400"></i>
+    </div>
+    <div class="flex-1">
+        <p class="font-semibold text-red-900 dark:text-red-400">Sign Out</p>
+        <p class="text-xs text-red-600 dark:text-red-500">Logout from account</p>
+    </div>
+    <i class="fa-solid fa-chevron-right text-red-400 dark:text-red-500 text-xs"></i>
+</button>
+<script src="/auth-script/logout.js"></script>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mobile Support Widget -->
+                        <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Application Modal -->
+            <div x-show="showCardApplicationModal" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-50 overflow-y-auto" 
+                 style="display: none;">
+                
+                <!-- Backdrop -->
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="showCardApplicationModal = false"></div>
+                
+                <!-- Modal Content -->
+                <div class="flex min-h-screen items-center justify-center p-4">
+                    <div @click.away="showCardApplicationModal = false"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 transform scale-90"
+                         x-transition:enter-end="opacity-100 transform scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100 transform scale-100"
+                         x-transition:leave-end="opacity-0 transform scale-90"
+                         class="relative w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+                        
+                        <!-- Modal Header -->
+                        <div class="bg-gradient-to-r from-primary-500 to-primary-700 px-6 py-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-credit-card text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white">Apply for New Card</h3>
+                                        <p class="text-sm text-white/80">Fill in your card preferences</p>
+                                    </div>
+                                </div>
+                                <button @click="showCardApplicationModal = false" 
+                                        class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors">
+                                    <i class="fas fa-times text-white text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+                            <form @submit.prevent="submitCardApplication" class="space-y-6">
+                                
+                                <!-- Card Type -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Card Type</label>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_type" value="virtual" class="peer sr-only" checked>
+                                            <div class="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 transition-all">
+                                                <div class="flex items-center space-x-3">
+                                                    <i class="fas fa-mobile-alt text-2xl text-gray-400 dark:text-gray-500 peer-checked:text-primary-600"></i>
+                                                    <div>
+                                                        <p class="font-semibold text-gray-900 dark:text-white">Virtual Card</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Instant digital card</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_type" value="physical" class="peer sr-only">
+                                            <div class="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 transition-all">
+                                                <div class="flex items-center space-x-3">
+                                                    <i class="fas fa-credit-card text-2xl text-gray-400 dark:text-gray-500 peer-checked:text-primary-600"></i>
+                                                    <div>
+                                                        <p class="font-semibold text-gray-900 dark:text-white">Physical Card</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Shipped to your address</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Card Tier -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Card Tier</label>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_tier" value="platinum" class="peer sr-only" checked>
+                                            <div class="p-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <i class="fas fa-gem text-xl text-purple-500 mb-2"></i>
+                                                <p class="font-semibold text-gray-900 dark:text-white text-sm">Platinum</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Premium</p>
+                                            </div>
+                                        </label>
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_tier" value="gold" class="peer sr-only">
+                                            <div class="p-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <i class="fas fa-star text-xl text-yellow-500 mb-2"></i>
+                                                <p class="font-semibold text-gray-900 dark:text-white text-sm">Gold</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Classic</p>
+                                            </div>
+                                        </label>
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_tier" value="silver" class="peer sr-only">
+                                            <div class="p-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <i class="fas fa-circle text-xl text-gray-400 mb-2"></i>
+                                                <p class="font-semibold text-gray-900 dark:text-white text-sm">Silver</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Basic</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Card Brand -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Card Brand</label>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_brand" value="visa" class="peer sr-only" checked>
+                                            <div class="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <p class="font-bold text-lg text-blue-600">VISA</p>
+                                            </div>
+                                        </label>
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_brand" value="mastercard" class="peer sr-only">
+                                            <div class="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <p class="font-bold text-lg text-red-600">Mastercard</p>
+                                            </div>
+                                        </label>
+                                        <label class="relative cursor-pointer">
+                                            <input type="radio" x-model="applicationForm.card_brand" value="amex" class="peer sr-only">
+                                            <div class="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 text-center transition-all">
+                                                <p class="font-bold text-lg text-blue-800">AMEX</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Color Scheme -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Card Color</label>
+                                    <div class="grid grid-cols-4 gap-3">
+                                        <label class="relative cursor-pointer" title="Blue">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="blue" class="peer sr-only" checked>
+                                            <div class="w-full h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-blue-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Purple">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="purple" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-purple-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Pink">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="pink" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-pink-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Green">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="green" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-green-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Orange">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="orange" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-orange-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Red">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="red" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-red-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Indigo">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="indigo" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-indigo-300 transition-all"></div>
+                                        </label>
+                                        <label class="relative cursor-pointer" title="Black">
+                                            <input type="radio" x-model="applicationForm.color_scheme" value="black" class="peer sr-only">
+                                            <div class="w-full h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg hover:scale-105 peer-checked:ring-4 peer-checked:ring-gray-500 transition-all"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Daily Limit and Currency -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Daily Limit</label>
+                                        <input type="number" 
+                                               x-model="applicationForm.daily_limit" 
+                                               min="100" 
+                                               step="100"
+                                               required
+                                               class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/50 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Currency</label>
+                                        <select x-model="applicationForm.currency" 
+                                                required
+                                                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/50 transition-all">
+                                            <option value="USD">USD - US Dollar</option>
+                                            <option value="EUR">EUR - Euro</option>
+                                            <option value="GBP">GBP - British Pound</option>
+                                            <option value="JPY">JPY - Japanese Yen</option>
+                                            <option value="CAD">CAD - Canadian Dollar</option>
+                                            <option value="AUD">AUD - Australian Dollar</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <button type="button" 
+                                            @click="showCardApplicationModal = false"
+                                            class="px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-colors">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                            :disabled="submittingApplication"
+                                            class="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-xl shadow-lg transition-all transform hover:scale-[1.02] disabled:scale-100 disabled:cursor-not-allowed flex items-center space-x-2">
+                                        <span x-show="!submittingApplication">
+                                            <i class="fas fa-paper-plane mr-2"></i>Submit Application
+                                        </span>
+                                        <span x-show="submittingApplication" class="flex items-center">
+                                            <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Processing...
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    </script>
+
+      <!-- Authentication Check Script -->
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/user/check-auth", {
+      credentials: "include", // send cookies
+    });
+
+    if (!res.ok) {
+      if (!window.location.pathname.endsWith("/login.html")) {
+        window.location.href = "/login.html";
+      }
+    }
+  } catch (err) {
+    if (!window.location.pathname.endsWith("/login.html")) {
+      window.location.href = "/login.html";
+    }
+  }
+}
+
+checkAuth();
+</script>
+    
+               <script src="/js-scripts/sidebar.js"></script>
+<script src="/js-scripts/user-ui.js"></script> 
+ <script src="/js-scripts/notifications.js"></script>
+  <script src="/js-scripts/includeHeader.js"></script>
+
+
+  <!-- New -->
+   <script src="/auth-script/user-ui.js"></script>
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '94ba134f7bc8866625f7f4fa5bbd14c16f34797a';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+        
+</body>
+</html>

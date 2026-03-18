@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add International Transfer — Admin</title>
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="icon" href="/assets/images/logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #f1f5f9;
+      }
+
+      .page-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 80px;
+      }
+
+      .page-head {
+        width: 90%;
+        max-width: 780px;
+        margin: 40px 0 1.5rem;
+      }
+      .page-head h1 {
+        font-size: 1.55rem;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .page-head p {
+        color: #64748b;
+        font-size: 0.875rem;
+        margin: 5px 0 0;
+      }
+
+      /* Card */
+      .card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 780px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+      }
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.1rem 1.6rem;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .card-body {
+        padding: 1.75rem 1.6rem;
+      }
+
+      /* User pill */
+      .user-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: #eff6ff;
+        color: #1d4ed8;
+        padding: 0.38rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 1.4rem;
+      }
+
+      /* Balance preview */
+      .balance-preview {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.4rem;
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .bal-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .bal-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #16a34a;
+      }
+      .bal-value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #14532d;
+      }
+
+      /* Section label */
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+        margin: 0 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      /* Form */
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .form-row-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 600px) {
+        .form-row,
+        .form-row-3 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.45rem;
+      }
+      label .opt {
+        font-weight: 400;
+        text-transform: none;
+        color: #94a3b8;
+        font-size: 0.75rem;
+        letter-spacing: 0;
+      }
+
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        padding: 0.65rem 0.95rem;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-family: inherit;
+        color: #0f172a;
+        outline: none;
+        background: #fafbfc;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: #3b82f6;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+      }
+      .textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      .help {
+        font-size: 0.73rem;
+        color: #94a3b8;
+        margin-top: 0.3rem;
+      }
+
+      .divider {
+        height: 1px;
+        background: #f1f5f9;
+        margin: 1.5rem 0;
+      }
+
+      /* Method pills */
+      .method-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 1.4rem;
+      }
+      .method-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1.5px solid #e2e8f0;
+        background: #f8fafc;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.18s;
+      }
+      .method-pill:hover {
+        border-color: #3b82f6;
+        color: #1d4ed8;
+        background: #eff6ff;
+      }
+      .method-pill.active {
+        border-color: #3b82f6;
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .method-pill i {
+        font-size: 13px;
+      }
+
+      /* Dynamic fields section */
+      .method-fields {
+        display: none;
+      }
+      .method-fields.visible {
+        display: block;
+      }
+
+      /* Buttons */
+      .btn {
+        padding: 0.65rem 1.5rem;
+        border-radius: 9px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        font-family: inherit;
+        transition: all 0.18s;
+      }
+      .btn-primary {
+        background: #1d4ed8;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #1e40af;
+        transform: translateY(-1px);
+      }
+      .btn-primary:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+      }
+      .btn-ghost:hover {
+        background: #f8fafc;
+      }
+
+      /* Toast */
+      .toast-container {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #fff;
+        min-width: 240px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        animation: toastIn 0.3s ease;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .toast-success {
+        background: #10b981;
+      }
+      .toast-error {
+        background: #ef4444;
+      }
+      .toast-info {
+        background: #3b82f6;
+      }
+
+      /* Loading overlay */
+      #loadingOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 999;
+        align-items: center;
+        justify-content: center;
+      }
+      #loadingOverlay.show {
+        display: flex;
+      }
+      .spinner {
+        width: 38px;
+        height: 38px;
+        border: 3px solid #e2e8f0;
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toast-container" id="toast-container"></div>
+    <div id="loadingOverlay"><div class="spinner"></div></div>
+    <header id="topnav-mount"></header>
+
+    <div class="page-wrap">
+      <div class="page-head">
+        <h1>
+          <i
+            class="fa-solid fa-globe"
+            style="color: #3b82f6; margin-right: 8px"
+          ></i
+          >Add International Transfer
+        </h1>
+        <p>Manually add an international transfer record for a user</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span style="font-weight: 700; color: #0f172a; font-size: 0.95rem"
+            >Transfer Details</span
+          >
+          <a
+            href="javascript:history.back()"
+            class="btn btn-ghost"
+            style="font-size: 0.8rem; padding: 0.4rem 1rem"
+          >
+            <i class="fa-solid fa-arrow-left" style="margin-right: 6px"></i>Back
+            to List
+          </a>
+        </div>
+
+        <div class="card-body">
+          <!-- User pill (auto-loaded from URL ?userId=) -->
+          <div id="userPill" style="display: none" class="user-pill">
+            <i class="fa-solid fa-circle-user"></i>
+            <span id="userPillName"></span>
+            <span
+              style="opacity: 0.6; font-weight: 400"
+              id="userPillEmail"
+            ></span>
+          </div>
+
+          <!-- Balance preview -->
+          <div
+            id="balancePreview"
+            class="balance-preview"
+            style="display: none"
+          >
+            <div class="bal-item">
+              <span class="bal-label">Fiat Balance</span>
+              <span class="bal-value" id="balFiat">—</span>
+            </div>
+            <div class="bal-item">
+              <span class="bal-label">BTC Balance</span>
+              <span class="bal-value" id="balBtc">—</span>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Step 1: Core fields -->
+          <p class="section-label">
+            <i class="fa-solid fa-sliders" style="margin-right: 6px"></i>Step 1
+            — Core Details
+          </p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount</label>
+              <input
+                type="number"
+                id="amount"
+                class="input"
+                placeholder="0.00"
+                min="0.01"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label>Balance Type</label>
+              <select id="balanceType" class="select">
+                <option value="fiat">Fiat (USD)</option>
+                <option value="btc">BTC (Crypto)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Status</label>
+              <select id="status" class="select">
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="completed">Completed</option>
+                <option value="failed">Failed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Currency <span class="opt">(optional)</span></label>
+              <input
+                type="text"
+                id="currency"
+                class="input"
+                value="USD"
+                placeholder="USD"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label
+              >Description / Note <span class="opt">(optional)</span></label
+            >
+            <textarea
+              id="description"
+              class="textarea"
+              placeholder="Any notes about this transfer..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label
+              >Custom Date
+              <span class="opt">(optional — leave blank for now)</span></label
+            >
+            <input type="datetime-local" id="createdAt" class="input" />
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Step 2: Method -->
+          <p class="section-label">
+            <i class="fa-solid fa-credit-card" style="margin-right: 6px"></i
+            >Step 2 — Transfer Method
+          </p>
+
+          <div class="method-grid">
+            <div
+              class="method-pill active"
+              data-method="Wire Transfer"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-building-columns"></i> Wire Transfer
+            </div>
+            <div
+              class="method-pill"
+              data-method="Cryptocurrency"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-brands fa-bitcoin"></i> Cryptocurrency
+            </div>
+            <div
+              class="method-pill"
+              data-method="PayPal"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-brands fa-paypal"></i> PayPal
+            </div>
+            <div
+              class="method-pill"
+              data-method="Wise Transfer"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-arrow-right-arrow-left"></i> Wise
+            </div>
+            <div
+              class="method-pill"
+              data-method="Skrill"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-wallet"></i> Skrill
+            </div>
+            <div
+              class="method-pill"
+              data-method="Venmo"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-v"></i> Venmo
+            </div>
+            <div
+              class="method-pill"
+              data-method="Zelle"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-z"></i> Zelle
+            </div>
+            <div
+              class="method-pill"
+              data-method="Cash App"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-dollar-sign"></i> Cash App
+            </div>
+            <div
+              class="method-pill"
+              data-method="Revolut"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-r"></i> Revolut
+            </div>
+            <div
+              class="method-pill"
+              data-method="Alipay"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-solid fa-a"></i> Alipay
+            </div>
+            <div
+              class="method-pill"
+              data-method="WeChat Pay"
+              onclick="selectMethod(this)"
+            >
+              <i class="fa-brands fa-weixin"></i> WeChat Pay
+            </div>
+          </div>
+
+          <!-- ── WIRE TRANSFER ── -->
+          <div id="fields-Wire Transfer" class="method-fields visible">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Account Name</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-accountName"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div class="form-group">
+                <label>Account Number</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-accountNumber"
+                  placeholder="0123456789"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Bank Name</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-bankName"
+                  placeholder="Bank of America"
+                />
+              </div>
+              <div class="form-group">
+                <label>Bank Address <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-bankAddress"
+                  placeholder="123 Main St, NY"
+                />
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>Account Type <span class="opt">(optional)</span></label>
+                <select class="select" id="f-accountType">
+                  <option value="">Select type</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
+                  <option value="Business">Business</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Country</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-country"
+                  placeholder="United States"
+                />
+              </div>
+              <div class="form-group">
+                <label>IBAN <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-iban"
+                  placeholder="GB29NWBK..."
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label
+                  >SWIFT / BIC Code <span class="opt">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  class="input"
+                  id="f-swiftCode"
+                  placeholder="BOFAUS3N"
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  >Routing Number <span class="opt">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  class="input"
+                  id="f-routingNumber"
+                  placeholder="026009593"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CRYPTOCURRENCY ── -->
+          <div id="fields-Cryptocurrency" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Cryptocurrency</label>
+                <select class="select" id="f-cryptoCurrency">
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
+                  <option value="USDT">Tether (USDT)</option>
+                  <option value="BNB">BNB</option>
+                  <option value="SOL">Solana (SOL)</option>
+                  <option value="XRP">XRP</option>
+                  <option value="USDC">USDC</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Network</label>
+                <select class="select" id="f-cryptoNetwork">
+                  <option value="Bitcoin">Bitcoin</option>
+                  <option value="Ethereum (ERC-20)">Ethereum (ERC-20)</option>
+                  <option value="BNB Smart Chain (BEP-20)">
+                    BNB Smart Chain (BEP-20)
+                  </option>
+                  <option value="Solana">Solana</option>
+                  <option value="Tron (TRC-20)">Tron (TRC-20)</option>
+                  <option value="Polygon">Polygon</option>
+                  <option value="Arbitrum">Arbitrum</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Wallet Address</label>
+              <input
+                type="text"
+                class="input"
+                id="f-walletAddress"
+                placeholder="bc1q..."
+                style="font-family: monospace"
+              />
+            </div>
+          </div>
+
+          <!-- ── PAYPAL ── -->
+          <div id="fields-PayPal" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>PayPal Email</label>
+                <input
+                  type="email"
+                  class="input"
+                  id="f-paypalEmail"
+                  placeholder="recipient@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Full Name <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-paypalFullName"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── WISE TRANSFER ── -->
+          <div id="fields-Wise Transfer" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-wiseFullName"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  class="input"
+                  id="f-wiseEmail"
+                  placeholder="john@wise.com"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <input
+                type="text"
+                class="input"
+                id="f-wiseCountry"
+                placeholder="United Kingdom"
+              />
+            </div>
+          </div>
+
+          <!-- ── SKRILL ── -->
+          <div id="fields-Skrill" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Skrill Email</label>
+                <input
+                  type="email"
+                  class="input"
+                  id="f-skrillEmail"
+                  placeholder="user@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Full Name <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-skrillFullName"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── VENMO ── -->
+          <div id="fields-Venmo" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Venmo Username</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-venmoUsername"
+                  placeholder="@johndoe"
+                />
+              </div>
+              <div class="form-group">
+                <label>Phone <span class="opt">(optional)</span></label>
+                <input
+                  type="tel"
+                  class="input"
+                  id="f-venmoPhone"
+                  placeholder="+1 555 000 0000"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ZELLE ── -->
+          <div id="fields-Zelle" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Zelle Email</label>
+                <input
+                  type="email"
+                  class="input"
+                  id="f-zelleEmail"
+                  placeholder="user@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Phone <span class="opt">(optional)</span></label>
+                <input
+                  type="tel"
+                  class="input"
+                  id="f-zellePhone"
+                  placeholder="+1 555 000 0000"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                class="input"
+                id="f-zelleName"
+                placeholder="John Doe"
+              />
+            </div>
+          </div>
+
+          <!-- ── CASH APP ── -->
+          <div id="fields-Cash App" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>$Cashtag</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-cashAppTag"
+                  placeholder="$johndoe"
+                />
+              </div>
+              <div class="form-group">
+                <label>Full Name <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-cashAppFullName"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── REVOLUT ── -->
+          <div id="fields-Revolut" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-revolutFullName"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  class="input"
+                  id="f-revolutEmail"
+                  placeholder="user@revolut.com"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Phone <span class="opt">(optional)</span></label>
+              <input
+                type="tel"
+                class="input"
+                id="f-revolutPhone"
+                placeholder="+44 7700 900000"
+              />
+            </div>
+          </div>
+
+          <!-- ── ALIPAY ── -->
+          <div id="fields-Alipay" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Alipay ID</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-alipayId"
+                  placeholder="alipay_user123"
+                />
+              </div>
+              <div class="form-group">
+                <label>Full Name <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-alipayFullName"
+                  placeholder="Zhang Wei"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ── WECHAT PAY ── -->
+          <div id="fields-WeChat Pay" class="method-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>WeChat ID</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-wechatId"
+                  placeholder="wechat_user123"
+                />
+              </div>
+              <div class="form-group">
+                <label>Display Name <span class="opt">(optional)</span></label>
+                <input
+                  type="text"
+                  class="input"
+                  id="f-wechatName"
+                  placeholder="Wei Zhang"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Submit -->
+          <div style="display: flex; justify-content: flex-end; gap: 10px">
+            <button type="button" class="btn btn-ghost" onclick="resetForm()">
+              <i class="fa-solid fa-rotate-left" style="margin-right: 6px"></i
+              >Reset
+            </button>
+            <button
+              type="button"
+              id="submitBtn"
+              class="btn btn-primary"
+              onclick="submitTransfer()"
+            >
+              <i class="fa-solid fa-paper-plane" style="margin-right: 8px"></i
+              >Add Transfer
+            </button>
+          </div>
+        </div>
+        <!-- /card-body -->
+      </div>
+      <!-- /card -->
+    </div>
+    <!-- /page-wrap -->
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      let selectedMethod = "Wire Transfer";
+      let resolvedUser = null;
+
+      // ── Method picker ────────────────────────────────────────────────────
+      function selectMethod(pill) {
+        document
+          .querySelectorAll(".method-pill")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".method-fields")
+          .forEach((f) => f.classList.remove("visible"));
+        pill.classList.add("active");
+        selectedMethod = pill.dataset.method;
+        const fields = document.getElementById("fields-" + selectedMethod);
+        if (fields) fields.classList.add("visible");
+
+        // Auto-set balanceType for Crypto
+        if (selectedMethod === "Cryptocurrency") {
+          document.getElementById("balanceType").value = "btc";
+        } else {
+          document.getElementById("balanceType").value = "fiat";
+        }
+      }
+
+      // ── Auto-load user from URL ?userId= ─────────────────────────────────
+      const userId = new URLSearchParams(window.location.search).get("userId");
+
+      async function initUser() {
+        if (!userId) {
+          showToast(
+            "No userId in URL. Please open this page from the user's profile.",
+            "error",
+          );
+          return;
+        }
+        showLoading(true);
+        try {
+          const res = await fetch(`/api/admin/users/${userId}`, {
+            credentials: "include",
+          });
+          const data = await res.json();
+          showLoading(false);
+
+          if (!data.success || !data.user) {
+            showToast(data.message || "User not found", "error");
+            return;
+          }
+
+          resolvedUser = data.user;
+          const u = data.user;
+          document.getElementById("userPillName").textContent =
+            `${u.name} ${u.lastname}`;
+          document.getElementById("userPillEmail").textContent = u.email;
+          document.getElementById("userPill").style.display = "inline-flex";
+
+          document.getElementById("balFiat").textContent =
+            `$${Number(u.balance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+          document.getElementById("balBtc").textContent =
+            `${parseFloat(u.crypto_balance || 0).toFixed(8)} BTC`;
+          document.getElementById("balancePreview").style.display = "flex";
+        } catch (err) {
+          showLoading(false);
+          showToast("Network error loading user", "error");
+        }
+      }
+
+      initUser();
+
+      // ── Collect method-specific details ──────────────────────────────────
+      function collectDetails() {
+        const g = (id) => (document.getElementById(id)?.value || "").trim();
+
+        const map = {
+          "Wire Transfer": () => ({
+            accountName: g("f-accountName"),
+            accountNumber: g("f-accountNumber"),
+            bankName: g("f-bankName"),
+            bankAddress: g("f-bankAddress") || undefined,
+            accountType: g("f-accountType") || undefined,
+            country: g("f-country"),
+            iban: g("f-iban") || undefined,
+            swiftCode: g("f-swiftCode") || undefined,
+            routingNumber: g("f-routingNumber") || undefined,
+          }),
+          Cryptocurrency: () => ({
+            cryptoCurrency: g("f-cryptoCurrency"),
+            cryptoNetwork: g("f-cryptoNetwork"),
+            walletAddress: g("f-walletAddress"),
+          }),
+          PayPal: () => ({
+            paypalEmail: g("f-paypalEmail"),
+            fullName: g("f-paypalFullName") || undefined,
+          }),
+          "Wise Transfer": () => ({
+            wiseFullName: g("f-wiseFullName"),
+            wiseEmail: g("f-wiseEmail"),
+            wiseCountry: g("f-wiseCountry"),
+          }),
+          Skrill: () => ({
+            skrillEmail: g("f-skrillEmail"),
+            skrillFullName: g("f-skrillFullName") || undefined,
+          }),
+          Venmo: () => ({
+            venmoUsername: g("f-venmoUsername"),
+            venmoPhone: g("f-venmoPhone") || undefined,
+          }),
+          Zelle: () => ({
+            zelleEmail: g("f-zelleEmail"),
+            zellePhone: g("f-zellePhone") || undefined,
+            zelleName: g("f-zelleName"),
+          }),
+          "Cash App": () => ({
+            cashAppTag: g("f-cashAppTag"),
+            cashAppFullName: g("f-cashAppFullName") || undefined,
+          }),
+          Revolut: () => ({
+            revolutFullName: g("f-revolutFullName"),
+            revolutEmail: g("f-revolutEmail"),
+            revolutPhone: g("f-revolutPhone") || undefined,
+          }),
+          Alipay: () => ({
+            alipayId: g("f-alipayId"),
+            alipayFullName: g("f-alipayFullName") || undefined,
+          }),
+          "WeChat Pay": () => ({
+            wechatId: g("f-wechatId"),
+            wechatName: g("f-wechatName") || undefined,
+          }),
+        };
+
+        return map[selectedMethod] ? map[selectedMethod]() : {};
+      }
+
+      // ── Validate ─────────────────────────────────────────────────────────
+      function validate(details) {
+        const g = (id) => (document.getElementById(id)?.value || "").trim();
+
+        if (!resolvedUser) return "Please look up a user first.";
+        const amount = parseFloat(g("amount"));
+        if (!amount || amount <= 0) return "Please enter a valid amount.";
+
+        // Method-specific required fields
+        const required = {
+          "Wire Transfer": [
+            ["f-accountName", "Recipient name"],
+            ["f-accountNumber", "Account number"],
+            ["f-bankName", "Bank name"],
+            ["f-country", "Country"],
+          ],
+          Cryptocurrency: [["f-walletAddress", "Wallet address"]],
+          PayPal: [["f-paypalEmail", "PayPal email"]],
+          "Wise Transfer": [
+            ["f-wiseFullName", "Full name"],
+            ["f-wiseEmail", "Email"],
+            ["f-wiseCountry", "Country"],
+          ],
+          Skrill: [["f-skrillEmail", "Skrill email"]],
+          Venmo: [["f-venmoUsername", "Venmo username"]],
+          Zelle: [
+            ["f-zelleEmail", "Zelle email"],
+            ["f-zelleName", "Full name"],
+          ],
+          "Cash App": [["f-cashAppTag", "$Cashtag"]],
+          Revolut: [
+            ["f-revolutFullName", "Full name"],
+            ["f-revolutEmail", "Email"],
+          ],
+          Alipay: [["f-alipayId", "Alipay ID"]],
+          "WeChat Pay": [["f-wechatId", "WeChat ID"]],
+        };
+
+        for (const [fieldId, label] of required[selectedMethod] || []) {
+          if (!g(fieldId)) return `${label} is required for ${selectedMethod}.`;
+        }
+        return null;
+      }
+
+      // ── Submit ────────────────────────────────────────────────────────────
+      async function submitTransfer() {
+        const details = collectDetails();
+        const error = validate(details);
+        if (error) {
+          showToast(error, "error");
+          return;
+        }
+
+        const g = (id) => (document.getElementById(id)?.value || "").trim();
+
+        const payload = {
+          userId: resolvedUser._id,
+          method: selectedMethod,
+          amount: parseFloat(g("amount")),
+          balanceType: g("balanceType"),
+          currency: g("currency") || "USD",
+          status: g("status"),
+          description: g("description") || undefined,
+          details,
+          ...(g("createdAt")
+            ? { createdAt: new Date(g("createdAt")).toISOString() }
+            : {}),
+        };
+
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px"></i>Adding...';
+        showLoading(true);
+
+        try {
+          const res = await fetch("/api/admin/international-transfers/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          showLoading(false);
+
+          if (data.success) {
+            showToast("International transfer added successfully!", "success");
+            setTimeout(() => history.back(), 1500);
+          } else {
+            showToast(data.message || "Failed to add transfer", "error");
+            btn.disabled = false;
+            btn.innerHTML =
+              '<i class="fa-solid fa-paper-plane" style="margin-right:8px"></i>Add Transfer';
+          }
+        } catch (err) {
+          showLoading(false);
+          showToast("Network error. Please try again.", "error");
+          btn.disabled = false;
+          btn.innerHTML =
+            '<i class="fa-solid fa-paper-plane" style="margin-right:8px"></i>Add Transfer';
+        }
+      }
+
+      // ── Reset ─────────────────────────────────────────────────────────────
+      function resetForm() {
+        document
+          .querySelectorAll(".input, .select, .textarea")
+          .forEach((el) => {
+            if (el.tagName === "SELECT") el.selectedIndex = 0;
+            else if (el.id !== "currency") el.value = "";
+          });
+        document.getElementById("currency").value = "USD";
+        clearUserUI();
+        // Reset method to Wire Transfer
+        selectMethod(document.querySelector('[data-method="Wire Transfer"]'));
+        showToast("Form reset", "info");
+      }
+
+      // ── UI helpers ────────────────────────────────────────────────────────
+      function showLoading(on) {
+        document.getElementById("loadingOverlay").classList.toggle("show", on);
+      }
+
+      function showToast(msg, type = "info") {
+        const c = document.getElementById("toast-container");
+        const icon =
+          type === "success"
+            ? "fa-circle-check"
+            : type === "error"
+              ? "fa-circle-xmark"
+              : "fa-circle-info";
+        const t = document.createElement("div");
+        t.className = `toast toast-${type}`;
+        t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+        c.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+      }
+    </script>
+  </body>
+</html>

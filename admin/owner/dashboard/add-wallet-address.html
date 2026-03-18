@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wallet Addresses — Admin</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <style>
+      .wallet-wrap {
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 0 0 60px;
+      }
+      .wallet-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .wallet-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 4px;
+      }
+      .wallet-header p {
+        font-size: 0.875rem;
+        color: #667085;
+        margin: 0;
+      }
+      .btn-primary {
+        padding: 10px 20px;
+        background: #f7931a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      .btn-primary:hover {
+        background: #d97706;
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* Wallet Cards Grid */
+      .wallets-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .wallet-card {
+        background: #fff;
+        border: 1px solid #e4e7ec;
+        border-radius: 12px;
+        padding: 20px 24px;
+      }
+      .wallet-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .wallet-coin-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .coin-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 900;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .wallet-coin-info h3 {
+        margin: 0 0 2px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-transform: capitalize;
+      }
+      .wallet-coin-info span {
+        font-size: 0.78rem;
+        color: #667085;
+      }
+      .badge {
+        display: inline-block;
+        padding: 3px 12px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+      }
+      .badge-active {
+        background: #ecfdf3;
+        color: #027a48;
+      }
+      .badge-inactive {
+        background: #fef3f2;
+        color: #b42318;
+      }
+      .address-box {
+        background: #f9fafb;
+        border: 1px solid #e4e7ec;
+        border-radius: 8px;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .address-text {
+        font-family: monospace;
+        font-size: 0.82rem;
+        color: #344054;
+        word-break: break-all;
+        flex: 1;
+      }
+      .btn-copy {
+        padding: 4px 12px;
+        background: #f2f4f7;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #344054;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .btn-copy:hover {
+        background: #e4e7ec;
+      }
+      .wallet-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .btn-edit {
+        padding: 7px 16px;
+        background: #f2f4f7;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #344054;
+      }
+      .btn-edit:hover {
+        background: #e4e7ec;
+      }
+      .btn-toggle {
+        padding: 7px 16px;
+        background: #eff8ff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #1849a9;
+      }
+      .btn-delete {
+        padding: 7px 16px;
+        background: #fef3f2;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #b42318;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 48px;
+        color: #667085;
+        background: #fff;
+        border: 1px dashed #d0d5dd;
+        border-radius: 12px;
+        font-size: 0.9rem;
+      }
+
+      /* Toast */
+      #wallet-toast {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        padding: 12px 22px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #fff;
+        z-index: 99999;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: all 0.35s ease;
+        pointer-events: none;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: #fff;
+        border-radius: 14px;
+        padding: 28px;
+        width: 100%;
+        max-width: 480px;
+        margin: 16px;
+      }
+      .modal h3 {
+        margin: 0 0 20px;
+        font-size: 1.1rem;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .form-group label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #344054;
+      }
+      .form-group input,
+      .form-group select {
+        padding: 10px 14px;
+        border: 1.5px solid #d0d5dd;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #fff;
+        color: #344054;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: #f7931a;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .modal-btns {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: flex-end;
+      }
+      .btn-cancel {
+        padding: 9px 20px;
+        background: #f2f4f7;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-save {
+        padding: 9px 20px;
+        background: #f7931a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="topnav-mount"></header>
+    <div class="admin-shell">
+      <aside id="sidebar-mount" class="admin-sidebar"></aside>
+      <main class="admin-main">
+        <div class="admin-container" style="margin-top: 50px">
+          <div class="wallet-wrap">
+            <div class="wallet-header">
+              <div>
+                <h1>💳 Wallet Addresses</h1>
+                <p>Deposit addresses shown to users on the deposit page</p>
+              </div>
+              <button class="btn-primary" onclick="openAddModal()">
+                + Add Wallet
+              </button>
+            </div>
+
+            <div
+              id="loadingState"
+              style="
+                text-align: center;
+                padding: 40px;
+                color: #667085;
+                font-size: 0.95rem;
+              "
+            >
+              Loading...
+            </div>
+
+            <div
+              class="wallets-grid"
+              id="walletsGrid"
+              style="display: none"
+            ></div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer id="footer-mount"></footer>
+
+    <!-- Add Modal -->
+    <div class="modal-overlay" id="addModal">
+      <div class="modal">
+        <h3>Add Wallet Address</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Coin Name <span style="color: #f7931a">*</span></label>
+            <input type="text" id="add-coin" placeholder="e.g. Bitcoin" />
+          </div>
+          <div class="form-group">
+            <label>Symbol <span style="color: #f7931a">*</span></label>
+            <input type="text" id="add-symbol" placeholder="e.g. BTC" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label
+            >Network
+            <span style="color: #667085; font-weight: 400"
+              >(optional)</span
+            ></label
+          >
+          <input
+            type="text"
+            id="add-network"
+            placeholder="e.g. TRC20, ERC20, BEP20"
+          />
+        </div>
+        <div class="form-group">
+          <label>Wallet Address <span style="color: #f7931a">*</span></label>
+          <input
+            type="text"
+            id="add-address"
+            placeholder="Paste wallet address"
+            style="font-family: monospace"
+          />
+        </div>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+          <button class="btn-save" id="addSaveBtn" onclick="addWallet()">
+            Save Wallet
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+      <div class="modal">
+        <h3>Edit Wallet Address</h3>
+        <input type="hidden" id="edit-id" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Coin Name</label>
+            <input type="text" id="edit-coin" placeholder="e.g. Bitcoin" />
+          </div>
+          <div class="form-group">
+            <label>Symbol</label>
+            <input type="text" id="edit-symbol" placeholder="e.g. BTC" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Network</label>
+          <input
+            type="text"
+            id="edit-network"
+            placeholder="e.g. TRC20, ERC20"
+          />
+        </div>
+        <div class="form-group">
+          <label>Wallet Address <span style="color: #f7931a">*</span></label>
+          <input
+            type="text"
+            id="edit-address"
+            placeholder="Paste wallet address"
+            style="font-family: monospace"
+          />
+        </div>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+          <button class="btn-save" id="editSaveBtn" onclick="saveEdit()">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="wallet-toast"></div>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+    <script>
+      const API = "/api/admin/wallets";
+
+      // Coin color map
+      const coinColors = {
+        bitcoin: "#f7931a",
+        btc: "#f7931a",
+        ethereum: "#627eea",
+        eth: "#627eea",
+        usdt: "#26a17b",
+        tether: "#26a17b",
+        bnb: "#f3ba2f",
+        binance: "#f3ba2f",
+        usdc: "#2775ca",
+        litecoin: "#345d9d",
+        ltc: "#345d9d",
+        xrp: "#00aae4",
+        ripple: "#00aae4",
+        solana: "#9945ff",
+        sol: "#9945ff",
+        tron: "#ff0013",
+        trx: "#ff0013",
+        dogecoin: "#c2a633",
+        doge: "#c2a633",
+      };
+
+      function getCoinColor(coin, symbol) {
+        const key = (coin || "").toLowerCase();
+        const sym = (symbol || "").toLowerCase();
+        return coinColors[key] || coinColors[sym] || "#6b7280";
+      }
+
+      function getCoinEmoji(coin, symbol) {
+        const key = (coin || "").toLowerCase();
+        const sym = (symbol || "").toLowerCase();
+        const map = {
+          bitcoin: "₿",
+          btc: "₿",
+          ethereum: "Ξ",
+          eth: "Ξ",
+          usdt: "₮",
+          tether: "₮",
+          usdc: "$",
+          bnb: "B",
+          binance: "B",
+          solana: "◎",
+          sol: "◎",
+          dogecoin: "Ð",
+          doge: "Ð",
+          tron: "T",
+          trx: "T",
+          xrp: "✕",
+          ripple: "✕",
+          litecoin: "Ł",
+          ltc: "Ł",
+        };
+        return map[key] || map[sym] || (symbol || "?").charAt(0).toUpperCase();
+      }
+
+      function showToast(msg, success = true) {
+        const t = document.getElementById("wallet-toast");
+        t.textContent = msg;
+        t.style.background = success ? "#12b76a" : "#f04438";
+        t.style.opacity = "1";
+        t.style.transform = "translateY(0)";
+        setTimeout(() => {
+          t.style.opacity = "0";
+          t.style.transform = "translateY(16px)";
+        }, 3500);
+      }
+
+      function esc(str) {
+        return String(str ?? "").replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[m],
+        );
+      }
+
+      function renderWallets(wallets) {
+        document.getElementById("loadingState").style.display = "none";
+        const grid = document.getElementById("walletsGrid");
+        grid.style.display = "flex";
+
+        if (!wallets.length) {
+          grid.innerHTML = `<div class="empty-state">No wallet addresses yet.<br>Click <strong>+ Add Wallet</strong> to get started.</div>`;
+          return;
+        }
+
+        grid.innerHTML = wallets
+          .map((w) => {
+            const color = getCoinColor(w.coin, w.symbol);
+            const emoji = getCoinEmoji(w.coin, w.symbol);
+            const networkLabel = w.network ? ` · ${w.network}` : "";
+            return `
+          <div class="wallet-card">
+            <div class="wallet-card-header">
+              <div class="wallet-coin-info">
+                <div class="coin-icon" style="background:linear-gradient(135deg,${color},${color}cc);">${esc(emoji)}</div>
+                <div>
+                  <h3>${esc(w.coin)}</h3>
+                  <span>${esc(w.symbol)}${esc(networkLabel)} · Deposit Wallet</span>
+                </div>
+              </div>
+              <span class="badge ${w.isActive ? "badge-active" : "badge-inactive"}">${w.isActive ? "Active" : "Inactive"}</span>
+            </div>
+
+            <div class="address-box">
+              <div class="address-text">${esc(w.address)}</div>
+              <button class="btn-copy" onclick="copyAddress('${esc(w.address)}')">Copy</button>
+            </div>
+
+            <div class="wallet-actions">
+              <button class="btn-edit" onclick="openEditModal('${w._id}', '${esc(w.coin)}', '${esc(w.symbol)}', '${esc(w.network || "")}', '${esc(w.address)}')">✏️ Edit</button>
+              <button class="btn-toggle" onclick="toggleWallet('${w._id}', ${w.isActive})">${w.isActive ? "Disable" : "Enable"}</button>
+              <button class="btn-delete" onclick="deleteWallet('${w._id}')">🗑 Delete</button>
+            </div>
+          </div>`;
+          })
+          .join("");
+      }
+
+      async function loadWallets() {
+        try {
+          const res = await fetch(API, { credentials: "include" });
+          const data = await res.json();
+          renderWallets(data.wallets || []);
+        } catch {
+          showToast("Failed to load wallets", false);
+          document.getElementById("loadingState").style.display = "none";
+        }
+      }
+
+      // ── Add ──
+      function openAddModal() {
+        document.getElementById("add-coin").value = "";
+        document.getElementById("add-symbol").value = "";
+        document.getElementById("add-network").value = "";
+        document.getElementById("add-address").value = "";
+        document.getElementById("addModal").classList.add("open");
+      }
+      function closeAddModal() {
+        document.getElementById("addModal").classList.remove("open");
+      }
+      async function addWallet() {
+        const btn = document.getElementById("addSaveBtn");
+        const coin = document.getElementById("add-coin").value.trim();
+        const symbol = document.getElementById("add-symbol").value.trim();
+        const network = document.getElementById("add-network").value.trim();
+        const address = document.getElementById("add-address").value.trim();
+
+        if (!coin || !symbol || !address)
+          return showToast("Coin, symbol and address are required.", false);
+
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+        try {
+          const res = await fetch(API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ coin, symbol, network, address }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast("✅ Wallet added!");
+            closeAddModal();
+            loadWallets();
+          } else {
+            showToast(data.message || "Failed to add wallet.", false);
+          }
+        } catch {
+          showToast("Network error.", false);
+        }
+        btn.disabled = false;
+        btn.textContent = "Save Wallet";
+      }
+
+      // ── Edit ──
+      function openEditModal(id, coin, symbol, network, address) {
+        document.getElementById("edit-id").value = id;
+        document.getElementById("edit-coin").value = coin;
+        document.getElementById("edit-symbol").value = symbol;
+        document.getElementById("edit-network").value = network;
+        document.getElementById("edit-address").value = address;
+        document.getElementById("editModal").classList.add("open");
+      }
+      function closeEditModal() {
+        document.getElementById("editModal").classList.remove("open");
+      }
+      async function saveEdit() {
+        const btn = document.getElementById("editSaveBtn");
+        const id = document.getElementById("edit-id").value;
+        const coin = document.getElementById("edit-coin").value.trim();
+        const symbol = document.getElementById("edit-symbol").value.trim();
+        const network = document.getElementById("edit-network").value.trim();
+        const address = document.getElementById("edit-address").value.trim();
+
+        if (!address) return showToast("Address is required.", false);
+
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+        try {
+          const res = await fetch(`${API}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ coin, symbol, network, address }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast("✅ Wallet updated!");
+            closeEditModal();
+            loadWallets();
+          } else {
+            showToast(data.message || "Failed to update.", false);
+          }
+        } catch {
+          showToast("Network error.", false);
+        }
+        btn.disabled = false;
+        btn.textContent = "Save Changes";
+      }
+
+      // ── Toggle ──
+      async function toggleWallet(id, currentActive) {
+        try {
+          const res = await fetch(`${API}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ isActive: !currentActive }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast(`Wallet ${!currentActive ? "enabled" : "disabled"}.`);
+            loadWallets();
+          } else showToast(data.message || "Failed.", false);
+        } catch {
+          showToast("Network error.", false);
+        }
+      }
+
+      // ── Delete ──
+      async function deleteWallet(id) {
+        if (!confirm("Delete this wallet address? This cannot be undone."))
+          return;
+        try {
+          const res = await fetch(`${API}/${id}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast("Wallet deleted.");
+            loadWallets();
+          } else showToast(data.message || "Failed.", false);
+        } catch {
+          showToast("Network error.", false);
+        }
+      }
+
+      // ── Copy ──
+      function copyAddress(address) {
+        navigator.clipboard
+          .writeText(address)
+          .then(() => showToast("Address copied!"));
+      }
+
+      // Close modals on overlay click
+      document
+        .getElementById("addModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeAddModal();
+        });
+      document
+        .getElementById("editModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeEditModal();
+        });
+
+      loadWallets();
+    </script>
+  </body>
+</html>
