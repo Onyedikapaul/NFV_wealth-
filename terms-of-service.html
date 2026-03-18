@@ -1,480 +1,1360 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Terms of Service — NFV Wealth</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-      <link rel="icon" href="/assets/images/logo.png" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Service — NFV Wealth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="/assets/images/logo.png" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue: #0ea5e9; --blue-mid: #0284c7; --blue-dark: #0369a1;
-      --blue-deep: #0c4a6e; --blue-bg: #f0f9ff; --blue-light: #e0f2fe;
-      --text: #0f172a; --text-2: #334155; --muted: #64748b;
-      --border: #e2e8f0; --bg: #f8fafc; --white: #ffffff;
-      --radius: 14px; --radius-sm: 8px;
-    }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
-
-    /* ── NAVBAR ── */
-    nav { position: sticky; top: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 1rem 6%; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-mark { width: 38px; height: 38px; background: linear-gradient(135deg, var(--blue), var(--blue-dark)); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .logo-mark svg { width: 22px; height: 22px; }
-    .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text); }
-    .logo-text span { color: var(--blue); }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
-    .nav-links a { font-size: .9rem; font-weight: 400; color: var(--muted); text-decoration: none; transition: color .2s; }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-links a.active { color: var(--blue); font-weight: 500; }
-    .nav-actions { display: flex; gap: 10px; align-items: center; }
-    .btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--text-2); padding: .5rem 1.2rem; border-radius: var(--radius-sm); font-size: .875rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; text-decoration: none; display: inline-flex; align-items: center; }
-    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
-    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; border: none; padding: .55rem 1.4rem; border-radius: var(--radius-sm); font-size: .875rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; text-decoration: none; display: inline-flex; align-items: center; }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(14,165,233,.3); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.98); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text); text-decoration: none; }
-    .mobile-menu a:hover { color: var(--blue); }
-    .mobile-close { position: absolute; top: 1.5rem; right: 6%; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text); }
-
-    /* ── PAGE HERO ── */
-    .page-hero { background: linear-gradient(135deg, var(--blue-deep), var(--blue-dark)); padding: 5rem 6% 4rem; text-align: center; position: relative; overflow: hidden; }
-    .page-hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: rgba(255,255,255,.04); }
-    .page-hero::after { content: ''; position: absolute; bottom: -100px; left: -60px; width: 350px; height: 350px; border-radius: 50%; background: rgba(255,255,255,.03); }
-    .page-hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
-    .page-tag { display: inline-block; background: rgba(255,255,255,.15); color: rgba(255,255,255,.9); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; border-radius: 20px; margin-bottom: 1.2rem; border: 1px solid rgba(255,255,255,.2); }
-    .page-hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: .9rem; }
-    .page-hero p { font-size: 1rem; color: rgba(255,255,255,.78); line-height: 1.75; }
-    .page-meta { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 1.8rem; flex-wrap: wrap; }
-    .meta-item { display: flex; align-items: center; gap: 6px; font-size: .82rem; color: rgba(255,255,255,.7); }
-    .meta-item svg { width: 14px; height: 14px; stroke: rgba(255,255,255,.7); fill: none; stroke-width: 2; stroke-linecap: round; }
-
-    /* ── TERMS LAYOUT ── */
-    .terms-layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; max-width: 1100px; margin: 0 auto; padding: 4rem 6%; align-items: start; }
-
-    /* Sticky sidebar TOC */
-    .toc-sidebar { position: sticky; top: 90px; background: var(--bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; }
-    .toc-title { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 1rem; }
-    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
-    .toc-list a { display: block; padding: .45rem .75rem; border-radius: 6px; font-size: .83rem; color: var(--muted); text-decoration: none; transition: all .2s; line-height: 1.4; }
-    .toc-list a:hover { background: var(--blue-bg); color: var(--blue-dark); }
-    .toc-list a.active { background: var(--blue-bg); color: var(--blue-dark); font-weight: 500; }
-    .toc-updated { font-size: .75rem; color: var(--muted); margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-
-    /* Content */
-    .terms-content {}
-    .terms-intro { background: var(--blue-bg); border: 1px solid #bae6fd; border-radius: var(--radius); padding: 1.5rem 1.8rem; margin-bottom: 2.5rem; }
-    .terms-intro p { font-size: .9rem; color: var(--blue-dark); line-height: 1.75; }
-    .terms-intro strong { font-weight: 600; }
-
-    .terms-section { margin-bottom: 3rem; scroll-margin-top: 100px; }
-    .terms-section-num { font-size: .72rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .4rem; }
-    .terms-section h2 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; padding-bottom: .75rem; border-bottom: 2px solid var(--blue-light); }
-    .terms-section p { font-size: .93rem; color: var(--text-2); line-height: 1.8; margin-bottom: 1rem; }
-    .terms-section p:last-child { margin-bottom: 0; }
-    .terms-section ul { list-style: none; margin: .8rem 0; display: flex; flex-direction: column; gap: .6rem; }
-    .terms-section ul li { font-size: .93rem; color: var(--text-2); line-height: 1.7; padding-left: 1.4rem; position: relative; }
-    .terms-section ul li::before { content: ''; position: absolute; left: 0; top: .65em; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
-    .terms-section h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 .6rem; }
-    .highlight-box { background: #fefce8; border: 1px solid #fde047; border-radius: var(--radius-sm); padding: 1rem 1.2rem; margin: 1rem 0; }
-    .highlight-box p { font-size: .88rem; color: #713f12; margin: 0; }
-    .highlight-box strong { color: #92400e; }
-    .danger-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-sm); padding: 1rem 1.2rem; margin: 1rem 0; }
-    .danger-box p { font-size: .88rem; color: #7f1d1d; margin: 0; }
-
-    /* ── CTA BAND ── */
-    .cta-section { background: linear-gradient(135deg, var(--blue-deep), var(--blue-dark), var(--blue)); text-align: center; padding: 4.5rem 6%; position: relative; overflow: hidden; }
-    .cta-section::before { content: ''; position: absolute; top: -60px; left: -60px; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,.04); }
-    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
-    .cta-title { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: #fff; margin-bottom: .9rem; }
-    .cta-sub { font-size: .95rem; color: rgba(255,255,255,.8); margin-bottom: 2rem; line-height: 1.7; }
-    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-white { background: #fff; color: var(--blue-dark); border: none; padding: .85rem 2rem; border-radius: 10px; font-size: .95rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .25s; text-decoration: none; }
-    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.2); }
-    .btn-outline-white { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.5); padding: .85rem 2rem; border-radius: 10px; font-size: .95rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .25s; text-decoration: none; }
-    .btn-outline-white:hover { border-color: #fff; background: rgba(255,255,255,.1); }
-
-    /* ── FOOTER ── */
-    footer { background: var(--text); color: rgba(255,255,255,.75); padding: 4rem 6% 2rem; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
-    .footer-tagline { font-size: .88rem; line-height: 1.7; margin-top: .8rem; max-width: 240px; }
-    .footer-socials { display: flex; gap: 10px; margin-top: 1.5rem; }
-    .social-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; text-decoration: none; color: rgba(255,255,255,.7); }
-    .social-btn:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
-    .social-btn svg { width: 16px; height: 16px; }
-    .footer-col h4 { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; color: #fff; margin-bottom: 1.2rem; letter-spacing: .05em; text-transform: uppercase; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
-    .footer-col ul a { font-size: .875rem; color: rgba(255,255,255,.6); text-decoration: none; transition: color .2s; }
-    .footer-col ul a:hover { color: var(--blue); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; max-width: 1200px; margin: 0 auto; }
-    .footer-copy { font-size: .82rem; color: rgba(255,255,255,.4); }
-    .footer-legal { display: flex; gap: 1.5rem; }
-    .footer-legal a { font-size: .82rem; color: rgba(255,255,255,.4); text-decoration: none; transition: color .2s; }
-    .footer-legal a:hover { color: var(--blue); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .terms-layout { grid-template-columns: 1fr; padding: 3rem 5%; }
-      .toc-sidebar { position: static; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-    }
-    @media (max-width: 768px) {
-      nav { padding: .9rem 5%; }
-      .nav-links, .nav-actions { display: none; }
-      .hamburger { display: flex; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .page-meta { gap: 1rem; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
-  <a href="./index.html" onclick="closeMobileMenu()">Home</a>
-  <a href="./index.html#features" onclick="closeMobileMenu()">Features</a>
-  <a href="./index.html#how" onclick="closeMobileMenu()">How It Works</a>
-  <a href="./contact.html" onclick="closeMobileMenu()">Contact</a>
-  <a href="./register.html" class="btn-primary" style="margin-top:1rem;padding:.8rem 2rem;font-size:1rem">Get Started</a>
-</div>
-
-<!-- NAVBAR -->
-<nav>
-  <a href="./index.html" class="nav-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg>
-    </div>
-    <span class="logo-text">NFV <span>Wealth</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="./index.html">Home</a></li>
-    <li><a href="./index.html#features">Features</a></li>
-    <li><a href="./index.html#how">How It Works</a></li>
-    <li><a href="./index.html#faq">FAQ</a></li>
-    <li><a href="./contact.html">Contact</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="./login.html" class="btn-ghost">Log In</a>
-    <a href="./register.html" class="btn-primary">Get Started</a>
-  </div>
-  <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-inner">
-    <span class="page-tag">Legal</span>
-    <h1>Terms of Service</h1>
-    <p>Please read these terms carefully before using NFV Wealth. By creating an account, you agree to be bound by these terms.</p>
-    <div class="page-meta">
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Last updated: January 1, 2025
-      </div>
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        ~10 min read
-      </div>
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Version 2.1
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TERMS CONTENT -->
-<div class="terms-layout">
-
-  <!-- SIDEBAR TOC -->
-  <aside class="toc-sidebar">
-    <div class="toc-title">Contents</div>
-    <ul class="toc-list" id="tocList">
-      <li><a href="#acceptance" class="active">1. Acceptance of Terms</a></li>
-      <li><a href="#eligibility">2. Eligibility</a></li>
-      <li><a href="#accounts">3. Account Registration</a></li>
-      <li><a href="#services">4. Our Services</a></li>
-      <li><a href="#transfers">5. Transfers & Payments</a></li>
-      <li><a href="#prohibited">6. Prohibited Activities</a></li>
-      <li><a href="#security">7. Security</a></li>
-      <li><a href="#fees">8. Fees & Charges</a></li>
-      <li><a href="#privacy">9. Privacy</a></li>
-      <li><a href="#termination">10. Termination</a></li>
-      <li><a href="#liability">11. Limitation of Liability</a></li>
-      <li><a href="#changes">12. Changes to Terms</a></li>
-      <li><a href="#contact-legal">13. Contact</a></li>
-    </ul>
-    <div class="toc-updated">Effective: Jan 1, 2025</div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <div class="terms-content">
-
-    <div class="terms-intro">
-      <p><strong>Welcome to NFV Wealth.</strong> These Terms of Service ("Terms") govern your use of the NFV Wealth platform, website, and all associated services. By accessing or using our services, you confirm that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.</p>
-    </div>
-
-    <div class="terms-section" id="acceptance">
-      <div class="terms-section-num">Section 01</div>
-      <h2>Acceptance of Terms</h2>
-      <p>By creating an NFV Wealth account or using any of our services, you agree to these Terms of Service. If you do not agree to these terms, you must not access or use our platform.</p>
-      <p>These Terms constitute a legally binding agreement between you ("User," "you," or "your") and NFV Wealth ("Company," "we," "us," or "our"). This agreement governs your use of all services offered through our web platform and any future mobile applications.</p>
-      <p>If you are accepting these Terms on behalf of a company or other legal entity, you represent and warrant that you have authority to bind that entity to these Terms.</p>
-    </div>
-
-    <div class="terms-section" id="eligibility">
-      <div class="terms-section-num">Section 02</div>
-      <h2>Eligibility</h2>
-      <p>To use NFV Wealth, you must meet the following requirements:</p>
-      <ul>
-        <li>Be at least 18 years of age or the legal age of majority in your jurisdiction</li>
-        <li>Have the legal capacity to enter into a binding contract</li>
-        <li>Not be a person barred from using financial services under applicable law</li>
-        <li>Provide accurate, complete, and current registration information</li>
-        <li>Not be located in or a resident of any jurisdiction where our services are restricted</li>
-      </ul>
-      <p>We reserve the right to refuse service, close accounts, or remove content at our sole discretion.</p>
-    </div>
-
-    <div class="terms-section" id="accounts">
-      <div class="terms-section-num">Section 03</div>
-      <h2>Account Registration</h2>
-      <p>To access NFV Wealth services, you must create an account. You agree to:</p>
-      <ul>
-        <li>Provide accurate, complete, and truthful information during registration</li>
-        <li>Keep your account information up to date at all times</li>
-        <li>Maintain the confidentiality of your password and PIN</li>
-        <li>Accept responsibility for all activity that occurs under your account</li>
-        <li>Notify us immediately of any unauthorized use of your account</li>
-      </ul>
-      <h3>Account Security</h3>
-      <p>You are solely responsible for maintaining the security of your login credentials. NFV Wealth will never ask you to share your password, PIN, or OTP codes via email, phone, or chat. You must enable two-factor authentication where available.</p>
-      <div class="highlight-box">
-        <p><strong>Important:</strong> NFV Wealth staff will never ask for your full password, PIN, or one-time verification codes. If anyone claiming to be from NFV Wealth asks for these details, do not share them and report it immediately.</p>
-      </div>
-    </div>
-
-    <div class="terms-section" id="services">
-      <div class="terms-section-num">Section 04</div>
-      <h2>Our Services</h2>
-      <p>NFV Wealth provides a digital banking platform that includes, but is not limited to:</p>
-      <ul>
-        <li><strong>Local Transfers:</strong> Instant money transfers to domestic bank accounts</li>
-        <li><strong>International Transfers:</strong> Cross-border transfers via wire, crypto, PayPal, Wise, and other methods</li>
-        <li><strong>Virtual Cards:</strong> Issuance of virtual debit cards for online payments</li>
-        <li><strong>Currency Swap:</strong> Exchange between USD and supported cryptocurrencies</li>
-        <li><strong>Account Management:</strong> Balance monitoring, transaction history, and account settings</li>
-        <li><strong>Deposits:</strong> Funding your account via supported methods</li>
-      </ul>
-      <p>We reserve the right to modify, suspend, or discontinue any service at any time with or without notice. We shall not be liable to you or any third party for any modification, suspension, or discontinuance of services.</p>
-    </div>
-
-    <div class="terms-section" id="transfers">
-      <div class="terms-section-num">Section 05</div>
-      <h2>Transfers & Payments</h2>
-      <p>When initiating any transfer or payment through NFV Wealth, you acknowledge and agree that:</p>
-      <ul>
-        <li>You are authorized to use the funds being transferred</li>
-        <li>All recipient information provided is accurate and complete</li>
-        <li>Transfers may be subject to processing times, limits, and verification requirements</li>
-        <li>Once a transfer is confirmed, it may not be reversible</li>
-        <li>NFV Wealth is not responsible for losses resulting from incorrect recipient details</li>
-      </ul>
-      <h3>Transaction Limits</h3>
-      <p>We apply transaction limits to protect users. Your account tier determines your daily, weekly, and monthly transfer limits. These limits may be adjusted based on your account activity and verification status.</p>
-      <div class="danger-box">
-        <p><strong>Warning:</strong> Double-check all recipient details before confirming a transfer. Transactions sent to incorrect accounts may be irreversible. NFV Wealth is not liable for transfers made in error.</p>
-      </div>
-    </div>
-
-    <div class="terms-section" id="prohibited">
-      <div class="terms-section-num">Section 06</div>
-      <h2>Prohibited Activities</h2>
-      <p>You agree not to use NFV Wealth for any of the following:</p>
-      <ul>
-        <li>Money laundering, fraud, or any other illegal financial activity</li>
-        <li>Funding terrorist organizations or activities</li>
-        <li>Circumventing applicable laws, regulations, or sanctions</li>
-        <li>Creating multiple accounts or using false identities</li>
-        <li>Attempting to gain unauthorized access to our systems or other accounts</li>
-        <li>Harassing, threatening, or abusing other users or NFV Wealth staff</li>
-        <li>Transmitting malware, viruses, or other harmful code</li>
-        <li>Reverse engineering or attempting to extract source code from our platform</li>
-        <li>Using our services for gambling or other prohibited industries</li>
-        <li>Violating any applicable local, national, or international laws</li>
-      </ul>
-      <p>Violation of these prohibitions may result in immediate account suspension, termination, reporting to relevant authorities, and legal action where applicable.</p>
-    </div>
-
-    <div class="terms-section" id="security">
-      <div class="terms-section-num">Section 07</div>
-      <h2>Security</h2>
-      <p>NFV Wealth employs industry-standard security measures including 256-bit SSL encryption, two-factor authentication, OTP verification, and regular security audits to protect your account and data.</p>
-      <p>However, no method of transmission over the internet is 100% secure. While we strive to protect your personal information, we cannot guarantee absolute security. You are responsible for:</p>
-      <ul>
-        <li>Keeping your login credentials confidential</li>
-        <li>Using strong, unique passwords</li>
-        <li>Logging out from shared or public devices</li>
-        <li>Promptly reporting any suspicious activity on your account</li>
-        <li>Keeping your registered email and phone number up to date</li>
-      </ul>
-    </div>
-
-    <div class="terms-section" id="fees">
-      <div class="terms-section-num">Section 08</div>
-      <h2>Fees & Charges</h2>
-      <p>NFV Wealth is committed to transparent pricing. Applicable fees will always be displayed clearly before you confirm any transaction.</p>
-      <ul>
-        <li><strong>Local Transfers:</strong> Free of charge</li>
-        <li><strong>International Transfers:</strong> Fees vary by method and destination — shown at checkout</li>
-        <li><strong>Virtual Cards:</strong> Issuance may be subject to applicable fees</li>
-        <li><strong>Currency Swap:</strong> Spread-based pricing on exchange rates</li>
-        <li><strong>Account Maintenance:</strong> Currently free for all standard accounts</li>
-      </ul>
-      <p>We reserve the right to introduce or modify fees at any time. We will notify you of any fee changes at least 30 days in advance via email or in-platform notification.</p>
-    </div>
-
-    <div class="terms-section" id="privacy">
-      <div class="terms-section-num">Section 09</div>
-      <h2>Privacy</h2>
-      <p>Your use of NFV Wealth is also governed by our <a href="./terms-of-service.html" style="color:var(--blue);font-weight:500">Privacy Policy</a>, which is incorporated into these Terms by reference. By using our services, you consent to the collection and use of your information as described in our Privacy Policy.</p>
-      <p>We collect only the information necessary to provide our services and will never sell your personal data to third parties for marketing purposes.</p>
-    </div>
-
-    <div class="terms-section" id="termination">
-      <div class="terms-section-num">Section 10</div>
-      <h2>Termination</h2>
-      <p>You may close your NFV Wealth account at any time by contacting our support team. We may suspend or terminate your account at any time if:</p>
-      <ul>
-        <li>You violate these Terms of Service</li>
-        <li>We are required to do so by law or regulatory authority</li>
-        <li>We detect fraudulent, suspicious, or illegal activity</li>
-        <li>Your account has been inactive for an extended period</li>
-        <li>We discontinue the service</li>
-      </ul>
-      <p>Upon termination, your right to use the service ceases immediately. We will make reasonable efforts to allow you to withdraw any available balance, subject to applicable laws and pending investigations.</p>
-    </div>
-
-    <div class="terms-section" id="liability">
-      <div class="terms-section-num">Section 11</div>
-      <h2>Limitation of Liability</h2>
-      <p>To the maximum extent permitted by applicable law, NFV Wealth shall not be liable for:</p>
-      <ul>
-        <li>Indirect, incidental, special, consequential, or punitive damages</li>
-        <li>Loss of profits, data, goodwill, or other intangible losses</li>
-        <li>Unauthorized access to or use of our servers or personal information stored therein</li>
-        <li>Losses resulting from errors, inaccuracies, or interruptions in service</li>
-        <li>Third-party conduct or content accessible through our platform</li>
-      </ul>
-      <p>Our total liability to you for any claim arising from your use of the service shall not exceed the total fees paid by you to NFV Wealth in the 12 months preceding the claim.</p>
-    </div>
-
-    <div class="terms-section" id="changes">
-      <div class="terms-section-num">Section 12</div>
-      <h2>Changes to Terms</h2>
-      <p>We reserve the right to modify these Terms at any time. When we make material changes, we will:</p>
-      <ul>
-        <li>Update the "Last Updated" date at the top of this page</li>
-        <li>Send you an email notification to your registered address</li>
-        <li>Display a prominent notice on the platform</li>
-      </ul>
-      <p>Your continued use of NFV Wealth after the effective date of revised Terms constitutes your acceptance of the changes. If you do not agree to the updated Terms, you must stop using the service and close your account.</p>
-    </div>
-
-    <div class="terms-section" id="contact-legal">
-      <div class="terms-section-num">Section 13</div>
-      <h2>Contact Us</h2>
-      <p>If you have any questions, concerns, or disputes regarding these Terms of Service, please contact us:</p>
-      <ul>
-        <li><strong>Email:</strong> legal@nfvwealth.com</li>
-        <li><strong>Support:</strong> info@nfv-web-ing-uk.pro</li>
-        <li><strong>Contact Form:</strong> <a href="./contact.html" style="color:var(--blue)">Visit our Contact page</a></li>
-      </ul>
-      <p>We aim to respond to all legal enquiries within 5 business days.</p>
-    </div>
-
-  </div>
-</div>
-
-<!-- CTA BAND -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <h2 class="cta-title">Ready to get started?</h2>
-    <p class="cta-sub">Open your NFV Wealth account today and experience modern banking with full transparency and security.</p>
-    <div class="cta-actions">
-      <a href="./register.html" class="btn-white">Get Started Free</a>
-      <a href="./contact.html" class="btn-outline-white">Contact Us</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <a href="./index.html" class="nav-logo" style="text-decoration:none">
-        <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg></div>
-        <span class="logo-text" style="color:#fff">NFV <span>Wealth</span></span>
-      </a>
-      <p class="footer-tagline">Modern banking for a modern world. Secure, fast, and built for everyone.</p>
-      <div class="footer-socials">
-        <a href="#" class="social-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></a>
-        <a href="#" class="social-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="#" class="social-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Product</h4>
-      <ul><li><a href="./index.html#features">Features</a></li><li><a href="./index.html#how">How It Works</a></li><li><a href="./register.html">Open Account</a></li><li><a href="./login.html">Sign In</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <ul><li><a href="#">Local Transfers</a></li><li><a href="#">International</a></li><li><a href="#">Virtual Cards</a></li><li><a href="#">Crypto Swap</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul><li><a href="./contact.html">Contact Us</a></li><li><a href="./index.html#faq">FAQ</a></li><li><a href="./terms-of-service.html">Privacy Policy</a></li><li><a href="./terms-of-service.html">Terms of Service</a></li></ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2025 NFV Wealth. All rights reserved.</div>
-    <div class="footer-legal">
-      <a href="./terms-of-service.html">Privacy Policy</a>
-      <a href="./terms-of-service.html">Terms of Service</a>
-      <a href="./contact.html">Contact</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-  function openMobileMenu(){ document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeMobileMenu(){ document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
-
-  // Active TOC highlight on scroll
-  const sections = document.querySelectorAll('.terms-section');
-  const tocLinks = document.querySelectorAll('.toc-list a');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting){
-        tocLinks.forEach(l => l.classList.remove('active'));
-        const link = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
-        if(link) link.classList.add('active');
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-    });
-  }, { threshold: 0.4, rootMargin: '-80px 0px -60% 0px' });
-  sections.forEach(s => observer.observe(s));
+      :root {
+        --blue: #0ea5e9;
+        --blue-mid: #0284c7;
+        --blue-dark: #0369a1;
+        --blue-deep: #0c4a6e;
+        --blue-bg: #f0f9ff;
+        --blue-light: #e0f2fe;
+        --text: #0f172a;
+        --text-2: #334155;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --radius: 14px;
+        --radius-sm: 8px;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--white);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── NAVBAR ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 6%;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-mark svg {
+        width: 22px;
+        height: 22px;
+      }
+      .logo-text {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: var(--text);
+      }
+      .logo-text span {
+        color: var(--blue);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--blue);
+      }
+      .nav-links a.active {
+        color: var(--blue);
+        font-weight: 500;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn-ghost {
+        background: none;
+        border: 1.5px solid var(--border);
+        color: var(--text-2);
+        padding: 0.5rem 1.2rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn-ghost:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        color: #fff;
+        border: none;
+        padding: 0.55rem 1.4rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.98);
+        z-index: 1000;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-family: "Syne", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--blue);
+      }
+      .mobile-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 6%;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      /* ── PAGE HERO ── */
+      .page-hero {
+        background: linear-gradient(135deg, var(--blue-deep), var(--blue-dark));
+        padding: 5rem 6% 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .page-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -100px;
+        left: -60px;
+        width: 350px;
+        height: 350px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .page-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .page-tag {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.35rem 1rem;
+        border-radius: 20px;
+        margin-bottom: 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .page-hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.9rem;
+      }
+      .page-hero p {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.78);
+        line-height: 1.75;
+      }
+      .page-meta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1.8rem;
+        flex-wrap: wrap;
+      }
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .meta-item svg {
+        width: 14px;
+        height: 14px;
+        stroke: rgba(255, 255, 255, 0.7);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      /* ── TERMS LAYOUT ── */
+      .terms-layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 3rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4rem 6%;
+        align-items: start;
+      }
+
+      /* Sticky sidebar TOC */
+      .toc-sidebar {
+        position: sticky;
+        top: 90px;
+        background: var(--bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+      }
+      .toc-title {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 1rem;
+      }
+      .toc-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .toc-list a {
+        display: block;
+        padding: 0.45rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.83rem;
+        color: var(--muted);
+        text-decoration: none;
+        transition: all 0.2s;
+        line-height: 1.4;
+      }
+      .toc-list a:hover {
+        background: var(--blue-bg);
+        color: var(--blue-dark);
+      }
+      .toc-list a.active {
+        background: var(--blue-bg);
+        color: var(--blue-dark);
+        font-weight: 500;
+      }
+      .toc-updated {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+      }
+
+      /* Content */
+      .terms-content {
+      }
+      .terms-intro {
+        background: var(--blue-bg);
+        border: 1px solid #bae6fd;
+        border-radius: var(--radius);
+        padding: 1.5rem 1.8rem;
+        margin-bottom: 2.5rem;
+      }
+      .terms-intro p {
+        font-size: 0.9rem;
+        color: var(--blue-dark);
+        line-height: 1.75;
+      }
+      .terms-intro strong {
+        font-weight: 600;
+      }
+
+      .terms-section {
+        margin-bottom: 3rem;
+        scroll-margin-top: 100px;
+      }
+      .terms-section-num {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--blue);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.4rem;
+      }
+      .terms-section h2 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--blue-light);
+      }
+      .terms-section p {
+        font-size: 0.93rem;
+        color: var(--text-2);
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+      .terms-section p:last-child {
+        margin-bottom: 0;
+      }
+      .terms-section ul {
+        list-style: none;
+        margin: 0.8rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .terms-section ul li {
+        font-size: 0.93rem;
+        color: var(--text-2);
+        line-height: 1.7;
+        padding-left: 1.4rem;
+        position: relative;
+      }
+      .terms-section ul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.65em;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--blue);
+      }
+      .terms-section h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 1.5rem 0 0.6rem;
+      }
+      .highlight-box {
+        background: #fefce8;
+        border: 1px solid #fde047;
+        border-radius: var(--radius-sm);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .highlight-box p {
+        font-size: 0.88rem;
+        color: #713f12;
+        margin: 0;
+      }
+      .highlight-box strong {
+        color: #92400e;
+      }
+      .danger-box {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: var(--radius-sm);
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .danger-box p {
+        font-size: 0.88rem;
+        color: #7f1d1d;
+        margin: 0;
+      }
+
+      /* ── CTA BAND ── */
+      .cta-section {
+        background: linear-gradient(
+          135deg,
+          var(--blue-deep),
+          var(--blue-dark),
+          var(--blue)
+        );
+        text-align: center;
+        padding: 4.5rem 6%;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: -60px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .cta-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 580px;
+        margin: 0 auto;
+      }
+      .cta-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.9rem;
+      }
+      .cta-sub {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 2rem;
+        line-height: 1.7;
+      }
+      .cta-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-white {
+        background: #fff;
+        color: var(--blue-dark);
+        border: none;
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+        text-decoration: none;
+      }
+      .btn-white:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+      }
+      .btn-outline-white {
+        background: transparent;
+        color: #fff;
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+        text-decoration: none;
+      }
+      .btn-outline-white:hover {
+        border-color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--text);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 4rem 6% 2rem;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+      }
+      .footer-tagline {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        margin-top: 0.8rem;
+        max-width: 240px;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 10px;
+        margin-top: 1.5rem;
+      }
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .social-btn:hover {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+      }
+      .social-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .footer-col h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .footer-col ul a {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-col ul a:hover {
+        color: var(--blue);
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .footer-copy {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .footer-legal {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .footer-legal a {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-legal a:hover {
+        color: var(--blue);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        .terms-layout {
+          grid-template-columns: 1fr;
+          padding: 3rem 5%;
+        }
+        .toc-sidebar {
+          position: static;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+      }
+      @media (max-width: 768px) {
+        nav {
+          padding: 0.9rem 5%;
+        }
+        .nav-links,
+        .nav-actions {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+        .page-meta {
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+      <a href="./index.html" onclick="closeMobileMenu()">Home</a>
+      <a href="./index.html#features" onclick="closeMobileMenu()">Features</a>
+      <a href="./index.html#how" onclick="closeMobileMenu()">How It Works</a>
+      <a href="./contact.html" onclick="closeMobileMenu()">Contact</a>
+      <a
+        href="./register.html"
+        class="btn-primary"
+        style="margin-top: 1rem; padding: 0.8rem 2rem; font-size: 1rem"
+        >Get Started</a
+      >
+    </div>
+
+    <!-- NAVBAR -->
+    <nav>
+      <a href="./index.html" class="nav-logo">
+        <div class="logo-mark">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fff"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 2L4 6v6c0 4.5 3.5 8.5 8 10 4.5-1.5 8-5.5 8-10V6L12 2z"
+              fill="rgba(255,255,255,0.15)"
+              stroke="#fff"
+            />
+            <text
+              x="12"
+              y="14.5"
+              text-anchor="middle"
+              font-size="8"
+              font-weight="800"
+              fill="#fff"
+              stroke="none"
+              font-family="system-ui"
+            >
+              N
+            </text>
+          </svg>
+        </div>
+        <span class="logo-text">NFV <span>Wealth</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./index.html#features">Features</a></li>
+        <li><a href="./index.html#how">How It Works</a></li>
+        <li><a href="./index.html#faq">FAQ</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="./login.html" class="btn-ghost">Log In</a>
+        <a href="./register.html" class="btn-primary">Get Started</a>
+      </div>
+      <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+      <div class="page-hero-inner">
+        <span class="page-tag">Legal</span>
+        <h1>Terms of Service</h1>
+        <p>
+          Please read these terms carefully before using NFV Wealth. By creating
+          an account, you agree to be bound by these terms.
+        </p>
+        <div class="page-meta">
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            Last updated: January 1, 2025
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            ~10 min read
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Version 2.1
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMS CONTENT -->
+    <div class="terms-layout">
+      <!-- SIDEBAR TOC -->
+      <aside class="toc-sidebar">
+        <div class="toc-title">Contents</div>
+        <ul class="toc-list" id="tocList">
+          <li>
+            <a href="#acceptance" class="active">1. Acceptance of Terms</a>
+          </li>
+          <li><a href="#eligibility">2. Eligibility</a></li>
+          <li><a href="#accounts">3. Account Registration</a></li>
+          <li><a href="#services">4. Our Services</a></li>
+          <li><a href="#transfers">5. Transfers & Payments</a></li>
+          <li><a href="#prohibited">6. Prohibited Activities</a></li>
+          <li><a href="#security">7. Security</a></li>
+          <li><a href="#fees">8. Fees & Charges</a></li>
+          <li><a href="#privacy">9. Privacy</a></li>
+          <li><a href="#termination">10. Termination</a></li>
+          <li><a href="#liability">11. Limitation of Liability</a></li>
+          <li><a href="#changes">12. Changes to Terms</a></li>
+          <li><a href="#contact-legal">13. Contact</a></li>
+        </ul>
+        <div class="toc-updated">Effective: Jan 1, 2025</div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <div class="terms-content">
+        <div class="terms-intro">
+          <p>
+            <strong>Welcome to NFV Wealth.</strong> These Terms of Service
+            ("Terms") govern your use of the NFV Wealth platform, website, and
+            all associated services. By accessing or using our services, you
+            confirm that you have read, understood, and agree to be bound by
+            these Terms and our Privacy Policy.
+          </p>
+        </div>
+
+        <div class="terms-section" id="acceptance">
+          <div class="terms-section-num">Section 01</div>
+          <h2>Acceptance of Terms</h2>
+          <p>
+            By creating an NFV Wealth account or using any of our services, you
+            agree to these Terms of Service. If you do not agree to these terms,
+            you must not access or use our platform.
+          </p>
+          <p>
+            These Terms constitute a legally binding agreement between you
+            ("User," "you," or "your") and NFV Wealth ("Company," "we," "us," or
+            "our"). This agreement governs your use of all services offered
+            through our web platform and any future mobile applications.
+          </p>
+          <p>
+            If you are accepting these Terms on behalf of a company or other
+            legal entity, you represent and warrant that you have authority to
+            bind that entity to these Terms.
+          </p>
+        </div>
+
+        <div class="terms-section" id="eligibility">
+          <div class="terms-section-num">Section 02</div>
+          <h2>Eligibility</h2>
+          <p>To use NFV Wealth, you must meet the following requirements:</p>
+          <ul>
+            <li>
+              Be at least 18 years of age or the legal age of majority in your
+              jurisdiction
+            </li>
+            <li>Have the legal capacity to enter into a binding contract</li>
+            <li>
+              Not be a person barred from using financial services under
+              applicable law
+            </li>
+            <li>
+              Provide accurate, complete, and current registration information
+            </li>
+            <li>
+              Not be located in or a resident of any jurisdiction where our
+              services are restricted
+            </li>
+          </ul>
+          <p>
+            We reserve the right to refuse service, close accounts, or remove
+            content at our sole discretion.
+          </p>
+        </div>
+
+        <div class="terms-section" id="accounts">
+          <div class="terms-section-num">Section 03</div>
+          <h2>Account Registration</h2>
+          <p>
+            To access NFV Wealth services, you must create an account. You agree
+            to:
+          </p>
+          <ul>
+            <li>
+              Provide accurate, complete, and truthful information during
+              registration
+            </li>
+            <li>Keep your account information up to date at all times</li>
+            <li>Maintain the confidentiality of your password and PIN</li>
+            <li>
+              Accept responsibility for all activity that occurs under your
+              account
+            </li>
+            <li>
+              Notify us immediately of any unauthorized use of your account
+            </li>
+          </ul>
+          <h3>Account Security</h3>
+          <p>
+            You are solely responsible for maintaining the security of your
+            login credentials. NFV Wealth will never ask you to share your
+            password, PIN, or OTP codes via email, phone, or chat. You must
+            enable two-factor authentication where available.
+          </p>
+          <div class="highlight-box">
+            <p>
+              <strong>Important:</strong> NFV Wealth staff will never ask for
+              your full password, PIN, or one-time verification codes. If anyone
+              claiming to be from NFV Wealth asks for these details, do not
+              share them and report it immediately.
+            </p>
+          </div>
+        </div>
+
+        <div class="terms-section" id="services">
+          <div class="terms-section-num">Section 04</div>
+          <h2>Our Services</h2>
+          <p>
+            NFV Wealth provides a digital banking platform that includes, but is
+            not limited to:
+          </p>
+          <ul>
+            <li>
+              <strong>Local Transfers:</strong> Instant money transfers to
+              domestic bank accounts
+            </li>
+            <li>
+              <strong>International Transfers:</strong> Cross-border transfers
+              via wire, crypto, PayPal, Wise, and other methods
+            </li>
+            <li>
+              <strong>Virtual Cards:</strong> Issuance of virtual debit cards
+              for online payments
+            </li>
+            <li>
+              <strong>Currency Swap:</strong> Exchange between USD and supported
+              cryptocurrencies
+            </li>
+            <li>
+              <strong>Account Management:</strong> Balance monitoring,
+              transaction history, and account settings
+            </li>
+            <li>
+              <strong>Deposits:</strong> Funding your account via supported
+              methods
+            </li>
+          </ul>
+          <p>
+            We reserve the right to modify, suspend, or discontinue any service
+            at any time with or without notice. We shall not be liable to you or
+            any third party for any modification, suspension, or discontinuance
+            of services.
+          </p>
+        </div>
+
+        <div class="terms-section" id="transfers">
+          <div class="terms-section-num">Section 05</div>
+          <h2>Transfers & Payments</h2>
+          <p>
+            When initiating any transfer or payment through NFV Wealth, you
+            acknowledge and agree that:
+          </p>
+          <ul>
+            <li>You are authorized to use the funds being transferred</li>
+            <li>All recipient information provided is accurate and complete</li>
+            <li>
+              Transfers may be subject to processing times, limits, and
+              verification requirements
+            </li>
+            <li>Once a transfer is confirmed, it may not be reversible</li>
+            <li>
+              NFV Wealth is not responsible for losses resulting from incorrect
+              recipient details
+            </li>
+          </ul>
+          <h3>Transaction Limits</h3>
+          <p>
+            We apply transaction limits to protect users. Your account tier
+            determines your daily, weekly, and monthly transfer limits. These
+            limits may be adjusted based on your account activity and
+            verification status.
+          </p>
+          <div class="danger-box">
+            <p>
+              <strong>Warning:</strong> Double-check all recipient details
+              before confirming a transfer. Transactions sent to incorrect
+              accounts may be irreversible. NFV Wealth is not liable for
+              transfers made in error.
+            </p>
+          </div>
+        </div>
+
+        <div class="terms-section" id="prohibited">
+          <div class="terms-section-num">Section 06</div>
+          <h2>Prohibited Activities</h2>
+          <p>You agree not to use NFV Wealth for any of the following:</p>
+          <ul>
+            <li>
+              Money laundering, fraud, or any other illegal financial activity
+            </li>
+            <li>Funding terrorist organizations or activities</li>
+            <li>Circumventing applicable laws, regulations, or sanctions</li>
+            <li>Creating multiple accounts or using false identities</li>
+            <li>
+              Attempting to gain unauthorized access to our systems or other
+              accounts
+            </li>
+            <li>
+              Harassing, threatening, or abusing other users or NFV Wealth staff
+            </li>
+            <li>Transmitting malware, viruses, or other harmful code</li>
+            <li>
+              Reverse engineering or attempting to extract source code from our
+              platform
+            </li>
+            <li>
+              Using our services for gambling or other prohibited industries
+            </li>
+            <li>
+              Violating any applicable local, national, or international laws
+            </li>
+          </ul>
+          <p>
+            Violation of these prohibitions may result in immediate account
+            suspension, termination, reporting to relevant authorities, and
+            legal action where applicable.
+          </p>
+        </div>
+
+        <div class="terms-section" id="security">
+          <div class="terms-section-num">Section 07</div>
+          <h2>Security</h2>
+          <p>
+            NFV Wealth employs industry-standard security measures including
+            256-bit SSL encryption, two-factor authentication, OTP verification,
+            and regular security audits to protect your account and data.
+          </p>
+          <p>
+            However, no method of transmission over the internet is 100% secure.
+            While we strive to protect your personal information, we cannot
+            guarantee absolute security. You are responsible for:
+          </p>
+          <ul>
+            <li>Keeping your login credentials confidential</li>
+            <li>Using strong, unique passwords</li>
+            <li>Logging out from shared or public devices</li>
+            <li>Promptly reporting any suspicious activity on your account</li>
+            <li>Keeping your registered email and phone number up to date</li>
+          </ul>
+        </div>
+
+        <div class="terms-section" id="fees">
+          <div class="terms-section-num">Section 08</div>
+          <h2>Fees & Charges</h2>
+          <p>
+            NFV Wealth is committed to transparent pricing. Applicable fees will
+            always be displayed clearly before you confirm any transaction.
+          </p>
+          <ul>
+            <li><strong>Local Transfers:</strong> Free of charge</li>
+            <li>
+              <strong>International Transfers:</strong> Fees vary by method and
+              destination — shown at checkout
+            </li>
+            <li>
+              <strong>Virtual Cards:</strong> Issuance may be subject to
+              applicable fees
+            </li>
+            <li>
+              <strong>Currency Swap:</strong> Spread-based pricing on exchange
+              rates
+            </li>
+            <li>
+              <strong>Account Maintenance:</strong> Currently free for all
+              standard accounts
+            </li>
+          </ul>
+          <p>
+            We reserve the right to introduce or modify fees at any time. We
+            will notify you of any fee changes at least 30 days in advance via
+            email or in-platform notification.
+          </p>
+        </div>
+
+        <div class="terms-section" id="privacy">
+          <div class="terms-section-num">Section 09</div>
+          <h2>Privacy</h2>
+          <p>
+            Your use of NFV Wealth is also governed by our
+            <a
+              href="./terms-of-service.html"
+              style="color: var(--blue); font-weight: 500"
+              >Privacy Policy</a
+            >, which is incorporated into these Terms by reference. By using our
+            services, you consent to the collection and use of your information
+            as described in our Privacy Policy.
+          </p>
+          <p>
+            We collect only the information necessary to provide our services
+            and will never sell your personal data to third parties for
+            marketing purposes.
+          </p>
+        </div>
+
+        <div class="terms-section" id="termination">
+          <div class="terms-section-num">Section 10</div>
+          <h2>Termination</h2>
+          <p>
+            You may close your NFV Wealth account at any time by contacting our
+            support team. We may suspend or terminate your account at any time
+            if:
+          </p>
+          <ul>
+            <li>You violate these Terms of Service</li>
+            <li>We are required to do so by law or regulatory authority</li>
+            <li>We detect fraudulent, suspicious, or illegal activity</li>
+            <li>Your account has been inactive for an extended period</li>
+            <li>We discontinue the service</li>
+          </ul>
+          <p>
+            Upon termination, your right to use the service ceases immediately.
+            We will make reasonable efforts to allow you to withdraw any
+            available balance, subject to applicable laws and pending
+            investigations.
+          </p>
+        </div>
+
+        <div class="terms-section" id="liability">
+          <div class="terms-section-num">Section 11</div>
+          <h2>Limitation of Liability</h2>
+          <p>
+            To the maximum extent permitted by applicable law, NFV Wealth shall
+            not be liable for:
+          </p>
+          <ul>
+            <li>
+              Indirect, incidental, special, consequential, or punitive damages
+            </li>
+            <li>Loss of profits, data, goodwill, or other intangible losses</li>
+            <li>
+              Unauthorized access to or use of our servers or personal
+              information stored therein
+            </li>
+            <li>
+              Losses resulting from errors, inaccuracies, or interruptions in
+              service
+            </li>
+            <li>
+              Third-party conduct or content accessible through our platform
+            </li>
+          </ul>
+          <p>
+            Our total liability to you for any claim arising from your use of
+            the service shall not exceed the total fees paid by you to NFV
+            Wealth in the 12 months preceding the claim.
+          </p>
+        </div>
+
+        <div class="terms-section" id="changes">
+          <div class="terms-section-num">Section 12</div>
+          <h2>Changes to Terms</h2>
+          <p>
+            We reserve the right to modify these Terms at any time. When we make
+            material changes, we will:
+          </p>
+          <ul>
+            <li>Update the "Last Updated" date at the top of this page</li>
+            <li>Send you an email notification to your registered address</li>
+            <li>Display a prominent notice on the platform</li>
+          </ul>
+          <p>
+            Your continued use of NFV Wealth after the effective date of revised
+            Terms constitutes your acceptance of the changes. If you do not
+            agree to the updated Terms, you must stop using the service and
+            close your account.
+          </p>
+        </div>
+
+        <div class="terms-section" id="contact-legal">
+          <div class="terms-section-num">Section 13</div>
+          <h2>Contact Us</h2>
+          <p>
+            If you have any questions, concerns, or disputes regarding these
+            Terms of Service, please contact us:
+          </p>
+          <ul>
+            <li><strong>Email:</strong> legal@nfvwealth.com</li>
+            <li><strong>Support:</strong> info@nfv-web-ing-uk.pro</li>
+            <li>
+              <strong>Contact Form:</strong>
+              <a href="./contact.html" style="color: var(--blue)"
+                >Visit our Contact page</a
+              >
+            </li>
+          </ul>
+          <p>
+            We aim to respond to all legal enquiries within 5 business days.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA BAND -->
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="cta-title">Ready to get started?</h2>
+        <p class="cta-sub">
+          Open your NFV Wealth account today and experience modern banking with
+          full transparency and security.
+        </p>
+        <div class="cta-actions">
+          <a href="./register.html" class="btn-white">Get Started Free</a>
+          <a href="./contact.html" class="btn-outline-white">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <a href="./index.html" class="nav-logo" style="text-decoration: none">
+            <div class="logo-mark">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="5" width="20" height="14" rx="3" />
+                <path d="M2 10h20" />
+              </svg>
+            </div>
+            <span class="logo-text" style="color: #fff"
+              >NFV <span>Wealth</span></span
+            >
+          </a>
+          <p class="footer-tagline">
+            Modern banking for a modern world. Secure, fast, and built for
+            everyone.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                /></svg
+            ></a>
+            <a href="#" class="social-btn"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                /></svg
+            ></a>
+            <a href="#" class="social-btn"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg
+            ></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="./index.html#features">Features</a></li>
+            <li><a href="./index.html#how">How It Works</a></li>
+            <li><a href="./register.html">Open Account</a></li>
+            <li><a href="./login.html">Sign In</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Local Transfers</a></li>
+            <li><a href="#">International</a></li>
+            <li><a href="#">Virtual Cards</a></li>
+            <li><a href="#">Crypto Swap</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./index.html#faq">FAQ</a></li>
+            <li><a href="./terms-of-service.html">Privacy Policy</a></li>
+            <li><a href="./terms-of-service.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 NFV Wealth. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="./terms-of-service.html">Privacy Policy</a>
+          <a href="./terms-of-service.html">Terms of Service</a>
+          <a href="./contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function openMobileMenu() {
+        document.getElementById("mobileMenu").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeMobileMenu() {
+        document.getElementById("mobileMenu").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // Active TOC highlight on scroll
+      const sections = document.querySelectorAll(".terms-section");
+      const tocLinks = document.querySelectorAll(".toc-list a");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              tocLinks.forEach((l) => l.classList.remove("active"));
+              const link = document.querySelector(
+                `.toc-list a[href="#${e.target.id}"]`,
+              );
+              if (link) link.classList.add("active");
+            }
+          });
+        },
+        { threshold: 0.4, rootMargin: "-80px 0px -60% 0px" },
+      );
+      sections.forEach((s) => observer.observe(s));
+    </script>
+
+
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '7624f45c2fd0e6c023e08149787a3168ec2a5a77';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
 </script>
-</body>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+  </body>
 </html>

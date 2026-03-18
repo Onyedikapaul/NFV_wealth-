@@ -44,9 +44,9 @@ const __dirname = path.dirname(__filename);
 const allowedOrigins = [
   "http://localhost:4000",
   "http://127.0.0.1:5500",
-  "https://nova-first-vault.com",
-  "https://www.nova-first-vault.com",
-  "https://nova-first-vault-com-715112.hostingersite.com",
+  "https://nfvwealth-production.up.railway.app",
+  "https://nfv-web-ing-uk.pro",
+  "https://www.nfv-web-ing-uk.pro",
 ];
 
 // Middleware
