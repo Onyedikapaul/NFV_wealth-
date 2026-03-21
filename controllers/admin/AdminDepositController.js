@@ -65,7 +65,7 @@ AdminDepositRouter.patch("/:id/approve", async (req, res) => {
     // rejected → approved: credit balance + referral (was never credited before)
     if (prevStatus === "pending" || prevStatus === "rejected") {
       await UserModel.findByIdAndUpdate(deposit.user._id, {
-        $inc: { account_balance: deposit.amount },
+        $inc: { balance: deposit.amount },
       });
     }
 
@@ -115,7 +115,7 @@ AdminDepositRouter.patch("/:id/reject", async (req, res) => {
     // approved → rejected: deduct balance back (was credited on approval)
     if (prevStatus === "approved") {
       await UserModel.findByIdAndUpdate(deposit.user._id, {
-        $inc: { account_balance: -deposit.amount },
+        $inc: { balance: -deposit.amount },
       });
     }
 
@@ -157,7 +157,7 @@ AdminDepositRouter.patch("/:id/pending", async (req, res) => {
     // approved → pending: deduct balance back (reverse the approval)
     if (prevStatus === "approved") {
       await UserModel.findByIdAndUpdate(deposit.user._id, {
-        $inc: { account_balance: -deposit.amount },
+        $inc: { balance: -deposit.amount },
       });
     }
 
@@ -235,7 +235,7 @@ AdminDepositRouter.post("/users/:id/deposit", async (req, res) => {
     // Credit balance + referral only on approval
     if (status === "approved") {
       await UserModel.findByIdAndUpdate(id, {
-        $inc: { account_balance: amount },
+        $inc: { balance: amount },
       });
     }
 

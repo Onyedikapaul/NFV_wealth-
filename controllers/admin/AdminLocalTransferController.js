@@ -53,8 +53,8 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
       routing_number: routing_number || undefined,
       swift_code: swift_code || undefined,
       description: description || undefined,
-      balanceBefore: balanceBefore ?? user.account_balance,
-      balanceAfter: balanceAfter ?? user.account_balance - amount,
+      balanceBefore: balanceBefore ?? user.balance,
+      balanceAfter: balanceAfter ?? user.balance - amount,
       status: status || "pending",
       reference: transferRef,
     };
@@ -67,7 +67,7 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
     // Only skip if manually created as already-failed
     if ((status || "pending") !== "failed") {
       await UserModel.findByIdAndUpdate(id, {
-        $inc: { account_balance: -amount },
+        $inc: { balance: -amount },
       });
     }
 
@@ -161,18 +161,18 @@ AdminLocalTransferRouter.patch(
       if (newStatus === "failed") {
         // pending → failed OR completed → failed: refund
         await UserModel.findByIdAndUpdate(transfer.user, {
-          $inc: { account_balance: transfer.amount },
+          $inc: { balance: transfer.amount },
         });
       } else if (newStatus === "pending" && prevStatus === "failed") {
         // failed → pending: re-deduct (refund was given, now back in transit)
-        if (user.account_balance < transfer.amount)
+        if (user.balance < transfer.amount)
           return res.status(400).json({
             success: false,
-            message: `Insufficient balance to restore transfer. User has $${user.account_balance}, transfer is $${transfer.amount}`,
+            message: `Insufficient balance to restore transfer. User has $${user.balance}, transfer is $${transfer.amount}`,
           });
 
         await UserModel.findByIdAndUpdate(transfer.user, {
-          $inc: { account_balance: -transfer.amount },
+          $inc: { balance: -transfer.amount },
         });
       }
       // pending → completed: nothing
