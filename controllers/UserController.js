@@ -153,7 +153,7 @@ export const registerUser = async (req, res) => {
       emailVerificationExpires: otpExpires,
     });
 
-    // Send OTP email
+    //Send OTP email
     await sendVerificationEmail(email, name, otp);
 
     return res.status(201).json({
@@ -161,8 +161,97 @@ export const registerUser = async (req, res) => {
         "Registration successful. Please check your email for a verification code.",
       email, // send back so frontend can pass to verify page
     });
+
   } catch (error) {
     console.error("registerUser error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ── loginUser — step 1: validate credentials, send OTP ───────
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // ── Turnstile check ──
+    const turnstileValid = await verifyTurnstile(
+      req.body["cf-turnstile-response"],
+    );
+    if (!turnstileValid) {
+      return res.status(400).json({
+        ok: false,
+        message: "Captcha verification failed. Please try again.",
+      });
+    }
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Check account status
+    if (user.accountStatus === "suspended" || user.accountStatus === "closed") {
+      return res.status(403).json({
+        message: `Your account has been ${user.accountStatus}. ${
+          user.suspensionReason
+            ? `Reason: ${user.suspensionReason}`
+            : "Please contact support."
+        }`,
+      });
+    }
+
+    //Generate login OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.emailVerificationOTP = otp;
+    user.emailVerificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+    await user.save();
+
+    //Send OTP email
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || "info@nfv-web-ing-uk.pro",
+      to: email,
+      subject: "Your login verification code – NFV Wealth",
+      html: `
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#0ea5e9,#0369a1);padding:28px 24px;text-align:center;border-radius:12px 12px 0 0;">
+            <h1 style="color:white;font-size:20px;margin:0;">Login Verification</h1>
+            <p style="color:rgba(255,255,255,0.8);font-size:13px;margin:6px 0 0;">NFV Wealth</p>
+          </div>
+          <div style="padding:28px 24px;background:white;border-radius:0 0 12px 12px;border:1px solid #e5e7eb;border-top:none;">
+            <p style="color:#374151;margin:0 0 8px;">Hi <strong>${user.name}</strong>,</p>
+            <p style="color:#6b7280;font-size:14px;margin:0 0 20px;line-height:1.6;">
+              Someone is trying to sign in to your account. Enter this code to complete your login.
+              It expires in <strong>10 minutes</strong>.
+            </p>
+            <div style="background:#f0f9ff;border:2px solid #bae6fd;border-radius:10px;padding:20px;text-align:center;margin-bottom:20px;">
+              <span style="font-size:36px;font-weight:900;letter-spacing:12px;color:#0369a1;">${otp}</span>
+            </div>
+            <p style="color:#9ca3af;font-size:12px;margin:0;">
+              If you didn't attempt to log in, please ignore this email and consider changing your password.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    return res.status(200).json({
+      message: "A verification code has been sent to your email.",
+      requiresOTP: true,
+      email,
+    });
+
+  } catch (error) {
+    console.error("loginUser error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -246,93 +335,6 @@ export const logoutUser = (req, res) => {
   });
 
   res.status(200).json({ message: "Logged out successfully" });
-};
-
-// ── loginUser — step 1: validate credentials, send OTP ───────
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // ── Turnstile check ──
-    const turnstileValid = await verifyTurnstile(
-      req.body["cf-turnstile-response"],
-    );
-    if (!turnstileValid) {
-      return res.status(400).json({
-        ok: false,
-        message: "Captcha verification failed. Please try again.",
-      });
-    }
-
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    if (user.password !== password) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // Check account status
-    if (user.accountStatus === "suspended" || user.accountStatus === "closed") {
-      return res.status(403).json({
-        message: `Your account has been ${user.accountStatus}. ${
-          user.suspensionReason
-            ? `Reason: ${user.suspensionReason}`
-            : "Please contact support."
-        }`,
-      });
-    }
-
-    // Generate login OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.emailVerificationOTP = otp;
-    user.emailVerificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
-    await user.save();
-
-    // Send OTP email
-    await resend.emails.send({
-      from: process.env.EMAIL_FROM || "info@nfv-web-ing-uk.pro",
-      to: email,
-      subject: "Your login verification code – NFV Wealth",
-      html: `
-        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;">
-          <div style="background:linear-gradient(135deg,#0ea5e9,#0369a1);padding:28px 24px;text-align:center;border-radius:12px 12px 0 0;">
-            <h1 style="color:white;font-size:20px;margin:0;">Login Verification</h1>
-            <p style="color:rgba(255,255,255,0.8);font-size:13px;margin:6px 0 0;">NFV Wealth</p>
-          </div>
-          <div style="padding:28px 24px;background:white;border-radius:0 0 12px 12px;border:1px solid #e5e7eb;border-top:none;">
-            <p style="color:#374151;margin:0 0 8px;">Hi <strong>${user.name}</strong>,</p>
-            <p style="color:#6b7280;font-size:14px;margin:0 0 20px;line-height:1.6;">
-              Someone is trying to sign in to your account. Enter this code to complete your login.
-              It expires in <strong>10 minutes</strong>.
-            </p>
-            <div style="background:#f0f9ff;border:2px solid #bae6fd;border-radius:10px;padding:20px;text-align:center;margin-bottom:20px;">
-              <span style="font-size:36px;font-weight:900;letter-spacing:12px;color:#0369a1;">${otp}</span>
-            </div>
-            <p style="color:#9ca3af;font-size:12px;margin:0;">
-              If you didn't attempt to log in, please ignore this email and consider changing your password.
-            </p>
-          </div>
-        </div>
-      `,
-    });
-
-    return res.status(200).json({
-      message: "A verification code has been sent to your email.",
-      requiresOTP: true,
-      email,
-    });
-  } catch (error) {
-    console.error("loginUser error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
 };
 
 // ── verifyLoginOTP — step 2: verify OTP, issue JWT ────────────

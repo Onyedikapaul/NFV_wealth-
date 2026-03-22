@@ -2,6 +2,7 @@ import express from 'express';
 import checkAuth from '../middleware/authMiddleware.js';
 import CardModels from '../models/CardModels.js';
 import UserModel from '../models/UserModel.js';
+import { requireKYC } from './KYCController.js';
 
 
 const CardRouter = express.Router();
@@ -52,7 +53,7 @@ CardRouter.get('/', checkAuth, async (req, res) => {
 });
 
 // POST /api/cards
-CardRouter.post('/', checkAuth, async (req, res) => {
+CardRouter.post('/', checkAuth, requireKYC, async (req, res) => {
   try {
     const { card_type, card_tier, card_brand, color_scheme, daily_limit, currency } = req.body;
 

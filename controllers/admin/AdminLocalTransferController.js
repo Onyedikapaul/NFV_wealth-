@@ -6,6 +6,7 @@ const AdminLocalTransferRouter = e.Router();
 
 // ─────────────────────────────────────────────
 // POST /api/admin/users/:id/local-transfer
+// Admin manually adds a transfer
 // ─────────────────────────────────────────────
 AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
   try {
@@ -19,8 +20,6 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
       routing_number,
       swift_code,
       description,
-      balanceBefore,
-      balanceAfter,
       status,
       reference,
       createdAt,
@@ -39,13 +38,27 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
 
+    const parsedAmount = parseFloat(amount);
+    const resolvedStatus = status || "pending";
+
+    // ── Only deduct balance if admin sets it directly to completed ──
+    let newBalance = user.balance;
+    if (resolvedStatus === "completed") {
+      if (user.balance < parsedAmount)
+        return res.status(400).json({
+          success: false,
+          message: `Insufficient balance. User has $${user.balance}, transfer is $${parsedAmount}`,
+        });
+      newBalance = parseFloat((user.balance - parsedAmount).toFixed(2));
+    }
+
     const transferRef =
       reference ||
       `TRF-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
     const transferData = {
       user: id,
-      amount,
+      amount: parsedAmount,
       accountname,
       accountnumber,
       bankname,
@@ -53,9 +66,9 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
       routing_number: routing_number || undefined,
       swift_code: swift_code || undefined,
       description: description || undefined,
-      balanceBefore: balanceBefore ?? user.balance,
-      balanceAfter: balanceAfter ?? user.balance - amount,
-      status: status || "pending",
+      balanceBefore: user.balance,
+      balanceAfter: newBalance,
+      status: resolvedStatus,
       reference: transferRef,
     };
 
@@ -63,11 +76,10 @@ AdminLocalTransferRouter.post("/users/:id/local-transfer", async (req, res) => {
 
     const transfer = await LocaltransferModel.create(transferData);
 
-    // Deduct immediately on creation — mirrors user-initiated transfers
-    // Only skip if manually created as already-failed
-    if ((status || "pending") !== "failed") {
+    // ── Only update balance in DB if completed ──
+    if (resolvedStatus === "completed") {
       await UserModel.findByIdAndUpdate(id, {
-        $inc: { balance: -amount },
+        $set: { balance: newBalance },
       });
     }
 
@@ -109,6 +121,15 @@ AdminLocalTransferRouter.get("/users/:id/local-transfers", async (req, res) => {
 // ─────────────────────────────────────────────
 // PATCH /api/admin/local-transfers/:id/status
 // Full status transitions with correct balance logic
+//
+// New logic (balance NOT deducted at creation):
+//
+//   pending   → completed : -amount  (deduct now — transfer approved)
+//   pending   → failed    : nothing  (was never deducted)
+//   completed → pending   : +amount  (refund — back in transit)
+//   completed → failed    : +amount  (refund — transfer reversed)
+//   failed    → pending   : nothing  (was never deducted)
+//   failed    → completed : -amount  (deduct now — admin force-completing)
 // ─────────────────────────────────────────────
 AdminLocalTransferRouter.patch(
   "/local-transfers/:id/status",
@@ -135,48 +156,54 @@ AdminLocalTransferRouter.patch(
         });
 
       const prevStatus = transfer.status;
+
       const user = await UserModel.findById(transfer.user);
       if (!user)
         return res
           .status(404)
           .json({ success: false, message: "User not found" });
 
-      // ── Balance logic ────────────────────────────────────────
-      // pending   → completed : -amount  (transfer went through)
-      // failed    → completed : -amount  (deduct again)
-      // completed → pending   : +amount  (reverse the completion)
-      // completed → failed    : +amount  (refund)
-      // pending   → failed    : nothing  (was never deducted)
-      // failed    → pending   : nothing  (refund already given or never deducted)
-
-      // Balance was deducted at creation (when user initiated the transfer)
-      //
-      // pending   → completed : nothing  (already deducted at creation)
-      // pending   → failed    : +amount  (refund — transfer didn't go through)
-      // completed → failed    : +amount  (refund — reverse the completed transfer)
-      // completed → pending   : nothing  (still deducted, back in transit)
-      // failed    → pending   : -amount  (re-deduct — back in transit after refund)
-      // failed    → completed : nothing  (was refunded then re-deducted via failed→pending first)
-
-      if (newStatus === "failed") {
-        // pending → failed OR completed → failed: refund
-        await UserModel.findByIdAndUpdate(transfer.user, {
-          $inc: { balance: transfer.amount },
-        });
-      } else if (newStatus === "pending" && prevStatus === "failed") {
-        // failed → pending: re-deduct (refund was given, now back in transit)
+      // ── Balance logic ──
+      if (
+        (prevStatus === "pending" && newStatus === "completed") ||
+        (prevStatus === "failed" && newStatus === "completed")
+      ) {
+        // Deduct balance — transfer is now approved
         if (user.balance < transfer.amount)
           return res.status(400).json({
             success: false,
-            message: `Insufficient balance to restore transfer. User has $${user.balance}, transfer is $${transfer.amount}`,
+            message: `Insufficient balance. User has $${user.balance}, transfer is $${transfer.amount}`,
           });
 
+        const balanceAfter = parseFloat(
+          (user.balance - transfer.amount).toFixed(2),
+        );
+
         await UserModel.findByIdAndUpdate(transfer.user, {
-          $inc: { balance: -transfer.amount },
+          $set: { balance: balanceAfter },
         });
+
+        // Update snapshot fields on the transfer
+        transfer.balanceBefore = user.balance;
+        transfer.balanceAfter = balanceAfter;
+      } else if (
+        (prevStatus === "completed" && newStatus === "pending") ||
+        (prevStatus === "completed" && newStatus === "failed")
+      ) {
+        // Refund balance — transfer reversed
+        const balanceAfter = parseFloat(
+          (user.balance + transfer.amount).toFixed(2),
+        );
+
+        await UserModel.findByIdAndUpdate(transfer.user, {
+          $set: { balance: balanceAfter },
+        });
+
+        transfer.balanceBefore = user.balance;
+        transfer.balanceAfter = balanceAfter;
       }
-      // pending → completed: nothing
-      // completed → pending: nothing
+      // pending → failed : nothing (never deducted)
+      // failed  → pending: nothing (never deducted)
 
       transfer.status = newStatus;
       await transfer.save();

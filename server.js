@@ -29,9 +29,10 @@ import AdminLocalTransferRouter from "./controllers/admin/AdminLocalTransferCont
 import UserCardRouter from "./controllers/UserCardsController.js";
 import WalletRouter from "./controllers/GetWalletAddressController.js";
 import AdminInternationalTransferRouter from "./controllers/admin/AdminInternationalTransferController.js";
+import KYCRouter from "./controllers/KYCController.js";
 
 const app = express();
-app.set('trust proxy', 1); // add this right after const app = express();
+app.set("trust proxy", 1); // add this right after const app = express();
 const port = process.env.PORT || 4000;
 
 connectDB();
@@ -44,9 +45,9 @@ const __dirname = path.dirname(__filename);
 const allowedOrigins = [
   "http://localhost:4000",
   "http://127.0.0.1:5500",
-  "https://nfvwealth-production.up.railway.app",
-  "https://nfv-web-ing-uk.pro",
-  "https://www.nfv-web-ing-uk.pro",
+  "https://wealth-vintage.pro",
+  "https://www.wealth-vintage.pro",
+  "https://wealth-vintage-production.up.railway.app",
 ];
 
 // Middleware
@@ -93,6 +94,7 @@ app.use("/api/cards", CardRouter);
 app.use("/api/international-transfer", InternationalTransferRouter);
 app.use("/api/user/cards", UserCardRouter);
 app.use("/api/wallet", WalletRouter);
+app.use("/api/kyc", KYCRouter);
 
 // Admin
 app.use("/api/admin/auth", AdminAuthRouter);
@@ -103,9 +105,9 @@ app.use("/api/admin", AdminUserRouter);
 app.use("/api/admin", AdminLocalTransferRouter);
 app.use("/api/admin/international-transfers", AdminInternationalTransferRouter);
 
-app.get('/api/debug-cookie', (req, res) => {
-  console.log('All cookies:', req.cookies);
-  console.log('Headers:', req.headers);
+app.get("/api/debug-cookie", (req, res) => {
+  console.log("All cookies:", req.cookies);
+  console.log("Headers:", req.headers);
   res.json({ cookies: req.cookies });
 });
 

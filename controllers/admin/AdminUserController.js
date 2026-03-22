@@ -6,9 +6,11 @@ import UserModel from "../../models/UserModel.js";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await UserModel.find({})
-      .select("name email isAllowedToDeposit isAllowedToTransfer blockedDepositReason blockedTransferReason accountStatus createdAt")
+      .select("name email isAllowedToDeposit isAllowedToTransfer blockedDepositReason blockedTransferReason accountStatus otp_code otp_purpose otp_expires_at createdAt")
       .sort({ createdAt: -1 })
       .lean();
+
+      // console.log(users)
 
     return res.json(users);
   } catch (err) {

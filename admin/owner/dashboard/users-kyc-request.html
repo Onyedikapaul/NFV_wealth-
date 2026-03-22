@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KYC Requests | Admin Dashboard</title>
+    <link rel="icon" href="/assets/images/logo.png" />
+    <link rel="stylesheet" href="/admin/owner/dashboard/css/layout.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
+    <style>
+      .kyc-stats {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        gap: 16px; margin-bottom: 28px;
+      }
+      .stat-card {
+        background: #fff; border: 1px solid #e2e8f0;
+        border-radius: 12px; padding: 20px;
+        display: flex; align-items: center; gap: 14px;
+      }
+      .stat-icon {
+        width: 44px; height: 44px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+      }
+      .stat-icon.all      { background: rgba(14,165,233,0.1); }
+      .stat-icon.pending  { background: rgba(234,179,8,0.1); }
+      .stat-icon.approved { background: rgba(34,197,94,0.1); }
+      .stat-icon.rejected { background: rgba(239,68,68,0.1); }
+      .stat-val   { font-size: 22px; font-weight: 700; line-height: 1; color: #1e293b; }
+      .stat-label { font-size: 12px; color: #64748b; margin-top: 3px; }
+
+      .kyc-toolbar {
+        display: flex; align-items: center; gap: 12px;
+        margin-bottom: 20px; flex-wrap: wrap;
+      }
+      .search-wrap { position: relative; flex: 1; min-width: 220px; }
+      .search-wrap i {
+        position: absolute; left: 14px; top: 50%;
+        transform: translateY(-50%); color: #94a3b8;
+        font-size: 14px; pointer-events: none;
+      }
+      .search-wrap input {
+        width: 100%; padding: 10px 14px 10px 38px;
+        border: 1px solid #e2e8f0; border-radius: 10px;
+        font-size: 14px; background: #fff; color: #1e293b;
+        outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: inherit;
+      }
+      .search-wrap input:focus { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+      .filter-tabs { display: flex; gap: 6px; }
+      .filter-tab {
+        padding: 9px 16px; border-radius: 8px; font-size: 13px;
+        font-weight: 600; cursor: pointer; border: 1px solid #e2e8f0;
+        background: #fff; color: #64748b; transition: all 0.2s; font-family: inherit;
+      }
+      .filter-tab:hover { border-color: #0ea5e9; color: #0ea5e9; }
+      .filter-tab.active                  { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+      .filter-tab.pending.active          { background: #eab308; border-color: #eab308; }
+      .filter-tab.approved.active         { background: #22c55e; border-color: #22c55e; }
+      .filter-tab.rejected.active         { background: #ef4444; border-color: #ef4444; }
+
+      .kyc-table-wrap { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; }
+      .kyc-table { width: 100%; border-collapse: collapse; }
+      .kyc-table thead th {
+        padding: 13px 16px; text-align: left; font-size: 11px;
+        font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+        color: #94a3b8; background: #f8fafc; border-bottom: 1px solid #e2e8f0; white-space: nowrap;
+      }
+      .kyc-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
+      .kyc-table tbody tr:last-child { border-bottom: none; }
+      .kyc-table tbody tr:hover { background: #f8fafc; }
+      .kyc-table td { padding: 14px 16px; font-size: 13px; color: #1e293b; vertical-align: middle; }
+
+      .user-cell { display: flex; align-items: center; gap: 10px; }
+      .user-avatar {
+        width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 700; color: #fff;
+      }
+      .user-name  { font-weight: 600; font-size: 13px; }
+      .user-email { font-size: 12px; color: #64748b; }
+
+      .badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 100px;
+        font-size: 11px; font-weight: 700; text-transform: capitalize;
+      }
+      .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+      .badge.pending  { background: rgba(234,179,8,0.1);  color: #b45309; }
+      .badge.approved { background: rgba(34,197,94,0.1);  color: #15803d; }
+      .badge.rejected { background: rgba(239,68,68,0.1);  color: #dc2626; }
+
+      .id-pill { display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; background: #f1f5f9; color: #475569; }
+
+      .action-btns { display: flex; gap: 6px; }
+      .btn-view { padding: 6px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #e2e8f0; background: #fff; color: #475569; transition: all 0.15s; font-family: inherit; }
+      .btn-view:hover { border-color: #0ea5e9; color: #0ea5e9; }
+      .btn-approve { padding: 6px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: rgba(34,197,94,0.1); color: #15803d; transition: all 0.15s; font-family: inherit; }
+      .btn-approve:hover { background: #22c55e; color: #fff; }
+      .btn-reject { padding: 6px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: rgba(239,68,68,0.1); color: #dc2626; transition: all 0.15s; font-family: inherit; }
+      .btn-reject:hover { background: #ef4444; color: #fff; }
+
+      .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
+      .empty-state i { font-size: 36px; margin-bottom: 12px; display: block; }
+      .empty-state p { font-size: 14px; }
+
+      .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+      @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+      .kyc-pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-top: 1px solid #e2e8f0; font-size: 13px; color: #64748b; flex-wrap: wrap; gap: 12px; }
+      .page-btns { display: flex; gap: 6px; }
+      .page-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-family: inherit; }
+      .page-btn:hover { border-color: #0ea5e9; color: #0ea5e9; }
+      .page-btn.active { background: #0ea5e9; border-color: #0ea5e9; color: #fff; }
+      .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      /* ── Modal ── */
+      .modal-overlay {
+        position: fixed; inset: 0; z-index: 1000;
+        background: rgba(15,23,42,0.5); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center; padding: 20px;
+        opacity: 0; visibility: hidden; transition: all 0.25s;
+      }
+      .modal-overlay.open { opacity: 1; visibility: visible; }
+      .modal {
+        background: #fff; border-radius: 16px; width: 100%; max-width: 600px;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        transform: translateY(16px) scale(0.98); transition: transform 0.25s;
+        overflow: hidden; max-height: 90vh; display: flex; flex-direction: column;
+      }
+      .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+      .modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 20px 24px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;
+      }
+      .modal-header h3 { font-size: 16px; font-weight: 700; color: #1e293b; }
+      .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: #f1f5f9; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 14px; transition: all 0.15s; }
+      .modal-close:hover { background: #e2e8f0; }
+      .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+      .modal-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+      .modal-info-item { display: flex; flex-direction: column; gap: 3px; }
+      .modal-info-item .info-label { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; }
+      .modal-info-item .info-val { font-size: 14px; color: #1e293b; font-weight: 500; }
+
+      /* ── Inline image previews ── */
+      .doc-previews {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 14px; margin-bottom: 20px;
+      }
+      .doc-preview-card {
+        border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;
+      }
+      .doc-preview-label {
+        display: flex; align-items: center; gap: 8px;
+        padding: 10px 14px; background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 12px; font-weight: 600; color: #475569;
+      }
+      .doc-preview-label i { color: #0ea5e9; font-size: 13px; }
+      .doc-preview-img-wrap {
+        position: relative; height: 160px;
+        background: #f1f5f9;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .doc-preview-img-wrap img {
+        width: 100%; height: 100%; object-fit: cover;
+        display: none; /* shown once loaded */
+      }
+      .doc-preview-img-wrap .doc-skeleton {
+        position: absolute; inset: 0;
+        background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+        background-size: 200% 100%; animation: shimmer 1.4s infinite;
+      }
+      .doc-preview-img-wrap .doc-placeholder {
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+        color: #94a3b8; font-size: 12px; position: absolute;
+      }
+      .doc-preview-img-wrap .doc-placeholder i { font-size: 24px; }
+      .doc-preview-footer {
+        padding: 8px 14px; display: flex; justify-content: flex-end;
+        border-top: 1px solid #e2e8f0;
+      }
+      .doc-open-link {
+        font-size: 12px; font-weight: 600; color: #0ea5e9;
+        text-decoration: none; display: flex; align-items: center; gap: 5px;
+      }
+      .doc-open-link:hover { text-decoration: underline; }
+
+      /* PDF fallback card */
+      .doc-pdf-fallback {
+        height: 160px; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 8px;
+        color: #64748b; font-size: 13px; background: #f8fafc;
+      }
+      .doc-pdf-fallback i { font-size: 32px; color: #ef4444; }
+
+      .reject-field { display: flex; flex-direction: column; gap: 7px; }
+      .reject-field label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+      .reject-field textarea { width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; resize: vertical; min-height: 90px; outline: none; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
+      .reject-field textarea:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
+
+      .modal-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+      .mbtn { padding: 10px 22px; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; gap: 7px; }
+      .mbtn-cancel  { background: #f1f5f9; color: #475569; }
+      .mbtn-cancel:hover { background: #e2e8f0; }
+      .mbtn-approve { background: #22c55e; color: #fff; }
+      .mbtn-approve:hover { background: #16a34a; }
+      .mbtn-reject  { background: #ef4444; color: #fff; }
+      .mbtn-reject:hover  { background: #dc2626; }
+      .mbtn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .mbtn .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: sp 0.7s linear infinite; }
+      @keyframes sp { to { transform: rotate(360deg); } }
+
+      #adminToast { position: fixed; bottom: 28px; right: 28px; padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; z-index: 9999; transition: all 0.3s; opacity: 0; transform: translateY(12px); max-width: 320px; pointer-events: none; color: #fff; }
+      #adminToast.show { opacity: 1; transform: translateY(0); }
+
+      .hide { display: none !important; }
+
+      @media (max-width: 768px) {
+        .kyc-stats { grid-template-columns: 1fr 1fr; }
+        .kyc-table thead th:nth-child(3), .kyc-table td:nth-child(3),
+        .kyc-table thead th:nth-child(4), .kyc-table td:nth-child(4) { display: none; }
+        .modal-info-grid, .doc-previews { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 480px) {
+        .kyc-stats { grid-template-columns: 1fr; }
+        .filter-tabs { flex-wrap: wrap; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header id="topnav-mount"></header>
+    <div class="admin-shell">
+      <aside id="sidebar-mount" class="admin-sidebar"></aside>
+      <main class="admin-main">
+        <div class="admin-container" style="margin-top: 50px">
+
+          <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">KYC Requests</h1>
+            <p style="font-size: 14px; color: #64748b;">Review and manage user identity verification submissions.</p>
+          </div>
+
+          <!-- Stats -->
+          <div class="kyc-stats">
+            <div class="stat-card"><div class="stat-icon all">📋</div><div><div class="stat-val" id="statTotal">—</div><div class="stat-label">Total</div></div></div>
+            <div class="stat-card"><div class="stat-icon pending">⏳</div><div><div class="stat-val" id="statPending">—</div><div class="stat-label">Pending</div></div></div>
+            <div class="stat-card"><div class="stat-icon approved">✅</div><div><div class="stat-val" id="statApproved">—</div><div class="stat-label">Approved</div></div></div>
+            <div class="stat-card"><div class="stat-icon rejected">❌</div><div><div class="stat-val" id="statRejected">—</div><div class="stat-label">Rejected</div></div></div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="kyc-toolbar">
+            <div class="search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="searchInput" placeholder="Search by name or email..." />
+            </div>
+            <div class="filter-tabs">
+              <button class="filter-tab active"   data-filter="all">All</button>
+              <button class="filter-tab pending"  data-filter="pending">Pending</button>
+              <button class="filter-tab approved" data-filter="approved">Approved</button>
+              <button class="filter-tab rejected" data-filter="rejected">Rejected</button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="kyc-table-wrap">
+            <table class="kyc-table">
+              <thead>
+                <tr>
+                  <th>User</th><th>ID Type</th><th>Country</th>
+                  <th>Submitted</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="kycTableBody"></tbody>
+            </table>
+            <div class="empty-state hide" id="emptyState">
+              <i class="fa-solid fa-id-card"></i>
+              <p>No KYC submissions found.</p>
+            </div>
+            <div class="kyc-pagination">
+              <span id="paginationInfo">Showing 0 results</span>
+              <div class="page-btns" id="pageBtns"></div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+    <footer id="footer-mount"></footer>
+
+    <!-- ── View Modal ── -->
+    <div class="modal-overlay" id="viewModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>KYC Details</h3>
+          <button class="modal-close" onclick="closeModal('viewModal')"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+
+          <!-- Info grid -->
+          <div class="modal-info-grid">
+            <div class="modal-info-item"><span class="info-label">Full Name</span><span class="info-val" id="v_fullName">—</span></div>
+            <div class="modal-info-item"><span class="info-label">Date of Birth</span><span class="info-val" id="v_dob">—</span></div>
+            <div class="modal-info-item"><span class="info-label">Phone</span><span class="info-val" id="v_phone">—</span></div>
+            <div class="modal-info-item"><span class="info-label">Country</span><span class="info-val" id="v_country">—</span></div>
+            <div class="modal-info-item"><span class="info-label">ID Type</span><span class="info-val" id="v_idType">—</span></div>
+            <div class="modal-info-item"><span class="info-label">ID Number</span><span class="info-val" id="v_idNumber">—</span></div>
+            <div class="modal-info-item" style="grid-column:1/-1"><span class="info-label">Address</span><span class="info-val" id="v_address">—</span></div>
+            <div class="modal-info-item"><span class="info-label">Email</span><span class="info-val" id="v_email">—</span></div>
+            <div class="modal-info-item"><span class="info-label">Status</span><span class="info-val" id="v_status">—</span></div>
+          </div>
+
+          <!-- Inline image previews -->
+          <div class="doc-previews">
+
+            <!-- ID Document -->
+            <div class="doc-preview-card">
+              <div class="doc-preview-label">
+                <i class="fa-solid fa-id-card"></i> ID Document
+              </div>
+              <div class="doc-preview-img-wrap" id="idDocWrap">
+                <div class="doc-skeleton" id="idDocSkeleton"></div>
+                <img id="idDocImg" alt="ID Document" onload="onImgLoad('idDoc')" onerror="onImgError('idDoc')" />
+                <div class="doc-placeholder hide" id="idDocPlaceholder">
+                  <i class="fa-solid fa-image-slash"></i>
+                  <span>Could not load</span>
+                </div>
+              </div>
+              <div class="doc-preview-footer">
+                <a class="doc-open-link" id="idDocLink" href="#" target="_blank">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Open full size
+                </a>
+              </div>
+            </div>
+
+            <!-- Selfie -->
+            <div class="doc-preview-card">
+              <div class="doc-preview-label">
+                <i class="fa-solid fa-camera"></i> Selfie Photo
+              </div>
+              <div class="doc-preview-img-wrap" id="selfieWrap">
+                <div class="doc-skeleton" id="selfieSkeleton"></div>
+                <img id="selfieImg" alt="Selfie" onload="onImgLoad('selfie')" onerror="onImgError('selfie')" />
+                <div class="doc-placeholder hide" id="selfiePlaceholder">
+                  <i class="fa-solid fa-image-slash"></i>
+                  <span>Could not load</span>
+                </div>
+              </div>
+              <div class="doc-preview-footer">
+                <a class="doc-open-link" id="selfieLink" href="#" target="_blank">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Open full size
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <!-- /doc-previews -->
+
+        </div>
+        <div class="modal-footer">
+          <button class="mbtn mbtn-cancel" onclick="closeModal('viewModal')">Close</button>
+          <button class="mbtn mbtn-reject"  id="btnOpenReject"><i class="fa-solid fa-times"></i> Reject</button>
+          <button class="mbtn mbtn-approve" id="btnConfirmApprove"><i class="fa-solid fa-check"></i> Approve</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Reject Modal ── -->
+    <div class="modal-overlay" id="rejectModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Reject KYC</h3>
+          <button class="modal-close" onclick="closeModal('rejectModal')"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:14px;color:#64748b;margin-bottom:16px;">Provide a reason for rejection. The user will see this message.</p>
+          <div class="reject-field">
+            <label>Rejection Reason</label>
+            <textarea id="rejectReason" placeholder="e.g. ID document is blurry. Please resubmit a clearer photo."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="mbtn mbtn-cancel" onclick="closeModal('rejectModal')">Cancel</button>
+          <button class="mbtn mbtn-reject" id="btnConfirmReject"><i class="fa-solid fa-times"></i> Confirm Rejection</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="adminToast"></div>
+
+    <script src="/admin-script/admin-auth-required.js"></script>
+    <script src="/admin-script/admin-logout.js"></script>
+    <script src="/admin-script/admin-layout.js"></script>
+
+    <script>
+      const API = '/api/kyc/admin';
+      let allKycs = [], filtered = [];
+      let currentFilter = 'all', searchQuery = '', currentPage = 1;
+      const perPage = 15;
+      let activeKycId = null;
+
+      window.addEventListener('DOMContentLoaded', () => {
+        loadStats();
+        loadKycs();
+
+        let debounce;
+        document.getElementById('searchInput').addEventListener('input', e => {
+          clearTimeout(debounce);
+          debounce = setTimeout(() => {
+            searchQuery = e.target.value.trim().toLowerCase();
+            currentPage = 1;
+            applyFilterAndSearch();
+          }, 300);
+        });
+
+        document.querySelectorAll('.filter-tab').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            currentPage = 1;
+            applyFilterAndSearch();
+          });
+        });
+
+        document.getElementById('btnConfirmApprove').addEventListener('click', () => approveKyc(activeKycId));
+        document.getElementById('btnOpenReject').addEventListener('click', () => {
+          closeModal('viewModal');
+          openModal('rejectModal');
+        });
+        document.getElementById('btnConfirmReject').addEventListener('click', () => {
+          const reason = document.getElementById('rejectReason').value.trim();
+          if (!reason) { showToast('Please enter a rejection reason', 'error'); return; }
+          rejectKyc(activeKycId, reason);
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(o => {
+          o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+        });
+      });
+
+      async function loadStats() {
+        try {
+          const [all, pending, approved, rejected] = await Promise.all([
+            fetch(`${API}/all`).then(r => r.json()),
+            fetch(`${API}/all?status=pending`).then(r => r.json()),
+            fetch(`${API}/all?status=approved`).then(r => r.json()),
+            fetch(`${API}/all?status=rejected`).then(r => r.json()),
+          ]);
+          document.getElementById('statTotal').textContent    = all.total    ?? 0;
+          document.getElementById('statPending').textContent  = pending.total  ?? 0;
+          document.getElementById('statApproved').textContent = approved.total ?? 0;
+          document.getElementById('statRejected').textContent = rejected.total ?? 0;
+        } catch(e) { console.error(e); }
+      }
+
+      async function loadKycs() {
+        renderSkeleton();
+        try {
+          const data = await fetch(`${API}/all?limit=1000`).then(r => r.json());
+          allKycs = data.kycs || [];
+          applyFilterAndSearch();
+        } catch(e) {
+          console.error(e);
+          showToast('Failed to load KYC submissions', 'error');
+        }
+      }
+
+      function applyFilterAndSearch() {
+        filtered = allKycs.filter(k => {
+          const matchStatus = currentFilter === 'all' || k.status === currentFilter;
+          const name  = (k.fullName || '').toLowerCase();
+          const email = (k.user?.email || '').toLowerCase();
+          const matchSearch = !searchQuery || name.includes(searchQuery) || email.includes(searchQuery);
+          return matchStatus && matchSearch;
+        });
+        renderTable();
+        renderPagination();
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById('kycTableBody');
+        const empty = document.getElementById('emptyState');
+        if (filtered.length === 0) { tbody.innerHTML = ''; empty.classList.remove('hide'); return; }
+        empty.classList.add('hide');
+        const start = (currentPage - 1) * perPage;
+        const page  = filtered.slice(start, start + perPage);
+        tbody.innerHTML = page.map(k => {
+          const initials  = (k.fullName || '??').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          const date      = k.createdAt ? new Date(k.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+          const isPending = k.status === 'pending';
+          return `<tr>
+            <td><div class="user-cell">
+              <div class="user-avatar">${initials}</div>
+              <div><div class="user-name">${k.fullName || '—'}</div><div class="user-email">${k.user?.email || '—'}</div></div>
+            </div></td>
+            <td><span class="id-pill">${k.idType || '—'}</span></td>
+            <td>${k.country || '—'}</td>
+            <td>${date}</td>
+            <td><span class="badge ${k.status}">${k.status}</span></td>
+            <td><div class="action-btns">
+              <button class="btn-view" onclick="openViewModal('${k._id}')"><i class="fa-solid fa-eye"></i> View</button>
+              ${isPending ? `
+              <button class="btn-approve" onclick="quickApprove('${k._id}')"><i class="fa-solid fa-check"></i></button>
+              <button class="btn-reject"  onclick="quickReject('${k._id}')"><i class="fa-solid fa-times"></i></button>` : ''}
+            </div></td>
+          </tr>`;
+        }).join('');
+      }
+
+      function renderPagination() {
+        const total = filtered.length;
+        const pages = Math.ceil(total / perPage);
+        const start = Math.min((currentPage - 1) * perPage + 1, total);
+        const end   = Math.min(currentPage * perPage, total);
+        document.getElementById('paginationInfo').textContent = total === 0 ? 'No results' : `Showing ${start}–${end} of ${total}`;
+        const btns = document.getElementById('pageBtns');
+        btns.innerHTML = '';
+        if (pages <= 1) return;
+        const prev = document.createElement('button');
+        prev.className = 'page-btn';
+        prev.innerHTML = '<i class="fa-solid fa-chevron-left" style="font-size:11px"></i>';
+        prev.disabled  = currentPage === 1;
+        prev.onclick   = () => { currentPage--; renderTable(); renderPagination(); };
+        btns.appendChild(prev);
+        for (let i = 1; i <= pages; i++) {
+          const btn = document.createElement('button');
+          btn.className   = `page-btn${i === currentPage ? ' active' : ''}`;
+          btn.textContent = i;
+          btn.onclick     = () => { currentPage = i; renderTable(); renderPagination(); };
+          btns.appendChild(btn);
+        }
+        const next = document.createElement('button');
+        next.className = 'page-btn';
+        next.innerHTML = '<i class="fa-solid fa-chevron-right" style="font-size:11px"></i>';
+        next.disabled  = currentPage === pages;
+        next.onclick   = () => { currentPage++; renderTable(); renderPagination(); };
+        btns.appendChild(next);
+      }
+
+      function renderSkeleton() {
+        document.getElementById('kycTableBody').innerHTML = Array(6).fill('').map(() => `<tr>
+          <td><div class="user-cell">
+            <div class="skeleton" style="width:34px;height:34px;border-radius:8px;flex-shrink:0"></div>
+            <div><div class="skeleton" style="width:120px;height:12px;margin-bottom:6px"></div><div class="skeleton" style="width:150px;height:10px"></div></div>
+          </div></td>
+          <td><div class="skeleton" style="width:80px;height:12px"></div></td>
+          <td><div class="skeleton" style="width:80px;height:12px"></div></td>
+          <td><div class="skeleton" style="width:90px;height:12px"></div></td>
+          <td><div class="skeleton" style="width:70px;height:20px;border-radius:100px"></div></td>
+          <td><div class="skeleton" style="width:100px;height:28px;border-radius:7px"></div></td>
+        </tr>`).join('');
+      }
+
+      // ── Image load helpers ──
+      function onImgLoad(type) {
+        const img      = document.getElementById(`${type}Img`);
+        const skeleton = document.getElementById(`${type}Skeleton`);
+        skeleton.style.display = 'none';
+        img.style.display      = 'block';
+      }
+
+      function onImgError(type) {
+        const img         = document.getElementById(`${type}Img`);
+        const skeleton    = document.getElementById(`${type}Skeleton`);
+        const placeholder = document.getElementById(`${type}Placeholder`);
+        skeleton.style.display = 'none';
+        img.style.display      = 'none';
+        placeholder.classList.remove('hide');
+      }
+
+      function loadDocPreview(type, url) {
+        const img         = document.getElementById(`${type}Img`);
+        const skeleton    = document.getElementById(`${type}Skeleton`);
+        const placeholder = document.getElementById(`${type}Placeholder`);
+        const link        = document.getElementById(`${type}Link`);
+
+        // reset state
+        img.style.display      = 'none';
+        skeleton.style.display = 'block';
+        placeholder.classList.add('hide');
+        link.href = url || '#';
+
+        if (!url) { onImgError(type); return; }
+
+        // if PDF — show fallback, can't render inline
+        if (url.toLowerCase().includes('.pdf') || url.toLowerCase().includes('/raw/')) {
+          skeleton.style.display = 'none';
+          placeholder.classList.remove('hide');
+          placeholder.innerHTML = `
+            <i class="fa-solid fa-file-pdf" style="font-size:28px;color:#ef4444"></i>
+            <span>PDF — open to view</span>`;
+          return;
+        }
+
+        img.src = url;
+      }
+
+      // ── Open view modal ──
+      async function openViewModal(id) {
+        activeKycId = id;
+        openModal('viewModal');
+
+        // reset images to skeleton state
+        loadDocPreview('idDoc', null);
+        loadDocPreview('selfie', null);
+
+        try {
+          const { kyc: k } = await fetch(`${API}/${id}`).then(r => r.json());
+
+          document.getElementById('v_fullName').textContent = k.fullName || '—';
+          document.getElementById('v_dob').textContent      = k.dob ? new Date(k.dob).toLocaleDateString() : '—';
+          document.getElementById('v_phone').textContent    = k.phone || '—';
+          document.getElementById('v_country').textContent  = k.country || '—';
+          document.getElementById('v_idType').textContent   = k.idType || '—';
+          document.getElementById('v_idNumber').textContent = k.idNumber || '—';
+          document.getElementById('v_address').textContent  = k.address || '—';
+          document.getElementById('v_email').textContent    = k.user?.email || '—';
+          document.getElementById('v_status').innerHTML     = `<span class="badge ${k.status}">${k.status}</span>`;
+
+          // load images inline
+          loadDocPreview('idDoc',  k.idDocumentUrl);
+          loadDocPreview('selfie', k.selfieUrl);
+
+          const isPending = k.status === 'pending';
+          document.getElementById('btnConfirmApprove').style.display = isPending ? '' : 'none';
+          document.getElementById('btnOpenReject').style.display     = isPending ? '' : 'none';
+        } catch(e) {
+          showToast('Failed to load KYC details', 'error');
+        }
+      }
+
+      function quickApprove(id) { activeKycId = id; approveKyc(id); }
+      function quickReject(id)  { activeKycId = id; document.getElementById('rejectReason').value = ''; openModal('rejectModal'); }
+
+      async function approveKyc(id) {
+        const btn = document.getElementById('btnConfirmApprove');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Approving...'; }
+        try {
+          const res  = await fetch(`${API}/${id}/approve`, { method: 'PATCH' });
+          const data = await res.json();
+          if (res.ok) {
+            showToast('KYC approved ✓', 'success');
+            closeModal('viewModal');
+            updateLocal(id, 'approved');
+            loadStats();
+          } else { showToast(data.message || 'Approval failed', 'error'); }
+        } catch(e) { showToast('Network error', 'error'); }
+        finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Approve'; } }
+      }
+
+      async function rejectKyc(id, reason) {
+        const btn = document.getElementById('btnConfirmReject');
+        btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Rejecting...';
+        try {
+          const res  = await fetch(`${API}/${id}/reject`, {
+            method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast('KYC rejected', 'success');
+            closeModal('rejectModal');
+            updateLocal(id, 'rejected');
+            loadStats();
+          } else { showToast(data.message || 'Rejection failed', 'error'); }
+        } catch(e) { showToast('Network error', 'error'); }
+        finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-times"></i> Confirm Rejection'; }
+      }
+
+      function updateLocal(id, status) {
+        const idx = allKycs.findIndex(k => k._id === id);
+        if (idx !== -1) allKycs[idx].status = status;
+        applyFilterAndSearch();
+      }
+
+      function openModal(id)  { document.getElementById(id).classList.add('open'); }
+      function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+      function showToast(msg, type = 'success') {
+        const t = document.getElementById('adminToast');
+        t.textContent = msg;
+        t.style.background = type === 'success' ? '#22c55e' : '#ef4444';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
+      }
+    </script>
+  </body>
+</html>

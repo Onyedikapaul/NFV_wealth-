@@ -8,7 +8,7 @@ const uploadToCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: "avatars",
+        folder: "vintage_avatars",
         transformation: [{ width: 300, height: 300, crop: "fill" }],
       },
       (error, result) => {

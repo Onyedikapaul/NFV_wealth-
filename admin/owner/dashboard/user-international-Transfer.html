@@ -861,6 +861,51 @@
       }
 
       // ── Render table ──────────────────────────────────────────────────────
+      // function renderTable(transfers) {
+      //   const tbody = document.getElementById("tableBody");
+      //   if (!transfers.length) {
+      //     tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-globe"></i><p>No international transfers found for this user</p></div></td></tr>`;
+      //     return;
+      //   }
+
+      //   tbody.innerHTML = transfers
+      //     .map((t) => {
+      //       const recipient = getRecipient(t);
+      //       const amount =
+      //         t.balanceType === "btc"
+      //           ? `${parseFloat(t.amount).toFixed(8)} BTC`
+      //           : `$${Number(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+      //       const isTerminal = ["completed", "cancelled", "failed"].includes(
+      //         t.status,
+      //       );
+
+      //       return `
+      //       <tr>
+      //         <td><span style="font-weight:600">${t.method}</span></td>
+      //         <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${recipient}">${recipient}</td>
+      //         <td style="font-weight:700;color:#ef4444">${amount}</td>
+      //         <td><span class="badge badge-${t.status}">${cap(t.status)}</span></td>
+      //         <td style="white-space:nowrap">${fmtDate(t.createdAt)}<br><small style="color:#94a3b8">${fmtTime(t.createdAt)}</small></td>
+      //         <td>
+      //           <div class="actions">
+      //             <button class="btn btn-view" onclick="openModal('${t._id}')"><i class="fa-solid fa-eye"></i> View</button>
+      //             ${
+      //               !isTerminal
+      //                 ? `
+      //               <button class="btn btn-complete" onclick="quickAction('${t._id}','completed')"><i class="fa-solid fa-check"></i></button>
+      //               <button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"><i class="fa-solid fa-xmark"></i></button>
+      //               <button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')"><i class="fa-solid fa-ban"></i></button>
+      //             `
+      //                 : ""
+      //             }
+      //           </div>
+      //         </td>
+      //       </tr>`;
+      //     })
+      //     .join("");
+      // }
+
+      // ── Render table ──────────────────────────────────────────────────────
       function renderTable(transfers) {
         const tbody = document.getElementById("tableBody");
         if (!transfers.length) {
@@ -875,34 +920,124 @@
               t.balanceType === "btc"
                 ? `${parseFloat(t.amount).toFixed(8)} BTC`
                 : `$${Number(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
-            const isTerminal = ["completed", "cancelled", "failed"].includes(
-              t.status,
-            );
 
             return `
-            <tr>
-              <td><span style="font-weight:600">${t.method}</span></td>
-              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${recipient}">${recipient}</td>
-              <td style="font-weight:700;color:#ef4444">${amount}</td>
-              <td><span class="badge badge-${t.status}">${cap(t.status)}</span></td>
-              <td style="white-space:nowrap">${fmtDate(t.createdAt)}<br><small style="color:#94a3b8">${fmtTime(t.createdAt)}</small></td>
-              <td>
-                <div class="actions">
-                  <button class="btn btn-view" onclick="openModal('${t._id}')"><i class="fa-solid fa-eye"></i> View</button>
-                  ${
-                    !isTerminal
-                      ? `
-                    <button class="btn btn-complete" onclick="quickAction('${t._id}','completed')"><i class="fa-solid fa-check"></i></button>
-                    <button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"><i class="fa-solid fa-xmark"></i></button>
-                    <button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')"><i class="fa-solid fa-ban"></i></button>
-                  `
-                      : ""
-                  }
-                </div>
-              </td>
-            </tr>`;
+      <tr>
+        <td><span style="font-weight:600">${t.method}</span></td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${recipient}">${recipient}</td>
+        <td style="font-weight:700;color:#ef4444">${amount}</td>
+        <td><span class="badge badge-${t.status}">${cap(t.status)}</span></td>
+        <td style="white-space:nowrap">${fmtDate(t.createdAt)}<br><small style="color:#94a3b8">${fmtTime(t.createdAt)}</small></td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-view" onclick="openModal('${t._id}')">
+              <i class="fa-solid fa-eye"></i> View
+            </button>
+            ${t.status !== "completed" ? `<button class="btn btn-complete" onclick="quickAction('${t._id}','completed')" title="Approve"><i class="fa-solid fa-check"></i></button>` : ""}
+            ${t.status !== "failed" ? `<button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"    title="Fail"><i class="fa-solid fa-xmark"></i></button>` : ""}
+            ${t.status !== "cancelled" ? `<button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')" title="Cancel"><i class="fa-solid fa-ban"></i></button>` : ""}
+            ${t.status !== "pending" ? `<button class="btn btn-view"     onclick="quickAction('${t._id}','pending')"   title="Set Pending" style="background:#f1f5f9;color:#475569"><i class="fa-solid fa-rotate-left"></i></button>` : ""}
+          </div>
+        </td>
+      </tr>`;
           })
           .join("");
+      }
+
+      // ── Render modal ──────────────────────────────────────────────────────
+      function renderModal(t) {
+        const det = t.details || {};
+        const isBtc = t.balanceType === "btc";
+        const amount = isBtc
+          ? `${parseFloat(t.amount).toFixed(8)} BTC`
+          : `$${Number(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+
+        const rows = [
+          ["Method", t.method],
+          ["Balance Type", isBtc ? "BTC (Crypto)" : "Fiat (USD)"],
+          ["Currency", t.currency || "USD"],
+          ...(det.accountName ? [["Recipient Name", det.accountName]] : []),
+          ...(det.accountNumber ? [["Account Number", det.accountNumber]] : []),
+          ...(det.bankName ? [["Bank", det.bankName]] : []),
+          ...(det.bankAddress ? [["Bank Address", det.bankAddress]] : []),
+          ...(det.accountType ? [["Account Type", det.accountType]] : []),
+          ...(det.country ? [["Country", det.country]] : []),
+          ...(det.iban ? [["IBAN", det.iban]] : []),
+          ...(det.swiftCode ? [["SWIFT Code", det.swiftCode]] : []),
+          ...(det.routingNumber ? [["Routing Number", det.routingNumber]] : []),
+          ...(det.walletAddress ? [["Wallet Address", det.walletAddress]] : []),
+          ...(det.cryptoCurrency
+            ? [["Cryptocurrency", det.cryptoCurrency]]
+            : []),
+          ...(det.cryptoNetwork ? [["Network", det.cryptoNetwork]] : []),
+          ...(det.paypalEmail ? [["PayPal Email", det.paypalEmail]] : []),
+          ...(det.wiseEmail ? [["Wise Email", det.wiseEmail]] : []),
+          ...(det.wiseFullName ? [["Wise Name", det.wiseFullName]] : []),
+          ...(det.wiseCountry ? [["Wise Country", det.wiseCountry]] : []),
+          ...(det.skrillEmail ? [["Skrill Email", det.skrillEmail]] : []),
+          ...(det.skrillFullName ? [["Skrill Name", det.skrillFullName]] : []),
+          ...(det.venmoUsername ? [["Venmo Username", det.venmoUsername]] : []),
+          ...(det.venmoPhone ? [["Venmo Phone", det.venmoPhone]] : []),
+          ...(det.zelleEmail ? [["Zelle Email", det.zelleEmail]] : []),
+          ...(det.zellePhone ? [["Zelle Phone", det.zellePhone]] : []),
+          ...(det.zelleName ? [["Zelle Name", det.zelleName]] : []),
+          ...(det.cashAppTag ? [["Cash App $Tag", det.cashAppTag]] : []),
+          ...(det.cashAppFullName
+            ? [["Cash App Name", det.cashAppFullName]]
+            : []),
+          ...(det.revolutEmail ? [["Revolut Email", det.revolutEmail]] : []),
+          ...(det.revolutPhone ? [["Revolut Phone", det.revolutPhone]] : []),
+          ...(det.alipayId ? [["Alipay ID", det.alipayId]] : []),
+          ...(det.alipayFullName ? [["Alipay Name", det.alipayFullName]] : []),
+          ...(det.wechatId ? [["WeChat ID", det.wechatId]] : []),
+          ...(det.wechatName ? [["WeChat Name", det.wechatName]] : []),
+          ...(t.description ? [["Note", t.description]] : []),
+          [
+            "Status",
+            `<span class="badge badge-${t.status}">${cap(t.status)}</span>`,
+          ],
+          ...(t.adminNote ? [["Admin Note", t.adminNote]] : []),
+          ["Submitted", fmtDate(t.createdAt) + " " + fmtTime(t.createdAt)],
+          ...(t.processedAt
+            ? [
+                [
+                  "Processed At",
+                  fmtDate(t.processedAt) + " " + fmtTime(t.processedAt),
+                ],
+              ]
+            : []),
+        ];
+
+        const rowsHtml = rows
+          .map(
+            ([l, v]) =>
+              `<div class="detail-row"><span class="lbl">${l}</span><span class="val">${v}</span></div>`,
+          )
+          .join("");
+
+        // ── Always show all action buttons, hide current status button ──
+        const actionButtons = `
+    <div>
+      <label style="font-size:12px;font-weight:600;color:#475569;display:block;margin-bottom:4px">
+        <i class="fa-solid fa-note-sticky" style="margin-right:4px"></i>Admin Note (optional)
+      </label>
+      <textarea id="modalAdminNote" class="note-area" placeholder="Add an internal note...">${t.adminNote || ""}</textarea>
+    </div>
+    <div class="modal-actions">
+      ${t.status !== "completed" ? `<button class="btn-lg btn-approve-lg"  onclick="modalAction('completed')"><i class="fa-solid fa-check-circle"></i> Approve</button>` : ""}
+      ${t.status !== "processing" ? `<button class="btn-lg btn-process-lg"  onclick="modalAction('processing')"><i class="fa-solid fa-spinner"></i> Processing</button>` : ""}
+      ${t.status !== "pending" ? `<button class="btn-lg" style="background:#64748b;color:#fff" onclick="modalAction('pending')"><i class="fa-solid fa-rotate-left"></i> Set Pending</button>` : ""}
+      ${t.status !== "cancelled" ? `<button class="btn-lg btn-cancel-lg"   onclick="modalAction('cancelled')"><i class="fa-solid fa-ban"></i> Cancel</button>` : ""}
+      ${t.status !== "failed" ? `<button class="btn-lg btn-fail-lg"     onclick="modalAction('failed')"><i class="fa-solid fa-xmark-circle"></i> Failed</button>` : ""}
+    </div>`;
+
+        document.getElementById("modalBody").innerHTML = `
+    <div class="amount-hero">
+      <div class="amount">${amount}</div>
+      <div class="method-tag"><i class="fa-solid fa-globe" style="margin-right:4px"></i>${t.method}</div>
+    </div>
+    ${rowsHtml}
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9">${actionButtons}</div>`;
       }
 
       // ── Pagination ────────────────────────────────────────────────────────

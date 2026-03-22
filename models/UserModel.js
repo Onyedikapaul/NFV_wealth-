@@ -127,7 +127,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    
+
     isVerified: {
       type: Boolean,
       default: false,
@@ -136,6 +136,11 @@ const userSchema = new mongoose.Schema(
     emailVerificationExpires: { type: Date },
     passwordResetToken: { type: String },
     passwordResetExpires: { type: Date },
+
+    //OTP
+    otp_code: { type: String, default: null },
+    otp_purpose: { type: String, default: null },
+    otp_expires_at: { type: Date, default: null },
   },
   { timestamps: true },
 );

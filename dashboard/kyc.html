@@ -5,8 +5,9 @@
 
        <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NFV Wealth | Currency Swap</title>
+    <title>NFV Wealth | KYC Verification</title>
     <link rel="icon" href="/assets/images/logo.png" />
+    <link rel="stylesheet" href="/css/kyc.css">
   
     
     <!-- Tailwind CSS with custom color variables -->
@@ -635,12 +636,13 @@
                 <main class="flex-1 overflow-y-auto">
                     <div class="relative">
                         <div class="absolute inset-0 bg-gradient-to-b from-primary-50/60 via-transparent to-transparent dark:from-slate-900/50 pointer-events-none" aria-hidden="true"></div>
-                        <div class="relative px-4 lg:px-8 pt-4 lg:pt-6 pb-24 lg:pb-10">
-                            <div class="lg:hidden mb-6">
+
+                        <!-- Mobile Header -->
+                           <div class="lg:hidden mb-6 px-4 py-2">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
                                         <div class="w-11 h-11 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/30">
-                                            <i class="fa-solid fa-arrows-rotate text-white"></i>
+    <i class="fa-solid fa-id-card text-yellow-500 transition-colors"></i>
                                         </div>
                                         <div>
                                             <p class="text-sm text-gray-500 dark:text-gray-400">Transfers</p>
@@ -659,153 +661,195 @@
                                 </div>
                             </div>
 
-                            
-                            
-                            <div class="max-w-5xl mx-auto space-y-6">
-                                <div class="bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 dark:border-gray-800 overflow-hidden" x-data="{ 
-    fromCurrency: 'fiat',
-    toCurrency: 'btc',
-    amount: '',
-    isSubmitting: false,
-    calculateConversionText(amountValue) {
-        const amount = parseFloat(amountValue) || 0;
-        const btcRate = 87468;
-        if (amount <= 0) return 'Enter an amount to see conversion';
-        if (this.fromCurrency === 'fiat') {
-            const btcAmount = amount / btcRate;
-            return `${amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD ≈ ${btcAmount.toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8})} BTC`;
-        }
-        const fiatAmount = amount * btcRate;
-        return `${amount.toLocaleString('en-US', {minimumFractionDigits: 8, maximumFractionDigits: 8})} BTC ≈ $${fiatAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
-    }
-}">
-                                    <div class="p-4 lg:p-6">
-                                        <div class="flex items-start justify-between mb-6">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center">
-                                                    <i class="fa-solid fa-arrow-right-arrow-left text-white"></i>
-                                                </div>
-                                                <div>
-                                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Swap currencies</h2>
-                                                    <p class="text-sm text-gray-600 dark:text-gray-400">Live rate and instant preview</p>
-                                                </div>
-                                            </div>
-                                            <div class="hidden lg:flex items-center space-x-2">
-                                                <button class="px-3 py-2 text-xs font-semibold rounded-xl bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 border border-primary-100 dark:border-primary-800">BTC • USD</button>
-                                            </div>
-                                        </div>
+                        
+<div class="main-content">
+  <div class="page-content" style="padding: 32px;">
 
-                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
-                                            <div class="bg-gray-50/70 dark:bg-gray-800/60 rounded-xl p-4 border border-gray-200/60 dark:border-gray-700/60">
-                                                <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">Current balances</h3>
-                                                <div class="space-y-3">
-                                                    <div class="flex items-center justify-between p-3 bg-white/90 dark:bg-gray-900/70 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
-                                                        <div class="flex items-center">
-                                                            <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mr-3">
-                                                                <i class="fa-solid fa-wallet text-blue-600 dark:text-blue-400 text-sm"></i>
-                                                            </div>
-                                                            <span class="text-gray-700 dark:text-gray-300 text-sm">USD Balance</span>
-                                                        </div>
-                                                        <!-- USD Balance -->
-                                                        <span class="font-semibold text-gray-900 dark:text-white text-sm" id="usd-balance-display">Loading...</span>
+    <div class="kyc-header">
+      <h1>KYC Verification</h1>
+      <p>Complete your identity verification to unlock full account access.</p>
+    </div>
 
-                                                    </div>
-                                                    <div class="flex items-center justify-between p-3 bg-white/90 dark:bg-gray-900/70 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
-                                                        <div class="flex items-center">
-                                                            <div class="bg-amber-100 dark:bg-amber-900/30 p-2 rounded-full mr-3">
-                                                                <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-sm"></i>
-                                                            </div>
-                                                            <span class="text-gray-700 dark:text-gray-300 text-sm">Bitcoin Balance</span>
-                                                        </div>
-                                                       <!-- BTC Balance -->
-                                                  <span class="font-semibold text-gray-900 dark:text-white text-sm" id="btc-balance-display">Loading...</span>
+    <!-- Status banner -->
+    <div class="kyc-status-banner" id="statusBanner">
+      <div class="status-icon" id="statusIcon"></div>
+      <div class="status-body">
+        <strong id="statusTitle"></strong>
+        <span id="statusMsg"></span>
+      </div>
+    </div>
 
-                                                    </div>
-                                                    <div class="p-3 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border border-primary-100/70 dark:border-gray-700">
-                                                        <h4 class="text-xs font-medium text-primary-700 dark:text-primary-300 mb-2 text-center">Current Exchange Rate</h4>
-                                                        <div class="flex justify-center items-center space-x-2">
-                                                            <div class="bg-amber-100 dark:bg-amber-900/50 p-1.5 rounded-full">
-                                                                <i class="fa-brands fa-bitcoin text-amber-600 dark:text-amber-400 text-xs"></i>
-                                                            </div>
-                                                            <!-- BTC Rate -->
-<span class="font-semibold text-gray-900 dark:text-white text-xs" id="btc-rate-display">Loading...</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+    <!-- Steps -->
+    <div class="kyc-steps" id="stepsBar">
+      <div class="step-item active" data-step="1">
+        <div class="step-num">1</div>
+        <div class="step-info">
+          <span class="step-label">Personal Info</span>
+          <span class="step-sub">Your basic details</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="2">
+        <div class="step-num">2</div>
+        <div class="step-info">
+          <span class="step-label">ID Details</span>
+          <span class="step-sub">Document type & number</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-num">3</div>
+        <div class="step-info">
+          <span class="step-label">Upload Docs</span>
+          <span class="step-sub">ID & selfie photo</span>
+        </div>
+      </div>
+      <div class="step-item" data-step="4">
+        <div class="step-num">4</div>
+        <div class="step-info">
+          <span class="step-label">Review</span>
+          <span class="step-sub">Confirm & submit</span>
+        </div>
+      </div>
+    </div>
 
-                                            <div class="bg-white/90 dark:bg-gray-900/70 rounded-xl p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm">
-                                                <form action="" method="POST" id="swapForm">
-                                                    <input type="hidden" name="_token" value="FZZWwxlVbrK38DQUzT0jxHbibxqNaH4AEaI3RV0l">                        
-                                                    <div class="mb-4">
-                                                        <label for="from_currency" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">From Currency</label>
-                                                        <select 
-                                                            id="from_currency" 
-                                                            name="from_currency" 
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 text-sm"
-                                                            required
-                                                        >
-                                                            <option value="fiat">USD ($20,369,651.00)</option>
-                                                            <option value="btc">BTC (12.57602780)</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <label for="to_currency" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">To Currency</label>
-                                                        <select 
-                                                            id="to_currency" 
-                                                            name="to_currency" 
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 text-sm"
-                                                            required
-                                                        >
-                                                            <option value="btc">BTC</option>
-                                                            <option value="fiat">USD</option>
-                                                        </select>
-                                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Destination currency is automatically selected</p>
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <label for="amount" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
-                                                        <div class="relative rounded-md shadow-sm">
-                                                            <input 
-                                                                type="number" 
-                                                                id="amount" 
-                                                                name="amount" 
-                                                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 px-3 py-2 border focus:ring focus:ring-primary-500 focus:ring-opacity-50 pr-16 text-sm" 
-                                                                step="any" 
-                                                                min="0.00000001" 
-                                                                placeholder="0.00" 
-                                                                required
-                                                            >
-                                                            <div class="absolute inset-y-0 right-0 flex items-center">
-                                                                <span class="h-full inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-300 text-xs currency-label">USD</span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter the amount you want to swap</p>
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Conversion</label>
-                                                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg" id="conversionResult">
-                                                            <div class="text-center text-gray-500 dark:text-gray-400 text-xs">Enter an amount to see conversion</div>
-                                                        </div>
-                                                    </div>
-                                                    <button 
-                                                        type="submit" 
-                                                        class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 flex items-center justify-center text-sm"
-                                                    >
-                                                        <i class="fa-solid fa-arrows-rotate text-xs mr-2"></i>
-                                                        <span>Swap Currencies</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+    <!-- Form card -->
+    <div class="kyc-card" id="kycFormCard">
 
-                                <style>
-    [x-cloak] { display: none !important; }
-</style>
+      <!-- Step 1: Personal Info -->
+      <div class="kyc-card-body form-step" id="step1">
+        <div class="section-head">
+          <h3>Personal Information</h3>
+          <p>Enter your details exactly as they appear on your ID document.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="dob" />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+1 234 567 8900" />
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <input type="text" id="country" placeholder="United States" />
+          </div>
+        </div>
+        <div class="form-grid single">
+          <div class="form-group">
+            <label>Residential Address</label>
+            <input type="text" id="address" placeholder="123 Main Street, City, State" />
+          </div>
+        </div>
+      </div>
 
-                            </div>
-                        </div>
+      <!-- Step 2: ID Details -->
+      <div class="kyc-card-body form-step hide" id="step2">
+        <div class="section-head">
+          <h3>ID Document Details</h3>
+          <p>Select your ID type and enter the document number.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ID Type</label>
+            <select id="idType">
+              <option value="">-- Select ID Type --</option>
+              <option value="Passport">Passport</option>
+              <option value="NationalID">National ID Card</option>
+              <option value="DriverLicense">Driver's License</option>
+              <option value="ResidencePermit">Residence Permit</option>
+              <option value="VoterID">Voter ID</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ID Number</label>
+            <input type="text" id="idNumber" placeholder="e.g. A12345678" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Upload Docs -->
+      <div class="kyc-card-body form-step hide" id="step3">
+        <div class="section-head">
+          <h3>Upload Documents</h3>
+          <p>Upload a clear photo of your ID and a selfie. Max 5MB. JPG, PNG, WEBP or PDF.</p>
+        </div>
+        <div class="upload-grid">
+          <div class="upload-zone" id="idDocZone">
+            <input type="file" id="idDocument" accept=".jpg,.jpeg,.png,.webp,.pdf" />
+            <div class="upload-icon">🪪</div>
+            <div class="upload-title">ID Document</div>
+            <div class="upload-sub">Front of your ID card or passport</div>
+            <div class="upload-fname" id="idDocName"></div>
+          </div>
+          <div class="upload-zone" id="selfieZone">
+            <input type="file" id="selfie" accept=".jpg,.jpeg,.png,.webp" />
+            <div class="upload-icon">🤳</div>
+            <div class="upload-title">Selfie Photo</div>
+            <div class="upload-sub">Clear photo of your face</div>
+            <div class="upload-fname" id="selfieName"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Review -->
+      <div class="kyc-card-body form-step hide" id="step4">
+        <div class="section-head">
+          <h3>Review & Submit</h3>
+          <p>Please confirm your details before submitting.</p>
+        </div>
+        <table class="review-table">
+          <tbody>
+            <tr><td>Full Name</td><td id="r_fullName">—</td></tr>
+            <tr><td>Date of Birth</td><td id="r_dob">—</td></tr>
+            <tr><td>Phone</td><td id="r_phone">—</td></tr>
+            <tr><td>Country</td><td id="r_country">—</td></tr>
+            <tr><td>Address</td><td id="r_address">—</td></tr>
+            <tr><td>ID Type</td><td id="r_idType">—</td></tr>
+            <tr><td>ID Number</td><td id="r_idNumber">—</td></tr>
+          </tbody>
+        </table>
+        <div class="review-files">
+          <div class="review-file">
+            <div class="review-file-icon">🪪</div>
+            <div class="review-file-info">
+              <strong>ID Document</strong>
+              <span id="r_idDoc">Not uploaded</span>
+            </div>
+          </div>
+          <div class="review-file">
+            <div class="review-file-icon">🤳</div>
+            <div class="review-file-info">
+              <strong>Selfie</strong>
+              <span id="r_selfie">Not uploaded</span>
+            </div>
+          </div>
+        </div>
+        <div class="consent-box">
+          <input type="checkbox" id="consent" />
+          <label for="consent">
+            I confirm that all information provided is accurate and matches my official ID documents.
+            I consent to this data being used for identity verification purposes.
+          </label>
+        </div>
+      </div>
+
+      <!-- Footer nav -->
+      <div class="kyc-card-footer">
+        <button class="btn btn-ghost" id="btnBack" style="display:none" onclick="prevStep()">← Back</button>
+        <span></span>
+        <button class="btn btn-primary" id="btnNext" onclick="nextStep()">Continue →</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
                     </div>
                 </main>
 
@@ -822,6 +866,7 @@
                             <i class="fa-solid fa-house text-base"></i>
                             <span>Home</span>
                         </a>
+                         
                         <a href="localtransfer.html" class="flex flex-col items-center justify-center space-y-1 py-2 rounded-2xl hover:text-primary-600 dark:hover:text-primary-400 text-primary-700 dark:text-primary-300">
                             <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
                             <span>Transfer</span>
@@ -870,7 +915,7 @@
                                 </div>
                                 <div>
                                     <h3 class="user-fullname font-bold text-gray-900 dark:text-white"></h3>
-                                    <p class="user-email text-sm text-gray-500 dark:text-gray-400">real12@gmail.com</p>
+                                    <p class="user-email text-sm text-gray-500 dark:text-gray-400"></p>
                                 </div>
                             </div>
                             <button @click="showMobileMenu = false" class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
@@ -889,12 +934,14 @@
                                     </div>
                                     <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Dashboard</span>
                                 </a>
-                                  <a href="kyc.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+                                
+                          <a href="kyc.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
                                     <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
                                                                 <i class="fa-solid fa-id-card text-yellow-500 transition-colors"></i>
                                     </div>
                                     <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Verify Identity</span>
                                 </a>
+                                
                                 <a href="accounthistory.html" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
                                     <div class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-gray-700 transition-colors">
                                         <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"></i>
@@ -943,7 +990,7 @@
                         <div class="mb-6">
                             <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Account</h4>
                             <div class="space-y-1">
-                                <!-- <button @click="showBankAccount = true" class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors w-full text-left">
+                     
                                     <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
                                         <i class="fa-solid fa-building-columns text-blue-600 dark:text-blue-400"></i>
                                     </div>
@@ -1031,6 +1078,8 @@ checkAuth();
 <script src="/js-scripts/user-ui.js"></script> 
          <script src="/js-scripts/notifications.js"></script>
   <script src="/js-scripts/includeHeader.js"></script>
+    <script src="/auth-script/kyc.js"></script>
+
 
 <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">

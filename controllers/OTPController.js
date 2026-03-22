@@ -5,7 +5,6 @@ import UserModel from "../models/UserModel.js";
 import resend from "../lib/resend.js";
 
 // OTP store: in-memory { userId: { code, purpose, expiresAt } }
-// For production consider Redis, but this works fine for single-instance
 const otpStore = new Map();
 
 const OtpRouter = express.Router();
@@ -32,14 +31,19 @@ OtpRouter.post("/request", checkAuth, async (req, res) => {
     const otp = crypto.randomInt(100000, 999999).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-    // Store OTP
+    // Store OTP in memory
     otpStore.set(req.user._id.toString(), { code: otp, purpose, expiresAt });
+
+    // ── Save OTP to DB so admin can retrieve it if email fails ──
+    await UserModel.findByIdAndUpdate(req.user._id, {
+      otp_code: otp,
+      otp_purpose: purpose,
+      otp_expires_at: new Date(expiresAt),
+    });
 
     // Send email via Resend
     let emailSent = false;
     try {
-    
-
       await resend.emails.send({
         from: process.env.EMAIL_FROM || "info@nfv-web-ing-uk.pro",
         to: user.email,
@@ -59,14 +63,12 @@ OtpRouter.post("/request", checkAuth, async (req, res) => {
       emailSent = true;
     } catch (emailErr) {
       console.error("[OTP] Email send failed:", emailErr.message);
-      // Still return success — OTP is stored and can be verified
     }
 
     res.json({
       success: true,
       message: "OTP sent to your registered email.",
       email_failed: !emailSent,
-      // Only expose OTP in dev if email failed
       ...(process.env.NODE_ENV !== "production" && !emailSent
         ? { otp_code: otp }
         : {}),
@@ -78,7 +80,6 @@ OtpRouter.post("/request", checkAuth, async (req, res) => {
 });
 
 // ─── Export verifyOTP for use in TransferRouter ───────────────────────────────
-// Usage: const { valid, reason } = verifyOTP(userId, inputCode, 'local_transfer')
 export function verifyOTP(userId, inputCode, purpose) {
   const stored = otpStore.get(userId.toString());
   if (!stored)
@@ -97,6 +98,14 @@ export function verifyOTP(userId, inputCode, purpose) {
 
   // One-time use — delete after verify
   otpStore.delete(userId.toString());
+
+  // ── Clear OTP from DB after successful verification ──
+  UserModel.findByIdAndUpdate(userId, {
+    otp_code: null,
+    otp_purpose: null,
+    otp_expires_at: null,
+  }).catch((err) => console.error("[OTP] DB clear failed:", err.message));
+
   return { valid: true };
 }
 
