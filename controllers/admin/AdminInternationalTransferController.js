@@ -263,4 +263,21 @@ AdminInternationalTransferRouter.post("/add", async (req, res) => {
   }
 });
 
+AdminInternationalTransferRouter.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const transfer = await InternationalTransferModel.findById(id);
+    if (!transfer)
+      return res.status(404).json({ success: false, message: "Transfer not found" });
+
+    await InternationalTransferModel.findByIdAndDelete(id);
+
+    return res.json({ success: true, message: "Transfer deleted" });
+  } catch (err) {
+    console.error("adminDeleteInternationalTransfer error:", err.message, err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 export default AdminInternationalTransferRouter;

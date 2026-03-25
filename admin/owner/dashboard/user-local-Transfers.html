@@ -11,12 +11,8 @@
       rel="stylesheet"
     />
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "DM Sans", sans-serif;
-      }
+      * { box-sizing: border-box; }
+      body { font-family: "DM Sans", sans-serif; }
       .page-wrap {
         display: flex;
         flex-direction: column;
@@ -33,18 +29,8 @@
         max-width: 1100px;
         margin: 40px 0 1.5rem;
       }
-      .page-head h1 {
-        margin: 0;
-        font-size: 1.55rem;
-        font-weight: 700;
-        color: #0f172a;
-        letter-spacing: -0.02em;
-      }
-      .page-head p {
-        margin: 5px 0 0;
-        color: #64748b;
-        font-size: 0.875rem;
-      }
+      .page-head h1 { margin: 0; font-size: 1.55rem; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; }
+      .page-head p { margin: 5px 0 0; color: #64748b; font-size: 0.875rem; }
       .card {
         background: #fff;
         border: 1px solid #e2e8f0;
@@ -52,7 +38,7 @@
         width: 90%;
         max-width: 1100px;
         overflow: hidden;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 1px 6px rgba(0,0,0,0.06);
       }
       .card-head {
         display: flex;
@@ -83,18 +69,9 @@
         font-size: 0.8rem;
         font-weight: 500;
       }
-      .table-wrap {
-        overflow-x: auto;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.875rem;
-      }
-      thead tr {
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-      }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+      thead tr { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
       th {
         padding: 0.75rem 1.1rem;
         text-align: left;
@@ -111,35 +88,27 @@
         color: #334155;
         vertical-align: middle;
       }
-      tbody tr:last-child td {
-        border-bottom: none;
-      }
-      tbody tr:hover td {
-        background: #fafbfc;
-      }
-      .amount-cell {
+      tbody tr:last-child td { border-bottom: none; }
+      tbody tr:hover td { background: #fafbfc; }
+      .amount-cell { font-weight: 700; font-size: 0.95rem; }
+      .amount-cell span { font-size: 0.72rem; font-weight: 400; color: #94a3b8; margin-left: 2px; }
+      .amount-debit { color: #dc2626; }
+      .amount-credit { color: #16a34a; }
+      .type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 0.18rem 0.55rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
         font-weight: 700;
-        font-size: 0.95rem;
-        color: #0f172a;
+        margin-top: 3px;
       }
-      .amount-cell span {
-        font-size: 0.72rem;
-        font-weight: 400;
-        color: #94a3b8;
-        margin-left: 2px;
-      }
-      .bank-info {
-        line-height: 1.5;
-      }
-      .bank-name {
-        font-weight: 600;
-        color: #0f172a;
-        font-size: 0.85rem;
-      }
-      .bank-sub {
-        font-size: 0.75rem;
-        color: #94a3b8;
-      }
+      .type-debit { background: #fee2e2; color: #991b1b; }
+      .type-credit { background: #d1fae5; color: #065f46; }
+      .bank-info { line-height: 1.5; }
+      .bank-name { font-weight: 600; color: #0f172a; font-size: 0.85rem; }
+      .bank-sub { font-size: 0.75rem; color: #94a3b8; }
       .mono {
         font-family: "Courier New", monospace;
         font-size: 0.75rem;
@@ -158,40 +127,14 @@
         font-weight: 600;
         white-space: nowrap;
       }
-      .badge::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        display: inline-block;
-      }
-      .badge-pending {
-        background: #fef3c7;
-        color: #92400e;
-      }
-      .badge-pending::before {
-        background: #f59e0b;
-      }
-      .badge-completed {
-        background: #d1fae5;
-        color: #065f46;
-      }
-      .badge-completed::before {
-        background: #10b981;
-      }
-      .badge-failed {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .badge-failed::before {
-        background: #ef4444;
-      }
-      .action-cell {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        min-width: 130px;
-      }
+      .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+      .badge-pending { background: #fef3c7; color: #92400e; }
+      .badge-pending::before { background: #f59e0b; }
+      .badge-completed { background: #d1fae5; color: #065f46; }
+      .badge-completed::before { background: #10b981; }
+      .badge-failed { background: #fee2e2; color: #991b1b; }
+      .badge-failed::before { background: #ef4444; }
+      .action-cell { display: flex; flex-direction: column; gap: 0.4rem; min-width: 130px; }
       .btn {
         padding: 0.38rem 0.85rem;
         border-radius: 6px;
@@ -204,36 +147,14 @@
         text-align: center;
         width: 100%;
       }
-      .btn-complete {
-        background: #ecfdf5;
-        color: #065f46;
-        border: 1px solid #6ee7b7;
-      }
-      .btn-complete:hover {
-        background: #10b981;
-        color: #fff;
-        border-color: #10b981;
-      }
-      .btn-fail {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #fca5a5;
-      }
-      .btn-fail:hover {
-        background: #ef4444;
-        color: #fff;
-        border-color: #ef4444;
-      }
-      .btn-pending {
-        background: #fefce8;
-        color: #92400e;
-        border: 1px solid #fde68a;
-      }
-      .btn-pending:hover {
-        background: #f59e0b;
-        color: #fff;
-        border-color: #f59e0b;
-      }
+      .btn-complete { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
+      .btn-complete:hover { background: #10b981; color: #fff; border-color: #10b981; }
+      .btn-fail { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+      .btn-fail:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+      .btn-pending { background: #fefce8; color: #92400e; border: 1px solid #fde68a; }
+      .btn-pending:hover { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+      .btn-delete { background: #fdf2f8; color: #7e1d4e; border: 1px solid #f0abcb; }
+      .btn-delete:hover { background: #be185d; color: #fff; border-color: #be185d; }
       .btn-ghost {
         background: transparent;
         border: 1px solid #e2e8f0;
@@ -246,28 +167,10 @@
         cursor: pointer;
         transition: background 0.15s;
       }
-      .btn-ghost:hover {
-        background: #f8fafc;
-      }
-      .btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      .empty {
-        text-align: center;
-        padding: 3.5rem;
-        color: #94a3b8;
-        font-size: 0.9rem;
-      }
-      .toast-container {
-        position: fixed;
-        top: 1.5rem;
-        right: 1.5rem;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+      .btn-ghost:hover { background: #f8fafc; }
+      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .empty { text-align: center; padding: 3.5rem; color: #94a3b8; font-size: 0.9rem; }
+      .toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; }
       .toast {
         display: flex;
         align-items: center;
@@ -277,132 +180,65 @@
         font-size: 0.875rem;
         font-weight: 500;
         min-width: 280px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
         animation: slideIn 0.25s ease;
       }
-      .toast.success {
-        background: #d1fae5;
-        color: #065f46;
-        border-left: 4px solid #10b981;
-      }
-      .toast.error {
-        background: #fee2e2;
-        color: #991b1b;
-        border-left: 4px solid #ef4444;
-      }
-      .toast.warning {
-        background: #fef3c7;
-        color: #92400e;
-        border-left: 4px solid #f59e0b;
-      }
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
+      .toast.success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+      .toast.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+      .toast.warning { background: #fef3c7; color: #92400e; border-left: 4px solid #f59e0b; }
+      @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
       .overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0,0,0,0.4);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 999;
         animation: fadeIn 0.2s ease;
       }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       .dialog {
         background: #fff;
         border-radius: 12px;
         padding: 2rem;
         max-width: 420px;
         width: 90%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.18);
       }
-      .dialog h3 {
-        margin: 0 0 0.5rem;
-        font-size: 1.05rem;
-        color: #0f172a;
-      }
-      .dialog p {
-        margin: 0 0 1.5rem;
-        color: #64748b;
-        font-size: 0.875rem;
-        line-height: 1.5;
-      }
-      .dialog-actions {
-        display: flex;
-        gap: 0.75rem;
-        justify-content: flex-end;
-      }
+      .dialog h3 { margin: 0 0 0.5rem; font-size: 1.05rem; color: #0f172a; }
+      .dialog p { margin: 0 0 1.5rem; color: #64748b; font-size: 0.875rem; line-height: 1.5; }
+      .dialog-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
       .btn-modal-cancel {
-        padding: 0.55rem 1.1rem;
-        border-radius: 7px;
-        border: 1px solid #e2e8f0;
-        background: #fff;
-        color: #64748b;
-        font-size: 0.875rem;
-        font-family: inherit;
-        font-weight: 500;
-        cursor: pointer;
+        padding: 0.55rem 1.1rem; border-radius: 7px; border: 1px solid #e2e8f0;
+        background: #fff; color: #64748b; font-size: 0.875rem; font-family: inherit;
+        font-weight: 500; cursor: pointer;
       }
-      .btn-modal-cancel:hover {
-        background: #f8fafc;
-      }
+      .btn-modal-cancel:hover { background: #f8fafc; }
       .btn-modal-complete {
-        padding: 0.55rem 1.25rem;
-        border-radius: 7px;
-        border: none;
-        background: #10b981;
-        color: #fff;
-        font-size: 0.875rem;
-        font-family: inherit;
-        font-weight: 600;
-        cursor: pointer;
+        padding: 0.55rem 1.25rem; border-radius: 7px; border: none;
+        background: #10b981; color: #fff; font-size: 0.875rem; font-family: inherit;
+        font-weight: 600; cursor: pointer;
       }
-      .btn-modal-complete:hover {
-        background: #059669;
-      }
+      .btn-modal-complete:hover { background: #059669; }
       .btn-modal-fail {
-        padding: 0.55rem 1.25rem;
-        border-radius: 7px;
-        border: none;
-        background: #ef4444;
-        color: #fff;
-        font-size: 0.875rem;
-        font-family: inherit;
-        font-weight: 600;
-        cursor: pointer;
+        padding: 0.55rem 1.25rem; border-radius: 7px; border: none;
+        background: #ef4444; color: #fff; font-size: 0.875rem; font-family: inherit;
+        font-weight: 600; cursor: pointer;
       }
-      .btn-modal-fail:hover {
-        background: #b91c1c;
-      }
+      .btn-modal-fail:hover { background: #b91c1c; }
       .btn-modal-pending {
-        padding: 0.55rem 1.25rem;
-        border-radius: 7px;
-        border: none;
-        background: #f59e0b;
-        color: #fff;
-        font-size: 0.875rem;
-        font-family: inherit;
-        font-weight: 600;
-        cursor: pointer;
+        padding: 0.55rem 1.25rem; border-radius: 7px; border: none;
+        background: #f59e0b; color: #fff; font-size: 0.875rem; font-family: inherit;
+        font-weight: 600; cursor: pointer;
       }
-      .btn-modal-pending:hover {
-        background: #d97706;
+      .btn-modal-pending:hover { background: #d97706; }
+      .btn-modal-delete {
+        padding: 0.55rem 1.25rem; border-radius: 7px; border: none;
+        background: #be185d; color: #fff; font-size: 0.875rem; font-family: inherit;
+        font-weight: 600; cursor: pointer;
       }
+      .btn-modal-delete:hover { background: #9d174d; }
     </style>
   </head>
 
@@ -465,14 +301,7 @@
       function esc(str) {
         return String(str ?? "").replace(
           /[&<>"']/g,
-          (m) =>
-            ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#039;",
-            })[m],
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[m]
         );
       }
 
@@ -481,58 +310,57 @@
       }
 
       function fmt(n) {
-        return (
-          "$" +
-          Number(n ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })
-        );
+        return "$" + Number(n ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 });
       }
 
       function formatDate(d) {
         if (!d) return "—";
         const date = new Date(d);
         return (
-          date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }) +
+          date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) +
           " · " +
-          date.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })
+          date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
         );
       }
 
-      // Build action buttons based on current status
+      function amountCell(t) {
+        const isCredit = t.type === "credit";
+        const arrow = isCredit ? "↑" : "↓";
+        const colorClass = isCredit ? "amount-credit" : "amount-debit";
+        const typeBadge = isCredit
+          ? `<span class="type-badge type-credit">↑ Credit</span>`
+          : `<span class="type-badge type-debit">↓ Debit</span>`;
+        return `
+          <div class="amount-cell ${colorClass}">
+            ${arrow} ${fmt(t.amount)}<span>USD</span>
+          </div>
+          ${typeBadge}
+        `;
+      }
+
       function actionButtons(t) {
         const id = t._id;
         const s = t.status;
 
         const complete = `<button class="btn btn-complete" onclick="openCompleteModal('${id}')">✓ Complete</button>`;
-        const fail = `<button class="btn btn-fail"     onclick="openFailModal('${id}')">✕ Mark Failed</button>`;
-        const pending = `<button class="btn btn-pending"  onclick="openPendingModal('${id}')">↩ Set Pending</button>`;
+        const fail     = `<button class="btn btn-fail"    onclick="openFailModal('${id}')">✕ Mark Failed</button>`;
+        const pending  = `<button class="btn btn-pending" onclick="openPendingModal('${id}')">↩ Set Pending</button>`;
+        const del      = `<button class="btn btn-delete"  onclick="openDeleteModal('${id}')">🗑 Delete</button>`;
 
-        if (s === "pending")
-          return `<div class="action-cell">${complete}${fail}</div>`;
-        if (s === "completed")
-          return `<div class="action-cell">${fail}${pending}</div>`;
-        if (s === "failed")
-          return `<div class="action-cell">${complete}${pending}</div>`;
+        if (s === "pending")   return `<div class="action-cell">${complete}${fail}${del}</div>`;
+        if (s === "completed") return `<div class="action-cell">${fail}${pending}${del}</div>`;
+        if (s === "failed")    return `<div class="action-cell">${complete}${pending}${del}</div>`;
 
-        return `<span style="color:#94a3b8;font-size:0.75rem;font-style:italic;">—</span>`;
+        return `<div class="action-cell">${del}</div>`;
       }
 
       async function loadUser() {
         if (!userId) return;
         try {
-          const res = await fetch(`/api/admin/users/${userId}`, {
-            credentials: "include",
-          });
+          const res = await fetch(`/api/admin/users/${userId}`, { credentials: "include" });
           const { success, user } = await res.json();
           if (!success) throw new Error();
-          document.getElementById("userPill").textContent =
-            `👤 ${user.name}  •  ${user.email}`;
+          document.getElementById("userPill").textContent = `👤 ${user.name}  •  ${user.email}`;
         } catch {
           document.getElementById("userPill").textContent = "Unknown user";
         }
@@ -540,10 +368,7 @@
 
       async function loadTransfers() {
         try {
-          const res = await fetch(
-            `/api/admin/users/${userId}/local-transfers`,
-            { credentials: "include" },
-          );
+          const res = await fetch(`/api/admin/users/${userId}/local-transfers`, { credentials: "include" });
           const { success, transfers } = await res.json();
           if (!success) throw new Error();
 
@@ -556,12 +381,10 @@
             return;
           }
 
-          tbody.innerHTML = transfers
-            .map(
-              (t) => `
+          tbody.innerHTML = transfers.map((t) => `
             <tr>
               <td style="white-space:nowrap;color:#64748b;font-size:0.8rem;">${formatDate(t.createdAt)}</td>
-              <td><div class="amount-cell">${fmt(t.amount)}<span>USD</span></div></td>
+              <td>${amountCell(t)}</td>
               <td>
                 <div class="bank-info">
                   <div class="bank-name">${esc(t.accountname)}</div>
@@ -575,9 +398,7 @@
               <td>${badge(t.status)}</td>
               <td>${actionButtons(t)}</td>
             </tr>
-          `,
-            )
-            .join("");
+          `).join("");
         } catch {
           document.getElementById("transfersTbody").innerHTML =
             `<tr><td colspan="8" class="empty">Failed to load transfers.</td></tr>`;
@@ -594,7 +415,7 @@
         overlay.innerHTML = `
           <div class="dialog">
             <h3>Mark as Completed</h3>
-            <p>This will deduct the transfer amount from the user's balance. Are you sure?</p>
+            <p>This will apply the transfer amount to the user's balance (deduct for debit, add for credit). Are you sure?</p>
             <div class="dialog-actions">
               <button onclick="closeCompleteModal()" class="btn-modal-cancel">Cancel</button>
               <button onclick="submitStatus('completed', 'completeOverlay')" class="btn-modal-complete">Yes, Complete</button>
@@ -602,9 +423,7 @@
           </div>`;
         document.body.appendChild(overlay);
       }
-      function closeCompleteModal() {
-        document.getElementById("completeOverlay")?.remove();
-      }
+      function closeCompleteModal() { document.getElementById("completeOverlay")?.remove(); }
 
       // ── Fail Modal ──
       let failTarget = null;
@@ -616,7 +435,7 @@
         overlay.innerHTML = `
           <div class="dialog">
             <h3>Mark as Failed</h3>
-            <p>If the transfer was previously completed, the amount will be refunded to the user's balance.</p>
+            <p>If the transfer was previously completed, the balance change will be reversed. Are you sure?</p>
             <div class="dialog-actions">
               <button onclick="closeFailModal()" class="btn-modal-cancel">Cancel</button>
               <button onclick="submitStatus('failed', 'failOverlay')" class="btn-modal-fail">Yes, Mark Failed</button>
@@ -624,9 +443,7 @@
           </div>`;
         document.body.appendChild(overlay);
       }
-      function closeFailModal() {
-        document.getElementById("failOverlay")?.remove();
-      }
+      function closeFailModal() { document.getElementById("failOverlay")?.remove(); }
 
       // ── Set Pending Modal ──
       let pendingTarget = null;
@@ -638,7 +455,7 @@
         overlay.innerHTML = `
           <div class="dialog">
             <h3>Set Back to Pending</h3>
-            <p>If the transfer was completed, the amount will be refunded to the user's balance.</p>
+            <p>If the transfer was completed, the balance change will be reversed. Are you sure?</p>
             <div class="dialog-actions">
               <button onclick="closePendingModal()" class="btn-modal-cancel">Cancel</button>
               <button onclick="submitStatus('pending', 'pendingOverlay')" class="btn-modal-pending">Yes, Set Pending</button>
@@ -646,18 +463,50 @@
           </div>`;
         document.body.appendChild(overlay);
       }
-      function closePendingModal() {
-        document.getElementById("pendingOverlay")?.remove();
+      function closePendingModal() { document.getElementById("pendingOverlay")?.remove(); }
+
+      // ── Delete Modal ──
+      let deleteTarget = null;
+      function openDeleteModal(id) {
+        deleteTarget = id;
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+        overlay.id = "deleteOverlay";
+        overlay.innerHTML = `
+          <div class="dialog">
+            <h3>Delete Transfer</h3>
+            <p>⚠️ This will permanently delete this transfer record. This action cannot be undone. Are you absolutely sure?</p>
+            <div class="dialog-actions">
+              <button onclick="closeDeleteModal()" class="btn-modal-cancel">Cancel</button>
+              <button onclick="submitDelete()" class="btn-modal-delete">Yes, Delete</button>
+            </div>
+          </div>`;
+        document.body.appendChild(overlay);
+      }
+      function closeDeleteModal() { document.getElementById("deleteOverlay")?.remove(); }
+
+      async function submitDelete() {
+        try {
+          const res = await fetch(`/api/admin/local-transfers/${deleteTarget}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+          const { success, message } = await res.json();
+          if (!success) throw new Error(message);
+          showToast("success", "Transfer deleted successfully");
+          document.getElementById("deleteOverlay")?.remove();
+          loadTransfers();
+        } catch (err) {
+          showToast("error", err.message || "Failed to delete transfer");
+        }
       }
 
-      // Shared submit — figures out the right ID based on which modal is open
+      // ── Shared status submit ──
       async function submitStatus(newStatus, overlayId) {
         const id =
-          newStatus === "completed"
-            ? completeTarget
-            : newStatus === "failed"
-              ? failTarget
-              : pendingTarget;
+          newStatus === "completed" ? completeTarget :
+          newStatus === "failed"    ? failTarget     :
+          pendingTarget;
         try {
           const res = await fetch(`/api/admin/local-transfers/${id}/status`, {
             method: "PATCH",

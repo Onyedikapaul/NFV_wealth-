@@ -495,17 +495,57 @@
         const approve = `<button class="btn btn-approve" onclick="openApproveModal('${id}')">✓ Approve</button>`;
         const reject = `<button class="btn btn-deny"    onclick="openRejectModal('${id}')">✕ Reject</button>`;
         const pending = `<button class="btn btn-pending" onclick="openPendingModal('${id}')">↩ Set Pending</button>`;
+        const del = `<button class="btn btn-deny"    onclick="openDeleteModal('${id}')" style="background:#fdf2f8;color:#7e1d4e;border:1px solid #f0abcb;">🗑 Delete</button>`;
 
         if (s === "pending")
-          return `<div class="action-cell">${approve}${reject}</div>`;
+          return `<div class="action-cell">${approve}${reject}${del}</div>`;
         if (s === "approved")
-          return `<div class="action-cell">${reject}${pending}</div>`;
+          return `<div class="action-cell">${reject}${pending}${del}</div>`;
         if (s === "rejected")
-          return `<div class="action-cell">${approve}${pending}</div>`;
+          return `<div class="action-cell">${approve}${pending}${del}</div>`;
 
-        return `<span style="color:#9ca3af;font-size:0.78rem;font-style:italic;">—</span>`;
+        return `<div class="action-cell">${del}</div>`;
       }
 
+      // ----------- Delete User ------------//
+      // ── Delete Modal ──
+      let deleteTarget = null;
+      function openDeleteModal(id) {
+        deleteTarget = id;
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+        overlay.id = "deleteOverlay";
+        overlay.innerHTML = `
+    <div class="dialog">
+      <h3>Delete Deposit</h3>
+      <p>⚠️ This will permanently delete this deposit record. This action cannot be undone. Are you absolutely sure?</p>
+      <div class="dialog-actions">
+        <button onclick="closeDeleteModal()" class="btn-modal-cancel">Cancel</button>
+        <button onclick="submitDelete()" class="btn-modal-reject">Yes, Delete</button>
+      </div>
+    </div>`;
+        document.body.appendChild(overlay);
+      }
+      function closeDeleteModal() {
+        document.getElementById("deleteOverlay")?.remove();
+      }
+      async function submitDelete() {
+        try {
+          const res = await fetch(`/api/admin/deposits/delete/${deleteTarget}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+          const { success, message } = await res.json();
+          if (!success) throw new Error(message);
+          showToast("success", "Deposit deleted successfully");
+          document.getElementById("deleteOverlay")?.remove();
+          loadDeposits();
+        } catch (err) {
+          showToast("error", err.message || "Failed to delete deposit");
+        }
+      }
+
+      // --------- Load User ---------//
       async function loadUser() {
         if (!userId) return;
         try {

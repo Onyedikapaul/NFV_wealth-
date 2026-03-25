@@ -789,6 +789,24 @@
         loadTransfers(1);
       });
 
+      // ----------- Delete ----------------//
+
+      async function deleteTransfer(id) {
+  if (!confirm("⚠️ This will permanently delete this transfer record. This action cannot be undone. Are you sure?")) return;
+  try {
+    const res = await fetch(`/api/admin/international-transfers/delete/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+    showToast("Transfer deleted successfully", "success");
+    loadTransfers(currentPage);
+  } catch (err) {
+    showToast(err.message || "Failed to delete transfer", "error");
+  }
+}
+
       // ── Load user info ────────────────────────────────────────────────────
       async function loadUser() {
         try {
@@ -929,15 +947,16 @@
         <td><span class="badge badge-${t.status}">${cap(t.status)}</span></td>
         <td style="white-space:nowrap">${fmtDate(t.createdAt)}<br><small style="color:#94a3b8">${fmtTime(t.createdAt)}</small></td>
         <td>
-          <div class="actions">
-            <button class="btn btn-view" onclick="openModal('${t._id}')">
-              <i class="fa-solid fa-eye"></i> View
-            </button>
-            ${t.status !== "completed" ? `<button class="btn btn-complete" onclick="quickAction('${t._id}','completed')" title="Approve"><i class="fa-solid fa-check"></i></button>` : ""}
-            ${t.status !== "failed" ? `<button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"    title="Fail"><i class="fa-solid fa-xmark"></i></button>` : ""}
-            ${t.status !== "cancelled" ? `<button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')" title="Cancel"><i class="fa-solid fa-ban"></i></button>` : ""}
-            ${t.status !== "pending" ? `<button class="btn btn-view"     onclick="quickAction('${t._id}','pending')"   title="Set Pending" style="background:#f1f5f9;color:#475569"><i class="fa-solid fa-rotate-left"></i></button>` : ""}
-          </div>
+         <div class="actions">
+  <button class="btn btn-view" onclick="openModal('${t._id}')">
+    <i class="fa-solid fa-eye"></i> View
+  </button>
+  ${t.status !== "completed" ? `<button class="btn btn-complete" onclick="quickAction('${t._id}','completed')" title="Approve"><i class="fa-solid fa-check"></i></button>` : ""}
+  ${t.status !== "failed" ? `<button class="btn btn-fail"     onclick="quickAction('${t._id}','failed')"    title="Fail"><i class="fa-solid fa-xmark"></i></button>` : ""}
+  ${t.status !== "cancelled" ? `<button class="btn btn-cancel"   onclick="quickAction('${t._id}','cancelled')" title="Cancel"><i class="fa-solid fa-ban"></i></button>` : ""}
+  ${t.status !== "pending" ? `<button class="btn btn-view"     onclick="quickAction('${t._id}','pending')"   title="Set Pending" style="background:#f1f5f9;color:#475569"><i class="fa-solid fa-rotate-left"></i></button>` : ""}
+  <button class="btn btn-fail" onclick="deleteTransfer('${t._id}')" title="Delete" style="background:#fdf2f8;color:#7e1d4e;border:1px solid #f0abcb"><i class="fa-solid fa-trash"></i></button>
+</div>
         </td>
       </tr>`;
           })

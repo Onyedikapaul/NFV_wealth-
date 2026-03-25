@@ -246,4 +246,21 @@ AdminDepositRouter.post("/users/:id/deposit", async (req, res) => {
   }
 });
 
+AdminDepositRouter.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deposit = await DepositModel.findById(id);
+    if (!deposit)
+      return res.status(404).json({ success: false, message: "Deposit not found" });
+
+    await DepositModel.findByIdAndDelete(id);
+
+    return res.json({ success: true, message: "Deposit deleted" });
+  } catch (err) {
+    console.error("adminDeleteDeposit error:", err.message, err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 export default AdminDepositRouter;

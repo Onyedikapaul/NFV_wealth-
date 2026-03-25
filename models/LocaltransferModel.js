@@ -12,6 +12,11 @@ const localTransferSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    type: {
+      type: String,
+      enum: ["credit", "debit"],
+      default: "debit",
+    },
     accountname: {
       type: String,
       required: true,
